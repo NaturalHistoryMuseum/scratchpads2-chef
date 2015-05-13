@@ -1,0 +1,11 @@
+name             'control'
+maintainer       'Simon Rycroft'
+maintainer_email 's.rycroft@nhm.ac.uk'
+license          'GPLv3'
+description      'Install the control/aegir server for a Scratchpads platform.'
+long_description 'Installs/Configures control'
+version          '0.1.0'
+
+depends 'apt', '~> 2.7.0'
+depends 'apache2', '~> 3.0.0'
+depends 'nfs', '~> 2.1.0'

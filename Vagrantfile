@@ -1,15 +1,37 @@
 VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "scratchpads/debian8-2gb-chef"
-  config.vm.network "public_network"
-  config.vm.network "forwarded_port", guest: 80, host: 8888
-
-#  # Virtualbox specific configuration
-#  config.vm.provider "virtualbox" do |vb|
-#    vb.customize ["modifyvm", :id, "--memory", "1024"]
-#  end
-
-  config.vm.provision "chef_solo" do |chef|
-    chef.add_recipe "learn_chef_apache2"
+  # Control VM - Aegir, Varnish
+  config.vm.define "control" do |control|
+    control.vm.box = "scratchpads/debian8-2gb-chef"
+    control.vm.provider "virtualbox" do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "2048"]
+    end
+    control.vm.network "public_network"
+    control.vm.network "forwarded_port", guest: 80, host: 8888
+    control.vm.provision "chef_solo" do |chef|
+      chef.add_recipe "learn_chef_apache2"
+    end
+  end
+  # App VM - Apache
+  config.vm.define "app1" do |app1|
+    app1.vm.box = "scratchpads/debian8-2gb-chef"
+    app1.vm.provider "virtualbox" do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "512"]
+    end
+    app1.vm.network "public_network"
+    app1.vm.provision "chef_solo" do |chef|
+      chef.add_recipe "learn_chef_apache2"
+    end
+  end
+  # Data VM - Percona/MySQL, Memcached
+  config.vm.define "data1" do |data1|
+    data1.vm.box = "scratchpads/debian8-2gb-chef"
+    data1.vm.provider "virtualbox" do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "512"]
+    end
+    data1.vm.network "public_network"
+    data1.vm.provision "chef_solo" do |chef|
+      chef.add_recipe "learn_chef_apache2"
+    end
   end
 end

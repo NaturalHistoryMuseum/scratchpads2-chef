@@ -1,0 +1,54 @@
+{
+  "create": {
+    "actors": [
+      "node1",
+      "pivotal",
+      "sdrycroft"
+    ],
+    "groups": [
+      "admins"
+    ]
+  },
+  "read": {
+    "actors": [
+      "node1",
+      "pivotal",
+      "sdrycroft"
+    ],
+    "groups": [
+      "admins",
+      "users"
+    ]
+  },
+  "update": {
+    "actors": [
+      "node1",
+      "pivotal",
+      "sdrycroft"
+    ],
+    "groups": [
+      "admins"
+    ]
+  },
+  "delete": {
+    "actors": [
+      "node1",
+      "pivotal",
+      "sdrycroft"
+    ],
+    "groups": [
+      "admins",
+      "users"
+    ]
+  },
+  "grant": {
+    "actors": [
+      "node1",
+      "pivotal",
+      "sdrycroft"
+    ],
+    "groups": [
+      "admins"
+    ]
+  }
+}

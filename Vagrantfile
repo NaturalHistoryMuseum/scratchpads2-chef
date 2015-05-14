@@ -11,6 +11,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.omnibus.chef_version = :latest
   # Control VM - Aegir, Varnish
   config.vm.define "control" do |control|
+    control.vm.hostname = "sp-control-1"
     control.vm.box = "scratchpads/debian8"
     control.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--memory", "2048"]
@@ -23,6 +24,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
   # App VM - Apache
   config.vm.define "app1", autostart: false do |app1|
+    app1.vm.hostname = "sp-app-1"
     app1.vm.box = "scratchpads/debian8"
     app1.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--memory", "512"]
@@ -34,6 +36,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
   # Data VM - Percona/MySQL, Memcached
   config.vm.define "data1", autostart: false do |data1|
+    data1.vm.hostname = "sp-data-1"
     data1.vm.box = "scratchpads/debian8"
     data1.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--memory", "512"]

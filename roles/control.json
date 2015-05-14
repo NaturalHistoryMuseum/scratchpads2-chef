@@ -1,4 +1,5 @@
 {
+  "json_class": "Chef::Role",
   "name": "control",
   "description": "Main Aegir server role.",
   "default_attributes": {

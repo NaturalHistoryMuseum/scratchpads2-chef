@@ -3,9 +3,22 @@
   "name": "control",
   "description": "Main Aegir server role.",
   "default_attributes": {
-    "encrypted_data_bag_secret_file": ".chef/encrypted_data_bag_secret",
-    "server": {
-      "bind_address": "127.0.0.1"
+    "percona": {
+      "use_percona_repos": false,
+      "encrypted_data_bag_secret_file": ".chef/encrypted_data_bag_secret",
+      "server": {
+        "bind_address": "127.0.0.1"
+      }
+    },
+    "php": {
+      "packages": [
+        "php5",
+        "php5-cli",
+        "php5-curl",
+        "php5-gd",
+        "php5-mysql",
+        "php5-memcache"
+      ]
     }
   },
   "run_list": [

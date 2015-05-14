@@ -1,3 +1,13 @@
 {
-  "name": "control"
+  "name": "control",
+  "description": "Main Aegir server role.",
+  "default_attributes": {
+    "encrypted_data_bag_secret_file": ".chef/encrypted_data_bag_secret",
+    "server": {
+      "bind_address": "127.0.0.1"
+    }
+  },
+  "run_list": [
+    "recipe[control]"
+  ]
 }

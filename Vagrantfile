@@ -19,7 +19,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     control.vm.network "public_network"
     control.vm.network "forwarded_port", guest: 80, host: 8888
     control.vm.provision "chef_solo" do |chef|
-      chef.add_recipe "control"
+      chef.add_role("control")
     end
   end
   # App VM - Apache

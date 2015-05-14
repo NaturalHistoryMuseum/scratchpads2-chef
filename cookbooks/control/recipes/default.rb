@@ -15,3 +15,6 @@ nfs_export "/var/aegir/platforms" do
   sync true
   options ['no_subtree_check']
 end
+
+include_recipe 'percona::client'
+include_recipe 'percona::server'

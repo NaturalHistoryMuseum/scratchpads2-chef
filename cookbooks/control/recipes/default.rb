@@ -16,5 +16,4 @@ nfs_export "/var/aegir/platforms" do
   options ['no_subtree_check']
 end
 
-include_recipe 'percona::client'
-include_recipe 'percona::server'
+#package ['php5','php5-cli','php5-curl','php5-gd','php5-mysql','php5-memcache']

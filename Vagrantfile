@@ -19,6 +19,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     control.vm.network "public_network"
     control.vm.network "forwarded_port", guest: 80, host: 8888
     control.vm.provision "chef_solo" do |chef|
+      chef.roles_path = "roles"
+      chef.data_bags_path = "data_bags"
       chef.add_role("control")
     end
   end

@@ -5,7 +5,6 @@
   "default_attributes": {
     "percona": {
       "use_percona_repos": false,
-      "encrypted_data_bag_secret_file": ".chef/encrypted_data_bag_secret",
       "server": {
         "bind_address": "127.0.0.1"
       }
@@ -19,6 +18,11 @@
         "php5-mysql",
         "php5-memcache"
       ]
+    }
+  },
+  "override_attributes": {
+    "percona": {
+      "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret"
     }
   },
   "run_list": [

@@ -35,3 +35,6 @@ apt_repository "percona" do
 end
 include_recipe 'percona::client'
 include_recipe 'percona::server'
+
+# Execute the Percona SQL to create the functions
+include_recipe 'scratchpads::percona-functions'

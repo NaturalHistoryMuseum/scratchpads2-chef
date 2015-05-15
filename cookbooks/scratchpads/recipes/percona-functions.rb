@@ -16,5 +16,5 @@ end
 passwords = EncryptedPasswords.new(node, node["scratchpads"]["percona"]["encrypted_data_bag"])
 execute 'percona functions' do
   root_pw = passwords.root_password
-#  command "mysql -h #{node['scratchpads']['percona']['host']} -u #{node['scratchpads']['percona']['username']} -p'#{roow_pw}' < #{node['scratchpads']['percona']['percona-functions-file']}"
+  command "mysql -h #{node['scratchpads']['percona']['host']} -u #{node['scratchpads']['percona']['username']} -p'#{root_pw}' < #{node['scratchpads']['percona']['percona-functions-file']}"
 end

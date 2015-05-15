@@ -1,20 +1,20 @@
 {
   "id": "mysql",
   "root": {
-    "encrypted_data": "BV32FFrzQUGDIvQsDliY6AgNXNxpJdiN4D5SZvPLav4=\n",
-    "iv": "XhkycCuB3Y5/tRb/r7nXWg==\n",
+    "encrypted_data": "uwnnXdjh4kbZXVbY835TgqWsiei+spEWUGL4z4tmWYs2vjCAhpkl4Lzu0Vgv\nWLRAQgqJBwSwalEOMiqetH6EyeRvdvV5nY7gpMo6fg++sGw=\n",
+    "iv": "XatsaCnzwWq2YykMM2Hfpg==\n",
     "version": 1,
     "cipher": "aes-256-cbc"
   },
   "backup": {
-    "encrypted_data": "vPNGIwM0iudTidMU7M46HYGAci+R8x1x4a7ZlgUYq90=\n",
-    "iv": "iNQg6T4ogVCLqDJS54cqng==\n",
+    "encrypted_data": "7f9azRF13t+zP8GojTWj7jd+atkDcwUEkq87yqKjQhqfuq6BYJcu00Ujzn47\nk8KFVvoEanpAmd7T964X8H3DM9rZpazynlqMXVfrWNzKbIg=\n",
+    "iv": "PhJm3LUulmBmBCOacBK/sw==\n",
     "version": 1,
     "cipher": "aes-256-cbc"
   },
   "replication": {
-    "encrypted_data": "6PjgDgKo9warzT3ZRzAINCui6fP2cBx4BTuGbQC2G+4=\n",
-    "iv": "EdghQxrJa6zK0dHnIep5Sw==\n",
+    "encrypted_data": "on17CvlM3yLcHT/J9/E8MXn1Q2CIFz43HTART+SlT1zh2zcCopkMkW1vRiS4\nHTLhy+XgkXeQIXVuUIz1BigfeRP50VT4uEe/d0j3DhHBzx4=\n",
+    "iv": "HuCh8/Fell2UrVkTTxabJA==\n",
     "version": 1,
     "cipher": "aes-256-cbc"
   }

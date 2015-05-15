@@ -38,3 +38,4 @@ include_recipe 'percona::server'
 
 # Execute the Percona SQL to create the functions
 include_recipe 'scratchpads::percona-functions'
+include_recipe 'scratchpads::secure-installation'

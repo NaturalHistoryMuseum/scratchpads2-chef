@@ -72,4 +72,6 @@ mysql_database_user node['scratchpads']['control']['aegir']['dbuser'] do
   grant_option true
 end
 
+include_recipe 'scratchpads::sendmail'
+
 include_recipe 'scratchpads::aegir'

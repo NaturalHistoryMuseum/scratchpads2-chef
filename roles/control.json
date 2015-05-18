@@ -16,11 +16,6 @@
         "bind_address": ""
       }
     },
-    "apache": {
-      "listen_addresses": [
-        "127.0.0.1"
-      ]
-    },
     "php": {
       "packages": [
         "php5",
@@ -40,6 +35,11 @@
   "override_attributes": {
     "percona": {
       "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret"
+    },
+    "apache": {
+      "listen_addresses": [
+        "127.0.0.1"
+      ]
     }
   },
   "run_list": [

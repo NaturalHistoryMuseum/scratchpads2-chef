@@ -14,6 +14,11 @@ user 'aegir' do
   manage_home
 end
 
+sudo 'aegir' do
+  user 'aegir'
+  nopasswd true
+end
+
 # Create the aegir directory and the drush folder
 directory '/var/aegir' do
   owner 'aegir'

@@ -16,6 +16,11 @@
         "bind_address": ""
       }
     },
+    "apache": {
+      "listen_addresses": [
+        "127.0.0.1"
+      ]
+    },
     "php": {
       "packages": [
         "php5",

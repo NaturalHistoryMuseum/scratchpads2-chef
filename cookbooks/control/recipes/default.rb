@@ -39,3 +39,26 @@ include_recipe 'percona::server'
 # Execute the Percona SQL to create the functions
 include_recipe 'scratchpads::percona-functions'
 include_recipe 'scratchpads::secure-installation'
+
+# Install the mysql2_chef_gem as required by database
+mysql2_chef_gem 'default' do
+  provider Chef::Provider::Mysql2ChefGem::Percona
+  action :install
+end
+
+# Create the aegir user
+# Add a database user using the password in the passwords bag.
+passwords = EncryptedPasswords.new(node, node["control"]["percona"]["encrypted_data_bag"])
+root_pw = passwords.root_password
+aegir_pw = passwords.find_password "mysql", "aegir"
+mysql_database_user node['control']['database']['aegir'] do
+  connection(
+    :host => node['control']['database']['host'],
+    :username => node['control']['database']['username'],
+    :password => root_pw
+  )
+  password aegir_pw
+  database_name node['control']['database']['dbname']
+  host node['control']['database']['host']
+  action [:create, :grant]
+end

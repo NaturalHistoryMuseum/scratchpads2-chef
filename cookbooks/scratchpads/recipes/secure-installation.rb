@@ -13,8 +13,8 @@ cookbook_file node['scratchpads']['percona']['secure-installation-file'] do
 end
 
 # Execute the SQL using the password set in the Percona passwords bag.
-passwords = EncryptedPasswords.new(node, node["scratchpads"]["percona"]["encrypted_data_bag"])
+passwords = EncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
 execute 'secure installation' do
   root_pw = passwords.root_password
-  command "mysql -h #{node['scratchpads']['percona']['host']} -u #{node['scratchpads']['percona']['username']} -p'#{root_pw}' < #{node['scratchpads']['percona']['secure-installation-file']}"
+  command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < #{node['scratchpads']['percona']['secure-installation-file']}"
 end

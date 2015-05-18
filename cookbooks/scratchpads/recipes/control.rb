@@ -6,6 +6,9 @@
 
 include_recipe 'apt'
 
+# Git
+include_recipe 'git'
+
 # PHP Package
 include_recipe 'php'
 # Install drush from pear

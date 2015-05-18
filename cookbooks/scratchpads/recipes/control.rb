@@ -79,3 +79,5 @@ include_recipe 'scratchpads::aegir'
 include_recipe 'imagemagick'
 
 include_recipe 'gkrellmd'
+
+include_recipe 'varnish'

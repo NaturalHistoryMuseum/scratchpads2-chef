@@ -27,6 +27,6 @@
     }
   },
   "run_list": [
-    "recipe[control]"
+    "recipe[scratchpads::control]"
   ]
 }

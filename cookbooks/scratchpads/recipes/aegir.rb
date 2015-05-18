@@ -39,6 +39,7 @@ execute 'download provision' do
   cwd '/var/aegir'
   group 'www-data'
   user 'aegir'
+  not_if { ::File.exists?("/var/aegir/.drush/provision/provision.info")}
 end
 
 # Clear the drush cache so that the provision command is found.
@@ -64,6 +65,7 @@ execute 'install hostmaster' do
   cwd '/var/aegir'
   group 'www-data'
   user 'aegir'
+  not_if { ::File.exists?("/var/aegir/.drush/hm.alias.drushrc.php")}
   environment(
     'SHELL' => '/bin/bash',
     'TERM' => 'xterm',

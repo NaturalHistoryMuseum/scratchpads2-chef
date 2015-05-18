@@ -13,6 +13,7 @@ default["scratchpads"]["control"]["aegir"]["dbname"] = "aegir"
 # Aegir database server
 default["scratchpads"]["control"]["dbserver"] = "localhost"
 default["scratchpads"]["control"]["dbuser"] = "root"
+default['scratchpads']['control']['admin_email'] = "s.rycroft@nhm.ac.uk"
 
 # Extra SQL files
 default["scratchpads"]["percona"]["percona-functions-file"] = "/tmp/percona-functions.sql"

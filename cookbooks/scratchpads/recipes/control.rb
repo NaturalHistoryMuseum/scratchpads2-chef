@@ -75,3 +75,7 @@ end
 include_recipe 'postfix'
 
 include_recipe 'scratchpads::aegir'
+
+include_recipe 'imagemagick'
+
+include_recipe 'gkrellmd'

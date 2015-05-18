@@ -53,7 +53,14 @@ end
 passwords = EncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
 aegir_pw = passwords.find_password "mysql", "aegir"
 execute 'install hostmaster' do
-  command "drush hostmaster-install --aegir_db_pass='#{aegir_pw}' --root=/var/aegir/hostmaster --aegir_db_user=#{node['scratchpads']['control']['aegir']['dbuser']} --aegir_db_host=#{node['scratchpads']['control']['dbserver']} #{node['scratchpads']['control']['fqdn']} -y"
+  command "drush hostmaster-install \
+           --aegir_db_pass='#{aegir_pw}' \
+           --root=/var/aegir/hostmaster \
+           --aegir_db_user=#{node['scratchpads']['control']['aegir']['dbuser']} \
+           --aegir_db_host=#{node['scratchpads']['control']['dbserver']} \
+           --client_email=#{node['scratchpads']['control']['admin_email']} \
+           #{node['scratchpads']['control']['fqdn']} \
+           -y"
   cwd '/var/aegir'
   group 'www-data'
   user 'aegir'

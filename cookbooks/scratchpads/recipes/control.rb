@@ -6,9 +6,15 @@
 
 include_recipe 'apt'
 
+# PHP Package
 include_recipe 'php'
-php_pear_channel "pear.drush.org" do
+# Install drush from pear
+dc = php_pear_channel "pear.drush.org" do
   action :discover
+end
+php_pear "drush" do
+  channel dc.channel_name
+  action :install
 end
 
 include_recipe 'apache2'
@@ -48,17 +54,19 @@ end
 
 # Create the aegir user
 # Add a database user using the password in the passwords bag.
-passwords = EncryptedPasswords.new(node, node["scratchpads"]["percona"]["encrypted_data_bag"])
+passwords = EncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
 root_pw = passwords.root_password
 aegir_pw = passwords.find_password "mysql", "aegir"
-mysql_database_user node['scratchpads']['control']['database']['dbuser'] do
+mysql_database_user node['scratchpads']['control']['aegir']['dbuser'] do
   connection(
-    :host => node['scratchpads']['percona']['host'],
-    :username => node['scratchpads']['percona']['username'],
+    :host => node['scratchpads']['control']['dbserver'],
+    :username => node['scratchpads']['control']['dbuser'],
     :password => root_pw
   )
   password aegir_pw
-  database_name node['scratchpads']['control']['database']['dbname']
-  host node['scratchpads']['control']['database']['host']
+  host node['scratchpads']['control']['aegir']['dbuserhost']
   action [:create, :grant]
+  grant_option true
 end
+
+include_recipe 'scratchpads::aegir'

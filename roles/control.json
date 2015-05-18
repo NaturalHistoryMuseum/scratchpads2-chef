@@ -3,6 +3,12 @@
   "name": "control",
   "description": "Main Aegir server role.",
   "default_attributes": {
+    "gkrellmd": {
+      "allowed_hosts": [
+        "157.140.126.246",
+        "monkey.nhm.ac.uk"
+      ]
+    },
     "percona": {
       "use_percona_repos": false,
       "apt_keyserver": "hkp://pgp.mit.edu:80",

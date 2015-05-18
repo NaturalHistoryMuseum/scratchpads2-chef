@@ -3,14 +3,6 @@
   "name": "control",
   "description": "Main Aegir server role.",
   "default_attributes": {
-    "authorization": {
-      "sudo": {
-        "users": [
-          "aegir"
-        ],
-        "passwordless": true
-      }
-    },
     "percona": {
       "use_percona_repos": false,
       "apt_keyserver": "hkp://pgp.mit.edu:80",

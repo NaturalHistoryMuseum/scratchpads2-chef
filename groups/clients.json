@@ -1,8 +1,6 @@
 {
   "name": "clients",
   "clients": [
-    "node1",
-    "sp-debian-big",
     "nhm-validator"
   ]
 }

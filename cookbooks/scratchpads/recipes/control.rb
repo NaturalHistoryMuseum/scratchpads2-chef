@@ -4,9 +4,13 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
+# Update apt repository and update
 include_recipe 'apt'
 
-# Git
+# Install percona (MySQL) server and client, and secure it.
+include_recipe 'percona'
+
+# Install Git client
 include_recipe 'git'
 
 # PHP Package
@@ -20,10 +24,12 @@ php_pear "drush" do
   action :install
 end
 
+# Install Apache2 and set it to use prefork and mod_php5
 include_recipe 'apache2'
 include_recipe 'apache2::mpm_prefork'
 include_recipe 'apache2::mod_php5'
 
+# Install NFS server and set it to allow access to certain servers.
 include_recipe 'nfs::server'
 nfs_export "/var/aegir/platforms" do
   network ['sp-app-1','sp-app-2', 'sp-app-3', 'sp-app-4']
@@ -32,22 +38,7 @@ nfs_export "/var/aegir/platforms" do
   options ['no_subtree_check']
 end
 
-# Manually add the Percona apt repository, as we need to use
-# the wheezy repo, and not the jessie one (which isn't yet
-# complete).
-apt_repository "percona" do
-  uri node["percona"]["apt_uri"]
-  distribution "wheezy"
-  components ["main"]
-  keyserver node["percona"]["apt_keyserver"]
-  key node["percona"]["apt_key"]
-end
-include_recipe 'percona::client'
-include_recipe 'percona::server'
 
-# Execute the Percona SQL to create the functions
-include_recipe 'scratchpads::percona-functions'
-include_recipe 'scratchpads::secure-installation'
 
 # Install the mysql2_chef_gem as required by database
 mysql2_chef_gem 'default' do

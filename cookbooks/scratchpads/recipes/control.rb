@@ -13,6 +13,10 @@ include_recipe 'scratchpads::percona'
 # Install Git client
 include_recipe 'git'
 
+# Install Apache2 and set it to use prefork and mod_php5
+include_recipe 'apache2'
+include_recipe 'apache2::mpm_prefork'
+
 # PHP Package
 include_recipe 'php'
 # Install drush from pear
@@ -24,9 +28,7 @@ php_pear "drush" do
   action :install
 end
 
-# Install Apache2 and set it to use prefork and mod_php5
-include_recipe 'apache2'
-include_recipe 'apache2::mpm_prefork'
+# Add mod_php once PHP has been installed
 include_recipe 'apache2::mod_php5'
 
 # Install NFS server and set it to allow access to certain servers.

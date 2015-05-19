@@ -1,6 +1,7 @@
 {
   "name": "clients",
   "clients": [
-    "nhm-validator"
+    "nhm-validator",
+    "sp-control-1"
   ]
 }

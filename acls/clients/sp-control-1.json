@@ -1,0 +1,54 @@
+{
+  "create": {
+    "actors": [
+      "pivotal",
+      "simor",
+      "sp-control-1"
+    ],
+    "groups": [
+      "admins"
+    ]
+  },
+  "read": {
+    "actors": [
+      "pivotal",
+      "simor",
+      "sp-control-1"
+    ],
+    "groups": [
+      "admins",
+      "users"
+    ]
+  },
+  "update": {
+    "actors": [
+      "pivotal",
+      "simor",
+      "sp-control-1"
+    ],
+    "groups": [
+      "admins"
+    ]
+  },
+  "delete": {
+    "actors": [
+      "pivotal",
+      "simor",
+      "sp-control-1"
+    ],
+    "groups": [
+      "admins",
+      "users"
+    ]
+  },
+  "grant": {
+    "actors": [
+      "pivotal",
+      "simor",
+      "sp-control-1"
+    ],
+    "groups": [
+      "admins"
+    ]
+  }
+}

@@ -38,14 +38,6 @@ nfs_export "/var/aegir/platforms" do
   options ['no_subtree_check']
 end
 
-
-
-# Install the mysql2_chef_gem as required by database
-mysql2_chef_gem 'default' do
-  provider Chef::Provider::Mysql2ChefGem::Percona
-  action :install
-end
-
 # Create the aegir user
 # Add a database user using the password in the passwords bag.
 passwords = EncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])

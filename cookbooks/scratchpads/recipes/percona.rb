@@ -19,6 +19,12 @@ end
 include_recipe 'percona::client'
 include_recipe 'percona::server'
 
+# Install the mysql2_chef_gem as required by database
+mysql2_chef_gem 'default' do
+  provider Chef::Provider::Mysql2ChefGem::Percona
+  action :install
+end
+
 # Copy the percona-functions SQL file.
 cookbook_file node['scratchpads']['percona']['percona-functions-file'] do
   source 'percona-functions.sql'

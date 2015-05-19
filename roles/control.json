@@ -1,5 +1,4 @@
 {
-  "json_class": "Chef::Role",
   "name": "control",
   "description": "Main Aegir server role.",
   "default_attributes": {
@@ -40,6 +39,9 @@
       "listen_addresses": [
         "127.0.0.1"
       ]
+    },
+    "varnish": {
+      "vcl_cookbook": "scratchpads"
     }
   },
   "run_list": [

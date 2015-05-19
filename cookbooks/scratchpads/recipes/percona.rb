@@ -1,0 +1,52 @@
+#
+# Cookbook Name:: scratchpads
+# Recipe:: percona
+#
+# Copyright (c) 2015 The Authors, All Rights Reserved.
+
+# Manually add the Percona apt repository, as we need to use
+# the wheezy repo, and not the jessie one (which isn't yet
+# complete).
+apt_repository "percona" do
+  uri node["percona"]["apt_uri"]
+  distribution "wheezy"
+  components ["main"]
+  keyserver node["percona"]["apt_keyserver"]
+  key node["percona"]["apt_key"]
+end
+
+# Install the client and server.
+include_recipe 'percona::client'
+include_recipe 'percona::server'
+
+# Copy the percona-functions SQL file.
+cookbook_file node['scratchpads']['percona']['percona-functions-file'] do
+  source 'percona-functions.sql'
+  owner 'root'
+  group 'root'
+  mode '0600'
+end
+
+# Execute the MySQL using the password set in the Percona passwords bag.
+passwords = EncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
+execute 'percona functions' do
+  root_pw = passwords.root_password
+  command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < #{node['scratchpads']['percona']['percona-functions-file']}"
+end
+
+# Copy the secure-installation SQL file.
+cookbook_file node['scratchpads']['percona']['secure-installation-file'] do
+  source 'secure-installation.sql'
+  owner 'root'
+  group 'root'
+  mode '0600'
+end
+
+# Execute the SQL using the password set in the Percona passwords bag.
+passwords = EncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
+execute 'secure installation' do
+  root_pw = passwords.root_password
+  command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < #{node['scratchpads']['percona']['secure-installation-file']}"
+end
+
+

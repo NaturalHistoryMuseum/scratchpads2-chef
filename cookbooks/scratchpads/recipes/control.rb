@@ -8,7 +8,7 @@
 include_recipe 'apt'
 
 # Install percona (MySQL) server and client, and secure it.
-include_recipe 'percona'
+include_recipe 'scratchpads::percona'
 
 # Install Git client
 include_recipe 'git'

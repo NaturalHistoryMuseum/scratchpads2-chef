@@ -1,0 +1,6 @@
+{
+  "name": "sp-control-1",
+  "run_list": [
+    "role[control]"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "create": {
+    "actors": [
+      "pivotal",
+      "sp-control-1.nhm.ac.uk"
+    ],
+    "groups": [
+      "admins",
+      "clients",
+      "users"
+    ]
+  },
+  "read": {
+    "actors": [
+      "pivotal",
+      "sp-control-1.nhm.ac.uk"
+    ],
+    "groups": [
+      "admins",
+      "clients",
+      "users"
+    ]
+  },
+  "update": {
+    "actors": [
+      "pivotal",
+      "sp-control-1.nhm.ac.uk"
+    ],
+    "groups": [
+      "admins",
+      "users"
+    ]
+  },
+  "delete": {
+    "actors": [
+      "pivotal",
+      "sp-control-1.nhm.ac.uk"
+    ],
+    "groups": [
+      "admins",
+      "users"
+    ]
+  },
+  "grant": {
+    "actors": [
+      "pivotal",
+      "sp-control-1.nhm.ac.uk"
+    ],
+    "groups": [
+      "admins"
+    ]
+  }
+}

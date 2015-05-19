@@ -2,6 +2,7 @@
   "name": "clients",
   "clients": [
     "nhm-validator",
-    "sp-control-1"
+    "sp-control-1",
+    "sp-control-1.nhm.ac.uk"
   ]
 }

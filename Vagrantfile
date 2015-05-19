@@ -1,11 +1,4 @@
 # Scratchpads Vagrant file.
-#
-# Requirements:
-#
-# - The vagrant-omnibus plugin is required. This can be installed using the
-#   following command:
-#   $ vagrant plugin install vagrant-omnibus
-
 VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.omnibus.chef_version = :latest
@@ -18,10 +11,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     control.vm.network "public_network"
     control.vm.network "forwarded_port", guest: 80, host: 8888
-    control.vm.provision "chef_solo" do |chef|
-      chef.roles_path = "roles"
-      chef.data_bags_path = "data_bags"
-      chef.add_role("control")
+    control.vm.provision "chef_client" do |chef|
+      chef.chef_server_url = "https://sp-chef.nhm.ac.uk/organizations/nhm"
+      chef.validation_key_path = ".chef/user.pem"
+      chef.validation_client_name = "simor"
     end
   end
   # App VM - Apache
@@ -32,8 +25,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       vb.customize ["modifyvm", :id, "--memory", "512"]
     end
     app1.vm.network "public_network"
-    app1.vm.provision "chef_solo" do |chef|
-      chef.add_recipe "learn_chef_apache2"
+    app1.vm.provision "chef_client" do |chef|
+      chef.chef_server_url = "https://sp-chef.nhm.ac.uk/organizations/nhm"
+      chef.validation_key_path = ".chef/user.pem"
+      chef.validation_client_name = "simor"
     end
   end
   # Data VM - Percona/MySQL, Memcached
@@ -45,7 +40,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     data1.vm.network "public_network"
     data1.vm.provision "chef_solo" do |chef|
-      chef.add_recipe "learn_chef_apache2"
+      chef.chef_server_url = "https://sp-chef.nhm.ac.uk/organizations/nhm"
+      chef.validation_key_path = ".chef/user.pem"
+      chef.validation_client_name = "simor"
     end
   end
 end

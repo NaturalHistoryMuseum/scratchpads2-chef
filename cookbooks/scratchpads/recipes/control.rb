@@ -65,4 +65,15 @@ include_recipe 'imagemagick'
 
 include_recipe 'gkrellmd'
 
+node.default['varnish']['listen_address'] = node['fqdn']
 include_recipe 'varnish'
+template '/etc/systemd/system/varnish.service' do
+  path '/etc/systemd/system/varnish.service'
+  source 'varnish.service.erb'
+  cookbook 'scratchpads'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+  notifies :restart, 'service[varnish]', :delayed
+end

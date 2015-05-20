@@ -77,9 +77,9 @@ include_recipe 'varnish'
 # default recipe uses its own cookbook which builds and allows the service
 # to be restarted.
 if Chef::Config[:solo]
-  app_hosts = search(:node, "role:#{node['postfix']['relayhost_role']}")
+  app_hosts = {"sp-app-1" => {"fqdn" => "sp-app-1"}}
 else
-  app_hosts = search(:node, "role:#{node['postfix']['relayhost_role']}")
+  app_hosts = search(:node, "role:app")
 end
 template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
   source node['varnish']['vcl_source']
@@ -106,5 +106,15 @@ template '/etc/systemd/system/varnish.service' do
   mode '0644'
   action :create
   notifies :run, 'execute[restart_systemctl_daemon]', :immediately
+  notifies :restart, 'service[varnish]', :delayed
+end
+template '/etc/default/varnish' do
+  path '/etc/default/varnish'
+  source 'default-varnish.erb'
+  cookbook 'scratchpads'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
   notifies :restart, 'service[varnish]', :delayed
 end

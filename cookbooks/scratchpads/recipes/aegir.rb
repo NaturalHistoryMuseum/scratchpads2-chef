@@ -28,7 +28,6 @@ directory '/var/aegir' do
 end
 
 # Install hostmaster/provision if the role is "control"
-Chef::Log.fatal(p node.automatic.roles);  
 if node.automatic.roles.index("control") then
   # Create the .drush folder
   directory '/var/aegir/.drush' do

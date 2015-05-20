@@ -1366,5 +1366,8 @@
     "roles": [
 
     ]
-  }
+  },
+  "run_list": [
+    "role[app]"
+  ]
 }

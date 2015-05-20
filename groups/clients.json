@@ -3,6 +3,7 @@
   "clients": [
     "nhm-validator",
     "sp-control-1",
-    "sp-control-1.nhm.ac.uk"
+    "sp-control-1.nhm.ac.uk",
+    "sp-app-1.nhm.ac.uk"
   ]
 }

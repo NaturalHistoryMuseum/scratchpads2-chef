@@ -1,9 +1,1423 @@
 {
   "name": "sp-control-1.nhm.ac.uk",
+  "override": {
+    "percona": {
+      "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret"
+    },
+    "apache": {
+      "listen_addresses": [
+        "127.0.0.1"
+      ]
+    },
+    "varnish": {
+      "listen_port": "80"
+    }
+  },
   "normal": {
     "tags": [
 
     ]
+  },
+  "default": {
+    "logrotate": {
+      "global": {
+        "weekly": true,
+        "rotate": 4,
+        "create": "",
+        "/var/log/wtmp": {
+          "missingok": true,
+          "monthly": true,
+          "create": "0664 root utmp",
+          "rotate": 1
+        },
+        "/var/log/btmp": {
+          "missingok": true,
+          "monthly": true,
+          "create": "0660 root utmp",
+          "rotate": 1
+        }
+      }
+    },
+    "apache": {
+      "mpm": "worker",
+      "version": "2.4",
+      "root_group": "root",
+      "default_site_name": "000-default",
+      "package": "apache2",
+      "perl_pkg": "perl",
+      "apachectl": "/usr/sbin/apache2ctl",
+      "dir": "/etc/apache2",
+      "log_dir": "/var/log/apache2",
+      "error_log": "error.log",
+      "access_log": "access.log",
+      "user": "www-data",
+      "group": "www-data",
+      "binary": "/usr/sbin/apache2",
+      "conf_dir": "/etc/apache2",
+      "cgibin_dir": "/usr/lib/cgi-bin",
+      "icondir": "/usr/share/apache2/icons",
+      "cache_dir": "/var/cache/apache2",
+      "run_dir": "/var/run/apache2",
+      "lock_dir": "/var/lock/apache2",
+      "pid_file": "/var/run/apache2/apache2.pid",
+      "docroot_dir": "/var/www/html",
+      "lib_dir": "/usr/lib/apache2",
+      "libexec_dir": "/usr/lib/apache2/modules",
+      "service_name": "apache2",
+      "listen_addresses": [
+        "*"
+      ],
+      "listen_ports": [
+        "80"
+      ],
+      "contact": "ops@example.com",
+      "timeout": 300,
+      "keepalive": "On",
+      "keepaliverequests": 100,
+      "keepalivetimeout": 5,
+      "locale": "C",
+      "sysconfig_additional_params": {
+
+      },
+      "default_site_enabled": false,
+      "servertokens": "Prod",
+      "serversignature": "On",
+      "traceenable": "Off",
+      "allowed_openids": [
+
+      ],
+      "status_allow_list": "127.0.0.1 ::1",
+      "ext_status": false,
+      "info_allow_list": "127.0.0.1 ::1",
+      "prefork": {
+        "startservers": 16,
+        "minspareservers": 16,
+        "maxspareservers": 32,
+        "serverlimit": 256,
+        "maxrequestworkers": 256,
+        "maxconnectionsperchild": 10000
+      },
+      "worker": {
+        "startservers": 4,
+        "serverlimit": 16,
+        "minsparethreads": 64,
+        "maxsparethreads": 192,
+        "threadlimit": 192,
+        "threadsperchild": 64,
+        "maxrequestworkers": 1024,
+        "maxconnectionsperchild": 0
+      },
+      "event": {
+        "startservers": 4,
+        "serverlimit": 16,
+        "minsparethreads": 64,
+        "maxsparethreads": 192,
+        "threadlimit": 192,
+        "threadsperchild": 64,
+        "maxrequestworkers": 1024,
+        "maxconnectionsperchild": 0
+      },
+      "proxy": {
+        "require": "all denied",
+        "order": "deny,allow",
+        "deny_from": "all",
+        "allow_from": "none"
+      },
+      "default_modules": [
+        "status",
+        "alias",
+        "auth_basic",
+        "authn_core",
+        "authn_file",
+        "authz_core",
+        "authz_groupfile",
+        "authz_host",
+        "authz_user",
+        "autoindex",
+        "dir",
+        "env",
+        "mime",
+        "negotiation",
+        "setenvif"
+      ],
+      "mod_auth_cas": {
+        "from_source": false,
+        "source_revision": "v1.0.8.1"
+      },
+      "mod_auth_openid": {
+        "ref": "v0.8",
+        "version": "0.8",
+        "source_url": "https://github.com/bmuller/mod_auth_openid/archive/v0.8.tar.gz",
+        "cache_dir": "/var/cache/mod_auth_openid",
+        "dblocation": "/var/cache/mod_auth_openid/mod_auth_openid.db",
+        "configure_flags": [
+
+        ]
+      },
+      "mod_fastcgi": {
+        "download_url": "http://www.fastcgi.com/dist/mod_fastcgi-current.tar.gz"
+      },
+      "mod_php5": {
+        "install_method": "package"
+      },
+      "mod_ssl": {
+        "protocol": "All -SSLv2 -SSLv3",
+        "cipher_suite": "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EECDH+aRSA+SHA256:EECDH+aRSA+RC4:EECDH:EDH+aRSA:RC4!aNULL!eNULL!LOW!3DES!MD5!EXP!PSK!SRP!DSS",
+        "honor_cipher_order": "On",
+        "insecure_renegotiation": "Off",
+        "strict_sni_vhost_check": "Off",
+        "session_cache": "shmcb:/var/run/apache2/ssl_scache",
+        "session_cache_timeout": 300,
+        "compression": "Off",
+        "use_stapling": "Off",
+        "stapling_responder_timeout": 5,
+        "stapling_return_responder_errors": "Off",
+        "stapling_cache": "shmcb:/var/run/ocsp(128000)",
+        "pass_phrase_dialog": "builtin",
+        "mutex": "file:/var/run/apache2/ssl_mutex",
+        "directives": {
+
+        }
+      }
+    },
+    "apache2": {
+      "mod_pagespeed": {
+        "package_link": "https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb"
+      }
+    },
+    "apt": {
+      "cacher-client": {
+        "restrict_environment": false
+      },
+      "cacher_dir": "/var/cache/apt-cacher-ng",
+      "cacher_interface": null,
+      "cacher_port": 3142,
+      "cacher_ssl_support": false,
+      "caching_server": false,
+      "compiletime": false,
+      "compile_time_update": false,
+      "key_proxy": "",
+      "cache_bypass": {
+
+      },
+      "periodic_update_min_delay": 86400,
+      "launchpad_api_version": "1.0",
+      "unattended_upgrades": {
+        "enable": false,
+        "update_package_lists": true,
+        "allowed_origins": [
+          "Debian jessie"
+        ],
+        "package_blacklist": [
+
+        ],
+        "auto_fix_interrupted_dpkg": false,
+        "minimal_steps": false,
+        "install_on_shutdown": false,
+        "mail": null,
+        "mail_only_on_error": true,
+        "remove_unused_dependencies": false,
+        "automatic_reboot": false,
+        "automatic_reboot_time": "now",
+        "dl_limit": null
+      }
+    },
+    "build-essential": {
+      "compile_time": false
+    },
+    "openssl": {
+      "packages": [
+
+      ],
+      "restart_services": [
+
+      ]
+    },
+    "postgresql": {
+      "enable_pgdg_apt": false,
+      "server": {
+        "config_change_notify": "restart",
+        "service_name": "postgresql",
+        "packages": [
+          "postgresql-9.1"
+        ]
+      },
+      "assign_postgres_password": true,
+      "database_name": "template1",
+      "version": "9.1",
+      "dir": "/etc/postgresql/9.1/main",
+      "client": {
+        "packages": [
+          "postgresql-client-9.1",
+          "libpq-dev"
+        ]
+      },
+      "contrib": {
+        "packages": [
+          "postgresql-contrib-9.1"
+        ]
+      },
+      "config": {
+        "data_directory": "/var/lib/postgresql/9.1/main",
+        "hba_file": "/etc/postgresql/9.1/main/pg_hba.conf",
+        "ident_file": "/etc/postgresql/9.1/main/pg_ident.conf",
+        "external_pid_file": "/var/run/postgresql/9.1-main.pid",
+        "listen_addresses": "localhost",
+        "port": 5432,
+        "max_connections": 100,
+        "unix_socket_directory": "/var/run/postgresql",
+        "shared_buffers": "24MB",
+        "log_line_prefix": "%t ",
+        "datestyle": "iso, mdy",
+        "default_text_search_config": "pg_catalog.english",
+        "ssl": true
+      },
+      "pg_hba": [
+        {
+          "type": "local",
+          "db": "all",
+          "user": "postgres",
+          "addr": null,
+          "method": "ident"
+        },
+        {
+          "type": "local",
+          "db": "all",
+          "user": "all",
+          "addr": null,
+          "method": "ident"
+        },
+        {
+          "type": "host",
+          "db": "all",
+          "user": "all",
+          "addr": "127.0.0.1/32",
+          "method": "md5"
+        },
+        {
+          "type": "host",
+          "db": "all",
+          "user": "all",
+          "addr": "::1/128",
+          "method": "md5"
+        }
+      ],
+      "password": {
+
+      },
+      "pgdg": {
+        "release_apt_codename": "jessie",
+        "repo_rpm_url": {
+          "9.3": {
+            "amazon": {
+              "2014": {
+                "i386": "http://yum.postgresql.org/9.3/redhat/rhel-6-i386/pgdg-redhat93-9.3-1.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm"
+              },
+              "2013": {
+                "i386": "http://yum.postgresql.org/9.3/redhat/rhel-6-i386/pgdg-redhat93-9.3-1.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm"
+              }
+            },
+            "centos": {
+              "7": {
+                "x86_64": "http://yum.postgresql.org/9.3/redhat/rhel-7-x86_64/pgdg-centos93-9.3-1.noarch.rpm"
+              },
+              "6": {
+                "i386": "http://yum.postgresql.org/9.3/redhat/rhel-6-i386/pgdg-centos93-9.3-1.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-centos93-9.3-1.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/9.3/redhat/rhel-5-i386/pgdg-centos93-9.3-1.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.3/redhat/rhel-5-x86_64/pgdg-centos93-9.3-1.noarch.rpm"
+              }
+            },
+            "redhat": {
+              "6": {
+                "i386": "http://yum.postgresql.org/9.3/redhat/rhel-6-i386/pgdg-redhat93-9.3-1.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/9.3/redhat/rhel-5-i386/pgdg-redhat93-9.3-1.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.3/redhat/rhel-5-x86_64/pgdg-redhat93-9.3-1.noarch.rpm"
+              }
+            },
+            "oracle": {
+              "6": {
+                "i386": "http://yum.postgresql.org/9.3/redhat/rhel-6-i386/pgdg-redhat93-9.3-1.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-redhat93-9.3-1.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/9.3/redhat/rhel-5-i386/pgdg-redhat93-9.3-1.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.3/redhat/rhel-5-x86_64/pgdg-redhat93-9.3-1.noarch.rpm"
+              }
+            },
+            "scientific": {
+              "6": {
+                "i386": "http://yum.postgresql.org/9.3/redhat/rhel-6-i386/pgdg-sl93-9.3-1.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.3/redhat/rhel-6-x86_64/pgdg-sl93-9.3-1.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/9.3/redhat/rhel-5-i386/pgdg-sl93-9.3-1.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.3/redhat/rhel-5-x86_64/pgdg-sl93-9.3-1.noarch.rpm"
+              }
+            },
+            "fedora": {
+              "20": {
+                "x86_64": "http://yum.postgresql.org/9.3/fedora/fedora-20-x86_64/pgdg-fedora93-9.3-1.noarch.rpm"
+              },
+              "19": {
+                "x86_64": "http://yum.postgresql.org/9.3/fedora/fedora-19-x86_64/pgdg-fedora93-9.3-1.noarch.rpm"
+              },
+              "18": {
+                "i386": "http://yum.postgresql.org/9.3/fedora/fedora-18-i386/pgdg-fedora93-9.3-1.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.3/fedora/fedora-18-x86_64/pgdg-fedora93-9.3-1.noarch.rpm"
+              },
+              "17": {
+                "i386": "http://yum.postgresql.org/9.3/fedora/fedora-17-i386/pgdg-fedora93-9.3-1.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.3/fedora/fedora-17-x86_64/pgdg-fedora93-9.3-1.noarch.rpm"
+              }
+            }
+          },
+          "9.2": {
+            "centos": {
+              "6": {
+                "i386": "http://yum.postgresql.org/9.2/redhat/rhel-6-i386/pgdg-centos92-9.2-6.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.2/redhat/rhel-6-x86_64/pgdg-centos92-9.2-6.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/9.2/redhat/rhel-5-i386/pgdg-centos92-9.2-6.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.2/redhat/rhel-5-x86_64/pgdg-centos92-9.2-6.noarch.rpm"
+              }
+            },
+            "redhat": {
+              "6": {
+                "i386": "http://yum.postgresql.org/9.2/redhat/rhel-6-i386/pgdg-redhat92-9.2-7.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.2/redhat/rhel-6-x86_64/pgdg-redhat92-9.2-7.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/9.2/redhat/rhel-5-i386/pgdg-redhat92-9.2-7.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.2/redhat/rhel-5-x86_64/pgdg-redhat92-9.2-7.noarch.rpm"
+              }
+            },
+            "oracle": {
+              "6": {
+                "i386": "http://yum.postgresql.org/9.2/redhat/rhel-6-i386/pgdg-redhat92-9.2-7.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.2/redhat/rhel-6-x86_64/pgdg-redhat92-9.2-7.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/9.2/redhat/rhel-5-i386/pgdg-redhat92-9.2-7.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.2/redhat/rhel-5-x86_64/pgdg-redhat92-9.2-7.noarch.rpm"
+              }
+            },
+            "scientific": {
+              "6": {
+                "i386": "http://yum.postgresql.org/9.2/redhat/rhel-6-i386/pgdg-sl92-9.2-8.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.2/redhat/rhel-6-x86_64/pgdg-sl92-9.2-8.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/9.2/redhat/rhel-5-i386/pgdg-sl92-9.2-8.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.2/redhat/rhel-5-x86_64/pgdg-sl92-9.2-8.noarch.rpm"
+              }
+            },
+            "fedora": {
+              "19": {
+                "i386": "http://yum.postgresql.org/9.2/fedora/fedora-19-i386/pgdg-fedora92-9.2-6.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.2/fedora/fedora-19-x86_64/pgdg-fedora92-9.2-6.noarch.rpm"
+              },
+              "18": {
+                "i386": "http://yum.postgresql.org/9.2/fedora/fedora-18-i386/pgdg-fedora92-9.2-6.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.2/fedora/fedora-18-x86_64/pgdg-fedora92-9.2-6.noarch.rpm"
+              },
+              "17": {
+                "i386": "http://yum.postgresql.org/9.2/fedora/fedora-17-i386/pgdg-fedora92-9.2-6.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.2/fedora/fedora-17-x86_64/pgdg-fedora92-9.2-5.noarch.rpm"
+              },
+              "16": {
+                "i386": "http://yum.postgresql.org/9.2/fedora/fedora-16-i386/pgdg-fedora92-9.2-5.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.2/fedora/fedora-16-x86_64/pgdg-fedora92-9.2-5.noarch.rpm"
+              }
+            }
+          },
+          "9.1": {
+            "centos": {
+              "6": {
+                "i386": "http://yum.postgresql.org/9.1/redhat/rhel-6-i386/pgdg-centos91-9.1-4.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.1/redhat/rhel-5-x86_64/pgdg-centos91-9.1-4.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/9.1/redhat/rhel-5-i386/pgdg-centos91-9.1-4.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.1/redhat/rhel-5-x86_64/pgdg-centos91-9.1-4.noarch.rpm"
+              },
+              "4": {
+                "i386": "http://yum.postgresql.org/9.1/redhat/rhel-4-i386/pgdg-centos91-9.1-4.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.1/redhat/rhel-4-x86_64/pgdg-centos91-9.1-4.noarch.rpm"
+              }
+            },
+            "redhat": {
+              "6": {
+                "i386": "http://yum.postgresql.org/9.1/redhat/rhel-6-i386/pgdg-redhat91-9.1-5.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.1/redhat/rhel-6-x86_64/pgdg-redhat91-9.1-5.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/9.1/redhat/rhel-5-i386/pgdg-redhat91-9.1-5.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.1/redhat/rhel-5-x86_64/pgdg-redhat91-9.1-5.noarch.rpm"
+              },
+              "4": {
+                "i386": "http://yum.postgresql.org/9.1/redhat/rhel-4-i386/pgdg-redhat-9.1-4.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.1/redhat/rhel-4-x86_64/pgdg-redhat-9.1-4.noarch.rpm"
+              }
+            },
+            "scientific": {
+              "6": {
+                "i386": "http://yum.postgresql.org/9.1/redhat/rhel-6-i386/pgdg-sl91-9.1-6.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.1/redhat/rhel-6-x86_64/pgdg-sl91-9.1-6.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/9.1/redhat/rhel-5-i386/pgdg-sl91-9.1-6.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.1/redhat/rhel-5-x86_64/pgdg-sl91-9.1-6.noarch.rpm"
+              }
+            },
+            "fedora": {
+              "16": {
+                "i386": "http://yum.postgresql.org/9.1/fedora/fedora-16-i386/pgdg-fedora91-9.1-4.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.1/fedora/fedora-16-x86_64/pgdg-fedora91-9.1-4.noarch.rpm"
+              },
+              "15": {
+                "i386": "http://yum.postgresql.org/9.1/fedora/fedora-15-i386/pgdg-fedora91-9.1-4.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.1/fedora/fedora-15-x86_64/pgdg-fedora91-9.1-4.noarch.rpm"
+              },
+              "14": {
+                "i386": "http://yum.postgresql.org/9.1/fedora/fedora-14-i386/pgdg-fedora91-9.1-4.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.1/fedora/fedora-14-x86_64/pgdg-fedora-9.1-2.noarch.rpm"
+              }
+            }
+          },
+          "9.0": {
+            "centos": {
+              "6": {
+                "i386": "http://yum.postgresql.org/9.0/redhat/rhel-6-i386/pgdg-centos90-9.0-5.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.0/redhat/rhel-6-x86_64/pgdg-centos90-9.0-5.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/9.0/redhat/rhel-5-i386/pgdg-centos90-9.0-5.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.0/redhat/rhel-5-x86_64/pgdg-centos90-9.0-5.noarch.rpm"
+              },
+              "4": {
+                "i386": "http://yum.postgresql.org/9.0/redhat/rhel-4-i386/pgdg-centos90-9.0-5.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.0/redhat/rhel-4-x86_64/pgdg-centos90-9.0-5.noarch.rpm"
+              }
+            },
+            "redhat": {
+              "6": {
+                "i386": "http://yum.postgresql.org/9.0/redhat/rhel-6-i386/pgdg-redhat90-9.0-5.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.0/redhat/rhel-6-x86_64/pgdg-redhat90-9.0-5.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/9.0/redhat/rhel-5-i386/pgdg-redhat90-9.0-5.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.0/redhat/rhel-5-x86_64/pgdg-redhat90-9.0-5.noarch.rpm"
+              },
+              "4": {
+                "i386": "http://yum.postgresql.org/9.0/redhat/rhel-4-i386/pgdg-redhat90-9.0-5.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.0/redhat/rhel-4-x86_64/pgdg-redhat90-9.0-5.noarch.rpm"
+              }
+            },
+            "scientific": {
+              "6": {
+                "i386": "http://yum.postgresql.org/9.0/redhat/rhel-6-i386/pgdg-sl90-9.0-6.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.0/redhat/rhel-6-x86_64/pgdg-sl90-9.0-6.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/9.0/redhat/rhel-5-i386/pgdg-sl90-9.0-6.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.0/redhat/rhel-5-x86_64/pgdg-sl90-9.0-6.noarch.rpm"
+              }
+            },
+            "fedora": {
+              "15": {
+                "i386": "http://yum.postgresql.org/9.0/fedora/fedora-15-i386/pgdg-fedora90-9.0-5.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.0/fedora/fedora-15-x86_64/pgdg-fedora90-9.0-5.noarch.rpm"
+              },
+              "14": {
+                "i386": "http://yum.postgresql.org/9.0/fedora/fedora-14-i386/pgdg-fedora90-9.0-5.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/9.0/fedora/fedora-14-x86_64/pgdg-fedora90-9.0-5.noarch.rpm"
+              }
+            }
+          },
+          "8.4": {
+            "centos": {
+              "6": {
+                "i386": "http://yum.postgresql.org/8.4/redhat/rhel-6-i386/pgdg-centos-8.4-3.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/8.4/redhat/rhel-6-x86_64/pgdg-centos-8.4-3.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/8.4/redhat/rhel-5-i386/pgdg-centos-8.4-3.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/8.4/redhat/rhel-5-x86_64/pgdg-centos-8.4-3.noarch.rpm"
+              },
+              "4": {
+                "i386": "http://yum.postgresql.org/8.4/redhat/rhel-4-i386/pgdg-centos-8.4-3.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/8.4/redhat/rhel-4-x86_64/pgdg-centos-8.4-3.noarch.rpm"
+              }
+            },
+            "redhat": {
+              "6": {
+                "i386": "http://yum.postgresql.org/8.4/redhat/rhel-6-i386/pgdg-redhat-8.4-3.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/8.4/redhat/rhel-6-x86_64/pgdg-redhat-8.4-3.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/8.4/redhat/rhel-5-i386/pgdg-redhat-8.4-3.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/8.4/redhat/rhel-5-x86_64/pgdg-redhat-8.4-3.noarch.rpm"
+              },
+              "4": {
+                "i386": "http://yum.postgresql.org/8.4/redhat/rhel-4-i386/pgdg-redhat-8.4-3.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/8.4/redhat/rhel-4-x86_64/pgdg-redhat-8.4-3.noarch.rpm"
+              }
+            },
+            "scientific": {
+              "6": {
+                "i386": "http://yum.postgresql.org/8.4/redhat/rhel-6-i386/pgdg-sl84-8.4-4.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/8.4/redhat/rhel-6-x86_64/pgdg-sl84-8.4-4.noarch.rpm"
+              },
+              "5": {
+                "i386": "http://yum.postgresql.org/8.4/redhat/rhel-5-i386/pgdg-sl-8.4-4.noarch.rpm",
+                "x86_64": "http://yum.postgresql.org/8.4/redhat/rhel-5-x86_64/pgdg-sl-8.4-4.noarch.rpm"
+              }
+            },
+            "fedora": {
+              "14": {
+                "i386": "http://yum.postgresql.org/8.4/fedora/fedora-14-i386/",
+                "x86_64": "http://yum.postgresql.org/8.4/fedora/fedora-14-x86_64/"
+              },
+              "13": {
+                "i386": "http://yum.postgresql.org/8.4/fedora/fedora-13-i386/",
+                "x86_64": "http://yum.postgresql.org/8.4/fedora/fedora-13-x86_64/"
+              },
+              "12": {
+                "i386": "http://yum.postgresql.org/8.4/fedora/fedora-12-i386/",
+                "x86_64": "http://yum.postgresql.org/8.4/fedora/fedora-12-x86_64/"
+              },
+              "8": {
+                "i386": "http://yum.postgresql.org/8.4/fedora/fedora-8-i386/",
+                "x86_64": "http://yum.postgresql.org/8.4/fedora/fedora-8-x86_64/"
+              },
+              "7": {
+                "i386": "http://yum.postgresql.org/8.4/fedora/fedora-7-i386/",
+                "x86_64": "http://yum.postgresql.org/8.4/fedora/fedora-7-x86_64/"
+              }
+            }
+          }
+        }
+      },
+      "enable_pgdg_yum": false,
+      "initdb_locale": null
+    },
+    "dmg": {
+      "base_dir": "/Applications",
+      "cache_dir": "/var/chef/cache"
+    },
+    "chef_handler": {
+      "root_user": "root",
+      "root_group": "root",
+      "handler_path": "/var/chef/handlers"
+    },
+    "windows": {
+      "allow_pending_reboots": true,
+      "allow_reboot_on_failure": false,
+      "rubyzipversion": null,
+      "reboot_timeout": 60
+    },
+    "yum": {
+      "main": {
+        "cachedir": "/var/cache/yum/$basearch/$releasever",
+        "distroverpkg": "debian-release",
+        "alwaysprompt": null,
+        "assumeyes": null,
+        "bandwidth": null,
+        "bugtracker_url": null,
+        "clean_requirements_on_remove": null,
+        "color": null,
+        "color_list_available_downgrade": null,
+        "color_list_available_install": null,
+        "color_list_available_reinstall": null,
+        "color_list_available_upgrade": null,
+        "color_list_installed_extra": null,
+        "color_list_installed_newer": null,
+        "color_list_installed_older": null,
+        "color_list_installed_reinstall": null,
+        "color_search_match": null,
+        "color_update_installed": null,
+        "color_update_local": null,
+        "color_update_remote": null,
+        "commands": null,
+        "debuglevel": null,
+        "diskspacecheck": null,
+        "enable_group_conditionals": null,
+        "errorlevel": null,
+        "exactarch": null,
+        "exclude": null,
+        "gpgcheck": true,
+        "group_package_types": null,
+        "groupremove_leaf_only": null,
+        "history_list_view": null,
+        "history_record": null,
+        "history_record_packages": null,
+        "http_caching": null,
+        "installonly_limit": null,
+        "installonlypkgs": null,
+        "installroot": null,
+        "keepalive": null,
+        "keepcache": false,
+        "kernelpkgnames": null,
+        "localpkg_gpgcheck": null,
+        "logfile": "/var/log/yum.log",
+        "max_retries": null,
+        "mdpolicy": null,
+        "metadata_expire": null,
+        "mirrorlist_expire": null,
+        "multilib_policy": null,
+        "obsoletes": null,
+        "overwrite_groups": null,
+        "password": null,
+        "path": "/etc/yum.conf",
+        "persistdir": null,
+        "pluginconfpath": null,
+        "pluginpath": null,
+        "plugins": null,
+        "protected_multilib": null,
+        "protected_packages": null,
+        "proxy": null,
+        "proxy_password": null,
+        "proxy_username": null,
+        "recent": null,
+        "releasever": null,
+        "repo_gpgcheck": null,
+        "reposdir": null,
+        "reset_nice": null,
+        "rpmverbosity": null,
+        "showdupesfromrepos": null,
+        "skip_broken": null,
+        "ssl_check_cert_permissions": null,
+        "sslcacert": null,
+        "sslclientcert": null,
+        "sslclientkey": null,
+        "sslverify": null,
+        "syslog_device": null,
+        "syslog_facility": null,
+        "syslog_ident": null,
+        "throttle": null,
+        "timeout": null,
+        "tolerant": false,
+        "tsflags": null,
+        "username": null
+      },
+      "epel-debuginfo": {
+        "repositoryid": "epel-debuginfo",
+        "failovermethod": "priority",
+        "gpgcheck": true,
+        "enabled": false,
+        "managed": false
+      },
+      "epel-source": {
+        "repositoryid": "epel-source",
+        "failovermethod": "priority",
+        "gpgcheck": true,
+        "enabled": false,
+        "managed": false
+      },
+      "epel-testing-debuginfo": {
+        "repositoryid": "epel-testing-debuginfo",
+        "failovermethod": "priority",
+        "gpgcheck": true,
+        "enabled": false,
+        "managed": false
+      },
+      "epel-testing-source": {
+        "repositoryid": "epel-testing-source",
+        "failovermethod": "priority",
+        "gpgcheck": true,
+        "enabled": false,
+        "managed": false
+      },
+      "epel-testing": {
+        "repositoryid": "epel-testing",
+        "failovermethod": "priority",
+        "gpgcheck": true,
+        "enabled": false,
+        "managed": false
+      },
+      "epel": {
+        "repositoryid": "epel",
+        "failovermethod": "priority",
+        "gpgcheck": true,
+        "enabled": true,
+        "managed": true
+      },
+      "mysql-connectors-community": {
+        "repositoryid": "mysql-connectors-community",
+        "gpgkey": "https://raw.githubusercontent.com/chef-cookbooks/yum-mysql-community/master/files/default/mysql_pubkey.asc",
+        "description": "MySQL Connectors Community",
+        "failovermethod": "priority",
+        "gpgcheck": true,
+        "enabled": true
+      },
+      "mysql55-community": {
+        "repositoryid": "mysql55-community",
+        "gpgkey": "https://raw.githubusercontent.com/chef-cookbooks/yum-mysql-community/master/files/default/mysql_pubkey.asc",
+        "description": "MySQL 5.5 Community Server",
+        "failovermethod": "priority",
+        "gpgcheck": true,
+        "enabled": true
+      },
+      "mysql56-community": {
+        "repositoryid": "mysql56-community",
+        "gpgkey": "https://raw.githubusercontent.com/chef-cookbooks/yum-mysql-community/master/files/default/mysql_pubkey.asc",
+        "description": "MySQL 5.6 Community Server",
+        "failovermethod": "priority",
+        "gpgcheck": true,
+        "enabled": true
+      },
+      "mysql57-community": {
+        "repositoryid": "mysql57-community",
+        "gpgkey": "https://raw.githubusercontent.com/chef-cookbooks/yum-mysql-community/master/files/default/mysql_pubkey.asc",
+        "description": "MySQL 5.7 Community Server",
+        "failovermethod": "priority",
+        "gpgcheck": true,
+        "enabled": true
+      }
+    },
+    "yum-epel": {
+      "repositories": [
+        "epel",
+        "epel-debuginfo",
+        "epel-source",
+        "epel-testing",
+        "epel-testing-debuginfo",
+        "epel-testing-source"
+      ]
+    },
+    "git": {
+      "prefix": "/usr/local",
+      "version": "1.9.5",
+      "url": "https://nodeload.github.com/git/git/tar.gz/v1.9.5",
+      "checksum": "0f30984828d573da01d9f8e78210d5f4c56da1697fd6d278bad4cfa4c22ba271",
+      "server": {
+        "base_path": "/srv/git",
+        "export_all": "true"
+      }
+    },
+    "gkrellmd": {
+      "port": 19150,
+      "allowed_hosts": [
+        "157.140.126.246",
+        "monkey.nhm.ac.uk"
+      ]
+    },
+    "hostsfile": {
+      "path": null
+    },
+    "mariadb": {
+      "configuration": {
+        "path": "/etc/mysql",
+        "includedir": "/etc/mysql/conf.d"
+      },
+      "mysqld": {
+        "socket": "/var/run/mysqld/mysqld.sock",
+        "pid_file": "/var/run/mysqld/mysqld.pid",
+        "service_name": "mysql",
+        "user": "mysql",
+        "port": "3306",
+        "basedir": "/usr",
+        "default_datadir": "/var/lib/mysql",
+        "datadir": "/var/lib/mysql",
+        "tmpdir": "/var/tmp",
+        "lc_messages_dir": "/usr/share/mysql",
+        "lc_messages": "en_US",
+        "skip_external_locking": "true",
+        "bind_address": "127.0.0.1",
+        "max_connections": "100",
+        "connect_timeout": "5",
+        "wait_timeout": "600",
+        "max_allowed_packet": "16M",
+        "thread_cache_size": "128",
+        "sort_buffer_size": "4M",
+        "bulk_insert_buffer_size": "16M",
+        "tmp_table_size": "32M",
+        "max_heap_table_size": "32M",
+        "myisam_recover": "BACKUP",
+        "key_buffer_size": "128M",
+        "open_files_limit": "",
+        "table_open_cache": "400",
+        "myisam_sort_buffer_size": "512M",
+        "concurrent_insert": "2",
+        "read_buffer_size": "2M",
+        "read_rnd_buffer_size": "1M",
+        "query_cache_limit": "128K",
+        "query_cache_size": "64M",
+        "query_cache_type": "",
+        "default_storage_engine": "InnoDB",
+        "options": {
+
+        }
+      },
+      "client": {
+        "socket": "/var/run/mysqld/mysqld.sock",
+        "port": 3306,
+        "options": {
+
+        },
+        "development_files": true
+      },
+      "mysqld_safe": {
+        "socket": "/var/run/mysqld/mysqld.sock",
+        "options": {
+
+        }
+      },
+      "forbid_remote_root": true,
+      "server_root_password": "",
+      "allow_root_pass_change": false,
+      "innodb": {
+        "log_file_size": "",
+        "bps_percentage_memory": false,
+        "buffer_pool_size": "256M",
+        "log_buffer_size": "8M",
+        "file_per_table": "1",
+        "open_files": "400",
+        "io_capacity": "400",
+        "flush_method": "O_DIRECT",
+        "options": {
+
+        }
+      },
+      "galera": {
+        "cluster_name": "galera_cluster",
+        "cluster_search_query": "",
+        "wsrep_sst_method": "rsync",
+        "wsrep_provider": "/usr/lib/galera/libgalera_smm.so",
+        "options": {
+
+        }
+      },
+      "replication": {
+        "server_id": "",
+        "log_bin": "/var/log/mysql/mariadb-bin",
+        "log_bin_index": "/var/log/mysql/mariadb-bin.index",
+        "expire_logs_days": "10",
+        "max_binlog_size": "100M"
+      },
+      "mysqldump": {
+        "quick": "true",
+        "quote_names": "true",
+        "max_allowed_packet": "16M"
+      },
+      "isamchk": {
+        "key_buffer": "16M"
+      },
+      "debian": {
+        "user": "debian-sys-maint",
+        "password": "please-change-me",
+        "host": "localhost"
+      },
+      "install": {
+        "type": "package",
+        "version": "10.0",
+        "prefer_os_package": false
+      },
+      "use_default_repository": false,
+      "apt_repository": {
+        "base_url": "ftp.igh.cnrs.fr/pub/mariadb/repo"
+      },
+      "plugins_options": {
+        "auto_install": true
+      },
+      "plugins": {
+        "audit": false
+      },
+      "plugins_loading": {
+        "audit": "server_audit=server_audit.so"
+      },
+      "audit_plugin": {
+        "server_audit_events": "",
+        "server_audit_output_type": "file",
+        "server_audit_syslog_facility": "LOG_USER",
+        "server_audit_syslog_priority": "LOG_INFO"
+      }
+    },
+    "nfs": {
+      "v2": null,
+      "v3": null,
+      "v4": null,
+      "rquotad": "no",
+      "port": {
+        "statd": 32765,
+        "statd_out": 32766,
+        "mountd": 32767,
+        "lockd": 32768,
+        "rquotad": 32769
+      },
+      "threads": 8,
+      "packages": [
+        "nfs-common",
+        "rpcbind"
+      ],
+      "service": {
+        "portmap": "rpcbind",
+        "lock": "nfs-common",
+        "server": "nfs-kernel-server",
+        "idmap": "nfs-common"
+      },
+      "service_provider": {
+        "lock": "Chef::Provider::Service::Insserv",
+        "portmap": "Chef::Provider::Service::Insserv",
+        "server": "Chef::Provider::Service::Insserv",
+        "idmap": "Chef::Provider::Service::Insserv"
+      },
+      "config": {
+        "client_templates": [
+          "/etc/default/nfs-common",
+          "/etc/modprobe.d/lockd.conf"
+        ],
+        "server_template": "/etc/default/nfs-kernel-server",
+        "idmap_template": "/etc/idmapd.conf"
+      },
+      "idmap": {
+        "domain": "nhm.ac.uk",
+        "pipefs_directory": "/var/lib/nfs/rpc_pipefs",
+        "user": "nobody",
+        "group": "nogroup"
+      }
+    },
+    "chef-vault": {
+      "version": "~> 2.2",
+      "databag_fallback": true,
+      "gem_source": null
+    },
+    "percona": {
+      "version": "5.6",
+      "auto_restart": true,
+      "server": {
+        "socket": "/var/run/mysqld/mysqld.sock",
+        "default_storage_engine": "InnoDB",
+        "includedir": "/etc/mysql/conf.d/",
+        "pidfile": "/var/run/mysqld/mysqld.pid",
+        "enable": true,
+        "package_action": "install",
+        "role": [
+          "standalone"
+        ],
+        "username": "mysql",
+        "datadir": "/var/lib/mysql",
+        "logdir": "/var/log/mysql",
+        "tmpdir": "/tmp",
+        "debian_username": "debian-sys-maint",
+        "jemalloc": false,
+        "jemalloc_lib": null,
+        "nice": 0,
+        "open_files_limit": 16384,
+        "hostname": "localhost",
+        "basedir": "/usr",
+        "port": 3306,
+        "language": "/usr/share/mysql/english",
+        "character_set": "utf8",
+        "collation": "utf8_unicode_ci",
+        "skip_name_resolve": false,
+        "skip_external_locking": true,
+        "net_read_timeout": 120,
+        "connect_timeout": 10,
+        "wait_timeout": 28800,
+        "old_passwords": 0,
+        "bind_address": "",
+        "federated": false,
+        "debian_password": "_bylRU0kpkuDgKP4mLSo",
+        "root_password": "dIsxkL44u0y0DArlmZef",
+        "key_buffer_size": "16M",
+        "max_allowed_packet": "64M",
+        "thread_stack": "192K",
+        "query_alloc_block_size": "16K",
+        "memlock": false,
+        "transaction_isolation": "REPEATABLE-READ",
+        "tmp_table_size": "64M",
+        "max_heap_table_size": "64M",
+        "sort_buffer_size": "8M",
+        "join_buffer_size": "8M",
+        "thread_cache_size": 16,
+        "back_log": 50,
+        "max_connections": 30,
+        "max_connect_errors": 9999999,
+        "sql_modes": [
+
+        ],
+        "table_cache": 8192,
+        "group_concat_max_len": 4096,
+        "expand_fast_index_creation": false,
+        "read_rnd_buffer_size": 262144,
+        "query_cache_size": "64M",
+        "query_cache_limit": "2M",
+        "sync_binlog": 1,
+        "slow_query_log": 1,
+        "slow_query_logdir": "/var/log/mysql",
+        "slow_query_log_file": "/var/log/mysql/mysql-slow.log",
+        "long_query_time": 2,
+        "server_id": 1,
+        "binlog_do_db": [
+
+        ],
+        "binlog_ignore_db": [
+
+        ],
+        "expire_logs_days": 10,
+        "max_binlog_size": "100M",
+        "binlog_cache_size": "1M",
+        "binlog_format": "MIXED",
+        "log_bin": "master-bin",
+        "relay_log": "slave-relay-bin",
+        "log_slave_updates": false,
+        "log_warnings": true,
+        "log_long_format": false,
+        "bulk_insert_buffer_size": "64M",
+        "myisam_recover_options": "BACKUP",
+        "myisam_sort_buffer_size": "128M",
+        "myisam_max_sort_file_size": "10G",
+        "myisam_repair_threads": 1,
+        "read_buffer_size": "8M",
+        "skip_innodb": false,
+        "innodb_additional_mem_pool_size": "32M",
+        "innodb_buffer_pool_size": "128M",
+        "innodb_data_file_path": "ibdata1:10M:autoextend",
+        "innodb_autoextend_increment": "128M",
+        "innodb_open_files": 2000,
+        "innodb_file_per_table": true,
+        "innodb_file_format": "Antelope",
+        "innodb_data_home_dir": "",
+        "innodb_thread_concurrency": 16,
+        "innodb_flush_log_at_trx_commit": 1,
+        "innodb_fast_shutdown": false,
+        "innodb_log_buffer_size": "64M",
+        "innodb_log_file_size": "5M",
+        "innodb_log_files_in_group": 2,
+        "innodb_max_dirty_pages_pct": 80,
+        "innodb_flush_method": "O_DIRECT",
+        "innodb_lock_wait_timeout": 120,
+        "innodb_import_table_from_xtrabackup": 0,
+        "performance_schema": false,
+        "replication": {
+          "read_only": false,
+          "host": "",
+          "username": "",
+          "password": "",
+          "port": 3306,
+          "ignore_db": [
+
+          ],
+          "ignore_table": [
+
+          ],
+          "ssl_enabled": false,
+          "suppress_1592": false,
+          "skip_slave_start": false
+        },
+        "package": "percona-server-server-5.6"
+      },
+      "main_config_file": "/etc/mysql/my.cnf",
+      "keyserver": "keys.gnupg.net",
+      "encrypted_data_bag": "passwords",
+      "encrypted_data_bag_secret_file": "",
+      "encrypted_data_bag_item_mysql": "mysql",
+      "encrypted_data_bag_item_system": "system",
+      "encrypted_data_bag_item_ssl_replication": "ssl_replication",
+      "use_chef_vault": false,
+      "skip_passwords": false,
+      "skip_configure": false,
+      "backup": {
+        "configure": false,
+        "username": "backup",
+        "password": "f43nsuvROS_IcBlZBDmg"
+      },
+      "cluster": {
+        "binlog_format": "ROW",
+        "wsrep_provider": "/usr/lib/libgalera_smm.so",
+        "wsrep_provider_options": "",
+        "wsrep_cluster_address": "",
+        "wsrep_slave_threads": 2,
+        "wsrep_cluster_name": "",
+        "wsrep_sst_method": "rsync",
+        "wsrep_node_name": "",
+        "wsrep_notify_cmd": "",
+        "wsrep_sst_auth": "",
+        "wsrep_sst_receive_interface": null,
+        "wsrep_sst_receive_port": "4444",
+        "innodb_locks_unsafe_for_binlog": 1,
+        "innodb_autoinc_lock_mode": 2
+      },
+      "client": {
+        "package_action": "install",
+        "packages": [
+          "libperconaserverclient18.1-dev",
+          "percona-server-client-5.6"
+        ]
+      },
+      "plugins_version": "1.1.3",
+      "plugins_packages": [
+        "percona-nagios-plugins",
+        "percona-zabbix-templates",
+        "percona-cacti-templates"
+      ],
+      "use_percona_repos": false,
+      "apt_uri": "http://repo.percona.com/apt",
+      "apt_keyserver": "hkp://pgp.mit.edu:80",
+      "apt_key": "0x1C4CBDCDCD2EFD2A",
+      "yum": {
+        "description": "Percona Packages",
+        "baseurl": "http://repo.percona.com/centos/8/os/x86_64/",
+        "gpgkey": "http://www.percona.com/downloads/RPM-GPG-KEY-percona",
+        "gpgcheck": true,
+        "sslverify": true
+      }
+    },
+    "iis": {
+      "home": "\\System32\\inetsrv",
+      "conf_dir": "\\System32\\inetsrv\\config",
+      "pubroot": "\\inetpub",
+      "docroot": "\\inetpub\\wwwroot",
+      "log_dir": "\\inetpub\\logs\\LogFiles",
+      "cache_dir": "\\inetpub\\temp",
+      "components": [
+
+      ]
+    },
+    "xml": {
+      "compiletime": false,
+      "packages": [
+        "libxml2-dev",
+        "libxslt-dev"
+      ],
+      "nokogiri": {
+        "use_system_libraries": false,
+        "version": "1.6.2.1"
+      }
+    },
+    "php": {
+      "install_method": "package",
+      "directives": {
+        "memory_limit": "512M"
+      },
+      "bin": "php",
+      "pear": "pear",
+      "pecl": "pecl",
+      "conf_dir": "/etc/php5/apache2",
+      "ext_conf_dir": "/etc/php5/conf.d",
+      "fpm_user": "www-data",
+      "fpm_group": "www-data",
+      "packages": [
+        "php5-cgi",
+        "php5",
+        "php5-dev",
+        "php5-cli",
+        "php-pear",
+        "php5-curl",
+        "php5-gd",
+        "php5-mysql",
+        "php5-memcache",
+        "php-console-table"
+      ],
+      "url": "http://us1.php.net/get",
+      "version": "5.5.9",
+      "checksum": "378de162efdaeeb725ed38d7fe956c9f0b9084ff",
+      "prefix_dir": "/usr/local",
+      "configure_options": [
+        "--prefix=/usr/local",
+        "--with-libdir=lib",
+        "--with-config-file-path=/etc/php5/apache2",
+        "--with-config-file-scan-dir=/etc/php5/conf.d",
+        "--with-pear",
+        "--enable-fpm",
+        "--with-fpm-user=www-data",
+        "--with-fpm-group=www-data",
+        "--with-zlib",
+        "--with-openssl",
+        "--with-kerberos",
+        "--with-bz2",
+        "--with-curl",
+        "--enable-ftp",
+        "--enable-zip",
+        "--enable-exif",
+        "--with-gd",
+        "--enable-gd-native-ttf",
+        "--with-gettext",
+        "--with-gmp",
+        "--with-mhash",
+        "--with-iconv",
+        "--with-imap",
+        "--with-imap-ssl",
+        "--enable-sockets",
+        "--enable-soap",
+        "--with-xmlrpc",
+        "--with-libevent-dir",
+        "--with-mcrypt",
+        "--enable-mbstring",
+        "--with-t1lib",
+        "--with-mysql",
+        "--with-mysqli=/usr/bin/mysql_config",
+        "--with-mysql-sock",
+        "--with-sqlite3",
+        "--with-pdo-mysql",
+        "--with-pdo-sqlite"
+      ],
+      "ini": {
+        "template": "php.ini.erb",
+        "cookbook": "php"
+      }
+    },
+    "postfix": {
+      "mail_type": "client",
+      "relayhost_role": "relayhost",
+      "multi_environment_relay": false,
+      "use_procmail": false,
+      "use_alias_maps": false,
+      "use_transport_maps": false,
+      "use_access_maps": false,
+      "use_virtual_aliases": false,
+      "use_virtual_aliases_domains": false,
+      "transports": {
+
+      },
+      "access": {
+
+      },
+      "virtual_aliases": {
+
+      },
+      "virtual_aliases_domains": {
+
+      },
+      "main_template_source": "postfix",
+      "master_template_source": "postfix",
+      "sender_canonical_map_entries": {
+
+      },
+      "smtp_generic_map_entries": {
+
+      },
+      "access_db_type": "hash",
+      "aliases_db_type": "hash",
+      "transport_db_type": "hash",
+      "virtual_alias_db_type": "hash",
+      "virtual_alias_domains_db_type": "hash",
+      "conf_dir": "/etc/postfix",
+      "aliases_db": "/etc/aliases",
+      "transport_db": "/etc/postfix/transport",
+      "access_db": "/etc/postfix/access",
+      "virtual_alias_db": "/etc/postfix/virtual",
+      "virtual_alias_domains_db": "/etc/postfix/virtual_domains",
+      "main": {
+        "biff": "no",
+        "append_dot_mydomain": "no",
+        "myhostname": "sp-control-1.nhm.ac.uk",
+        "mydomain": "nhm.ac.uk",
+        "myorigin": "$myhostname",
+        "mydestination": [
+          "sp-control-1.nhm.ac.uk",
+          "sp-control-1",
+          "localhost.localdomain",
+          "localhost"
+        ],
+        "smtpd_use_tls": "yes",
+        "smtp_use_tls": "yes",
+        "smtp_sasl_auth_enable": "no",
+        "mailbox_size_limit": 0,
+        "mynetworks": null,
+        "inet_interfaces": "loopback-only",
+        "smtpd_tls_cert_file": "/etc/ssl/certs/ssl-cert-snakeoil.pem",
+        "smtpd_tls_key_file": "/etc/ssl/private/ssl-cert-snakeoil.key",
+        "smtpd_tls_CAfile": "/etc/postfix/cacert.pem",
+        "smtpd_tls_session_cache_database": "btree:${data_directory}/smtpd_scache",
+        "smtp_tls_CAfile": "/etc/postfix/cacert.pem",
+        "smtp_tls_session_cache_database": "btree:${data_directory}/smtp_scache"
+      },
+      "cafile": "/etc/postfix/cacert.pem",
+      "master": {
+        "submission": false
+      },
+      "aliases": {
+
+      }
+    },
+    "authorization": {
+      "sudo": {
+        "groups": [
+          "sysadmin"
+        ],
+        "users": [
+
+        ],
+        "passwordless": false,
+        "include_sudoers_d": false,
+        "agent_forwarding": false,
+        "sudoers_defaults": [
+          "!lecture,tty_tickets,!fqdn"
+        ],
+        "command_aliases": [
+
+        ],
+        "prefix": "/etc"
+      }
+    },
+    "varnish": {
+      "default": "/etc/default/varnish",
+      "version": "4.0",
+      "dir": "/etc/varnish",
+      "start": "yes",
+      "nfiles": 131072,
+      "memlock": 82000,
+      "instance": "sp-control-1.nhm.ac.uk",
+      "listen_address": "sp-control-1.nhm.ac.uk",
+      "listen_port": 6081,
+      "vcl_conf": "default.vcl",
+      "vcl_source": "default.vcl.erb",
+      "vcl_cookbook": "varnish",
+      "vcl_generated": true,
+      "conf_source": "default.erb",
+      "conf_cookbook": "varnish",
+      "secret_file": "/etc/varnish/secret",
+      "admin_listen_address": "127.0.0.1",
+      "admin_listen_port": "6082",
+      "user": "varnish",
+      "group": "varnish",
+      "ttl": "120",
+      "parameters": {
+        "thread_pools": "4",
+        "thread_pool_min": "5",
+        "thread_pool_max": "500",
+        "thread_pool_timeout": "300"
+      },
+      "storage": "file",
+      "storage_file": "/var/lib/varnish/$INSTANCE_varnish_storage.bin",
+      "storage_size": "1G",
+      "log_daemon": true,
+      "use_default_repo": true,
+      "backend_host": "localhost",
+      "backend_port": "8080"
+    },
+    "scratchpads": {
+      "encrypted_data_bag": "passwords",
+      "control": {
+        "fqdn": "sp-control-1.nhm.ac.uk",
+        "aegir": {
+          "dbuser": "aegir",
+          "dbuserhost": "%",
+          "dbname": "aegir"
+        },
+        "dbserver": "localhost",
+        "dbuser": "root",
+        "admin_email": "s.rycroft@nhm.ac.uk"
+      },
+      "percona": {
+        "percona-functions-file": "/tmp/percona-functions.sql",
+        "secure-installation-file": "/tmp/secure-installation.sql"
+      }
+    },
+    "chef_client": {
+      "init_style": "systemd"
+    }
   },
   "automatic": {
     "network": {
@@ -43,7 +1457,7 @@
           ],
           "encapsulation": "Ethernet",
           "addresses": {
-            "08:00:27:04:51:F4": {
+            "08:00:27:C7:EC:E5": {
               "family": "lladdr"
             },
             "10.0.2.15": {
@@ -53,7 +1467,7 @@
               "broadcast": "10.0.2.255",
               "scope": "Global"
             },
-            "fe80::a00:27ff:fe04:51f4": {
+            "fe80::a00:27ff:fec7:ece5": {
               "family": "inet6",
               "prefixlen": "64",
               "scope": "Link"
@@ -61,7 +1475,6 @@
           },
           "state": "up",
           "arp": {
-            "10.0.2.3": "52:54:00:12:35:03",
             "10.0.2.2": "52:54:00:12:35:02"
           },
           "routes": [
@@ -84,6 +1497,55 @@
               "proto": "kernel"
             }
           ]
+        },
+        "eth1": {
+          "type": "eth",
+          "number": "1",
+          "mtu": "1500",
+          "flags": [
+            "BROADCAST",
+            "MULTICAST",
+            "UP",
+            "LOWER_UP"
+          ],
+          "encapsulation": "Ethernet",
+          "addresses": {
+            "08:00:27:4F:01:86": {
+              "family": "lladdr"
+            },
+            "157.140.126.191": {
+              "family": "inet",
+              "prefixlen": "24",
+              "netmask": "255.255.255.0",
+              "broadcast": "157.140.126.255",
+              "scope": "Global"
+            },
+            "fe80::a00:27ff:fe4f:186": {
+              "family": "inet6",
+              "prefixlen": "64",
+              "scope": "Link"
+            }
+          },
+          "state": "up",
+          "arp": {
+            "157.140.126.57": "08:00:27:99:05:46",
+            "157.140.126.246": "00:1e:4f:ba:cf:5c"
+          },
+          "routes": [
+            {
+              "destination": "157.140.126.0/24",
+              "family": "inet",
+              "scope": "link",
+              "proto": "kernel",
+              "src": "157.140.126.191"
+            },
+            {
+              "destination": "fe80::/64",
+              "family": "inet6",
+              "metric": "256",
+              "proto": "kernel"
+            }
+          ]
         }
       },
       "default_interface": "eth0",
@@ -94,15 +1556,15 @@
         "interfaces": {
           "lo": {
             "rx": {
-              "bytes": "0",
-              "packets": "0",
+              "bytes": "192870",
+              "packets": "898",
               "errors": "0",
               "drop": "0",
               "overrun": "0"
             },
             "tx": {
-              "bytes": "0",
-              "packets": "0",
+              "bytes": "192870",
+              "packets": "898",
               "errors": "0",
               "drop": "0",
               "carrier": "0",
@@ -112,16 +1574,34 @@
           "eth0": {
             "tx": {
               "queuelen": "1000",
-              "bytes": "584891",
-              "packets": "8866",
+              "bytes": "10520993",
+              "packets": "81815",
               "errors": "0",
               "drop": "0",
               "carrier": "0",
               "collisions": "0"
             },
             "rx": {
-              "bytes": "41387723",
-              "packets": "30240",
+              "bytes": "182142917",
+              "packets": "160593",
+              "errors": "0",
+              "drop": "0",
+              "overrun": "0"
+            }
+          },
+          "eth1": {
+            "tx": {
+              "queuelen": "1000",
+              "bytes": "2830005",
+              "packets": "11902",
+              "errors": "0",
+              "drop": "0",
+              "carrier": "0",
+              "collisions": "0"
+            },
+            "rx": {
+              "bytes": "16890912",
+              "packets": "30420",
               "errors": "0",
               "drop": "0",
               "overrun": "0"
@@ -131,8 +1611,8 @@
       }
     },
     "ipaddress": "10.0.2.15",
-    "macaddress": "08:00:27:04:51:F4",
-    "ip6address": "fe80::a00:27ff:fe04:51f4",
+    "macaddress": "08:00:27:C7:EC:E5",
+    "ip6address": "fe80::a00:27ff:fe4f:186",
     "kernel": {
       "name": "Linux",
       "release": "3.16.0-4-amd64",
@@ -140,6 +1620,38 @@
       "machine": "x86_64",
       "os": "GNU/Linux",
       "modules": {
+        "nfsd": {
+          "size": "263032",
+          "refcount": "13"
+        },
+        "auth_rpcgss": {
+          "size": "51211",
+          "refcount": "1"
+        },
+        "oid_registry": {
+          "size": "12419",
+          "refcount": "1"
+        },
+        "nfs_acl": {
+          "size": "12511",
+          "refcount": "1"
+        },
+        "nfs": {
+          "size": "188136",
+          "refcount": "0"
+        },
+        "lockd": {
+          "size": "83389",
+          "refcount": "2"
+        },
+        "fscache": {
+          "size": "45542",
+          "refcount": "1"
+        },
+        "sunrpc": {
+          "size": "237402",
+          "refcount": "18"
+        },
         "vboxsf": {
           "size": "41446",
           "refcount": "1"
@@ -148,16 +1660,12 @@
           "size": "16782",
           "refcount": "0"
         },
-        "evdev": {
-          "size": "17445",
-          "refcount": "4"
+        "vboxvideo": {
+          "size": "12437",
+          "refcount": "0"
         },
         "psmouse": {
           "size": "99143",
-          "refcount": "0"
-        },
-        "serio_raw": {
-          "size": "12849",
           "refcount": "0"
         },
         "parport_pc": {
@@ -168,52 +1676,56 @@
           "size": "35749",
           "refcount": "2"
         },
-        "vboxvideo": {
-          "size": "12437",
-          "refcount": "0"
-        },
         "drm": {
           "size": "249955",
           "refcount": "2"
+        },
+        "i2c_piix4": {
+          "size": "20864",
+          "refcount": "0"
         },
         "pcspkr": {
           "size": "12595",
           "refcount": "0"
         },
-        "i2c_piix4": {
-          "size": "20864",
+        "evdev": {
+          "size": "17445",
+          "refcount": "4"
+        },
+        "serio_raw": {
+          "size": "12849",
           "refcount": "0"
         },
         "i2c_core": {
           "size": "46012",
           "refcount": "2"
         },
-        "video": {
-          "size": "18096",
-          "refcount": "0"
-        },
-        "processor": {
-          "size": "28221",
-          "refcount": "0"
-        },
         "battery": {
           "size": "13356",
-          "refcount": "0"
-        },
-        "button": {
-          "size": "12944",
           "refcount": "0"
         },
         "ac": {
           "size": "12715",
           "refcount": "0"
         },
-        "vboxguest": {
-          "size": "193979",
-          "refcount": "2"
+        "processor": {
+          "size": "28221",
+          "refcount": "0"
+        },
+        "video": {
+          "size": "18096",
+          "refcount": "0"
+        },
+        "button": {
+          "size": "12944",
+          "refcount": "0"
         },
         "thermal_sys": {
           "size": "27642",
+          "refcount": "2"
+        },
+        "vboxguest": {
+          "size": "193979",
           "refcount": "2"
         },
         "autofs4": {
@@ -248,16 +1760,16 @@
           "size": "12431",
           "refcount": "1"
         },
+        "crct10dif_generic": {
+          "size": "12581",
+          "refcount": "1"
+        },
         "sr_mod": {
           "size": "21903",
           "refcount": "0"
         },
         "cdrom": {
           "size": "47424",
-          "refcount": "1"
-        },
-        "crct10dif_generic": {
-          "size": "12581",
           "refcount": "1"
         },
         "crct10dif_common": {
@@ -308,13 +1820,13 @@
     "filesystem": {
       "/dev/sda1": {
         "kb_size": "1052633524",
-        "kb_used": "1157876",
-        "kb_available": "997981940",
+        "kb_used": "2925160",
+        "kb_available": "996214656",
         "percent_used": "1%",
         "mount": "/",
         "total_inodes": "66846720",
-        "inodes_used": "59360",
-        "inodes_available": "66787360",
+        "inodes_used": "76842",
+        "inodes_available": "66769878",
         "inodes_percent_used": "1%",
         "fs_type": "ext4",
         "mount_options": [
@@ -365,9 +1877,9 @@
       },
       "none": {
         "kb_size": "581408864",
-        "kb_used": "391580116",
-        "kb_available": "189828748",
-        "percent_used": "68%",
+        "kb_used": "389432712",
+        "kb_available": "191976152",
+        "percent_used": "67%",
         "mount": "/vagrant",
         "total_inodes": "1000",
         "inodes_used": "0",
@@ -463,9 +1975,9 @@
           "direct"
         ]
       },
-      "debugfs": {
-        "mount": "/sys/kernel/debug",
-        "fs_type": "debugfs",
+      "hugetlbfs": {
+        "mount": "/dev/hugepages",
+        "fs_type": "hugetlbfs",
         "mount_options": [
           "rw",
           "relatime"
@@ -479,9 +1991,25 @@
           "relatime"
         ]
       },
-      "hugetlbfs": {
-        "mount": "/dev/hugepages",
-        "fs_type": "hugetlbfs",
+      "debugfs": {
+        "mount": "/sys/kernel/debug",
+        "fs_type": "debugfs",
+        "mount_options": [
+          "rw",
+          "relatime"
+        ]
+      },
+      "rpc_pipefs": {
+        "mount": "/run/rpc_pipefs",
+        "fs_type": "rpc_pipefs",
+        "mount_options": [
+          "rw",
+          "relatime"
+        ]
+      },
+      "nfsd": {
+        "mount": "/proc/fs/nfsd",
+        "fs_type": "nfsd",
         "mount_options": [
           "rw",
           "relatime"
@@ -506,7 +2034,7 @@
         "model": "23",
         "model_name": "Intel(R) Xeon(R) CPU           E5420  @ 2.50GHz",
         "stepping": "6",
-        "mhz": "2535.560",
+        "mhz": "2493.409",
         "cache_size": "6144 KB",
         "physical_id": "0",
         "core_id": "0",
@@ -563,25 +2091,25 @@
         "free": "4192252kB"
       },
       "total": "2058684kB",
-      "free": "1682092kB",
-      "buffers": "22404kB",
-      "cached": "213624kB",
-      "active": "133512kB",
-      "inactive": "176884kB",
-      "dirty": "13552kB",
+      "free": "419408kB",
+      "buffers": "150528kB",
+      "cached": "1093956kB",
+      "active": "872608kB",
+      "inactive": "525460kB",
+      "dirty": "148kB",
       "writeback": "0kB",
-      "anon_pages": "74364kB",
-      "mapped": "17952kB",
-      "slab": "51892kB",
-      "slab_reclaimable": "43904kB",
-      "slab_unreclaim": "7988kB",
-      "page_tables": "2724kB",
+      "anon_pages": "236532kB",
+      "mapped": "135556kB",
+      "slab": "120356kB",
+      "slab_reclaimable": "105384kB",
+      "slab_unreclaim": "14972kB",
+      "page_tables": "12132kB",
       "nfs_unstable": "0kB",
       "bounce": "0kB",
       "commit_limit": "5221592kB",
-      "committed_as": "184800kB",
+      "committed_as": "1285520kB",
       "vmalloc_total": "34359738367kB",
-      "vmalloc_used": "25640kB",
+      "vmalloc_used": "25772kB",
       "vmalloc_chunk": "34359711731kB"
     },
     "languages": {
@@ -610,6 +2138,12 @@
         "gems_dir": "/opt/chef/embedded/lib/ruby/gems/2.1.0",
         "gem_bin": "/opt/chef/embedded/bin/gem"
       },
+      "php": {
+        "version": "5.6.7-1",
+        "builddate": "Mar 24 2015 12:30:15",
+        "zend_engine_version": "2.6.0",
+        "zend_opcache_version": "7.0.4-dev"
+      },
       "c": {
         "gcc": {
           "version": "4.9.2",
@@ -631,7 +2165,7 @@
     "machinename": "sp-control-1",
     "fqdn": "sp-control-1.nhm.ac.uk",
     "domain": "nhm.ac.uk",
-    "ohai_time": 1432051780.0764859,
+    "ohai_time": 1432124901.95903,
     "etc": {
       "passwd": {
         "root": {
@@ -806,6 +2340,62 @@
           "dir": "/var/run/vboxadd",
           "gid": 1,
           "uid": 999,
+          "shell": "/bin/false",
+          "gecos": ""
+        },
+        "mysql": {
+          "dir": "/nonexistent",
+          "gid": 110,
+          "uid": 105,
+          "shell": "/bin/false",
+          "gecos": "MySQL Server,,,"
+        },
+        "statd": {
+          "dir": "/var/lib/nfs",
+          "gid": 65534,
+          "uid": 106,
+          "shell": "/bin/false",
+          "gecos": ""
+        },
+        "postfix": {
+          "dir": "/var/spool/postfix",
+          "gid": 112,
+          "uid": 107,
+          "shell": "/bin/false",
+          "gecos": ""
+        },
+        "aegir": {
+          "dir": "/var/aegir",
+          "gid": 33,
+          "uid": 998,
+          "shell": "/bin/bash",
+          "gecos": "User which runs all of the behind the scenes actions."
+        },
+        "messagebus": {
+          "dir": "/var/run/dbus",
+          "gid": 114,
+          "uid": 108,
+          "shell": "/bin/false",
+          "gecos": ""
+        },
+        "gkrellmd": {
+          "dir": "/home/gkrellmd",
+          "gid": 100,
+          "uid": 997,
+          "shell": "/bin/sh",
+          "gecos": ""
+        },
+        "varnish": {
+          "dir": "/home/varnish",
+          "gid": 115,
+          "uid": 109,
+          "shell": "/bin/false",
+          "gecos": ""
+        },
+        "varnishlog": {
+          "dir": "/home/varnishlog",
+          "gid": 116,
+          "uid": 110,
           "shell": "/bin/false",
           "gecos": ""
         }
@@ -1110,6 +2700,48 @@
           "members": [
 
           ]
+        },
+        "mysql": {
+          "gid": 110,
+          "members": [
+
+          ]
+        },
+        "ssl-cert": {
+          "gid": 111,
+          "members": [
+
+          ]
+        },
+        "postfix": {
+          "gid": 112,
+          "members": [
+
+          ]
+        },
+        "postdrop": {
+          "gid": 113,
+          "members": [
+
+          ]
+        },
+        "messagebus": {
+          "gid": 114,
+          "members": [
+
+          ]
+        },
+        "varnish": {
+          "gid": 115,
+          "members": [
+
+          ]
+        },
+        "varnishlog": {
+          "gid": 116,
+          "members": [
+
+          ]
         }
       }
     },
@@ -1162,7 +2794,7 @@
             "Product Name": "VirtualBox",
             "Version": "1.2",
             "Serial Number": "0",
-            "UUID": "67000E63-EDB9-4D1F-A9B0-8DF86A73FCC4",
+            "UUID": "29087FB2-9C5D-405B-9965-6DE6751CDA99",
             "Wake-up Type": "Power Switch",
             "SKU Number": "Not Specified",
             "Family": "Virtual Machine"
@@ -1172,7 +2804,7 @@
         "product_name": "VirtualBox",
         "version": "1.2",
         "serial_number": "0",
-        "uuid": "67000E63-EDB9-4D1F-A9B0-8DF86A73FCC4",
+        "uuid": "29087FB2-9C5D-405B-9965-6DE6751CDA99",
         "wake_up_type": "Power Switch",
         "sku_number": "Not Specified",
         "family": "Virtual Machine"
@@ -1245,7 +2877,7 @@
             "String 1": "vboxVer_4.3.28",
             "String 2": "vboxRev_100309",
             "Header and Data": {
-              "80 08 08 00 41 0C 26 00": null
+              "80 08 08 00 F3 0B 26 00": null
             }
           }
         ],
@@ -1287,18 +2919,67 @@
         "rotational": "1"
       }
     },
-    "uptime_seconds": 71,
-    "uptime": "1 minutes 11 seconds",
-    "idletime_seconds": 32,
-    "idletime": "32 seconds",
+    "uptime_seconds": 8305,
+    "uptime": "2 hours 18 minutes 25 seconds",
+    "idletime_seconds": 6707,
+    "idletime": "1 hours 51 minutes 47 seconds",
     "command": {
       "ps": "ps -ef"
     },
     "recipes": [
-
+      "scratchpads::control",
+      "apt::default",
+      "scratchpads::percona",
+      "percona::client",
+      "percona::package_repo",
+      "percona::server",
+      "percona::configure_server",
+      "percona::access_grants",
+      "percona::replication",
+      "git::default",
+      "apache2::default",
+      "apache2::mpm_worker",
+      "apache2::mod_status",
+      "apache2::mod_alias",
+      "apache2::mod_auth_basic",
+      "apache2::mod_authn_core",
+      "apache2::mod_authn_file",
+      "apache2::mod_authz_core",
+      "apache2::mod_authz_groupfile",
+      "apache2::mod_authz_host",
+      "apache2::mod_authz_user",
+      "apache2::mod_autoindex",
+      "apache2::mod_dir",
+      "apache2::mod_env",
+      "apache2::mod_mime",
+      "apache2::mod_negotiation",
+      "apache2::mod_setenvif",
+      "apache2::mod_rewrite",
+      "apache2::mod_deflate",
+      "apache2::mod_headers",
+      "apache2::mpm_prefork",
+      "apache2::mod_php5",
+      "php::default",
+      "php::package",
+      "php::ini",
+      "nfs::server",
+      "nfs::_common",
+      "postfix::default",
+      "postfix::_common",
+      "postfix::_attributes",
+      "scratchpads::aegir",
+      "imagemagick::default",
+      "gkrellmd::default",
+      "varnish::default",
+      "varnish::repo",
+      "build-essential::default",
+      "build-essential::_debian"
     ],
     "roles": [
-
+      "control"
     ]
-  }
+  },
+  "run_list": [
+    "role[control]"
+  ]
 }

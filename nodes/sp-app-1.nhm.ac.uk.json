@@ -1,0 +1,6 @@
+{
+  "name": "sp-app-1.nhm.ac.uk",
+  "run_list": [
+    "role[app]"
+  ]
+}

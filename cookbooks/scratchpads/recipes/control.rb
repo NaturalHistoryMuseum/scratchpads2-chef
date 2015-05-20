@@ -93,6 +93,10 @@ template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
     :sp_app_servers => app_hosts
   })
 end
+execute 'restart_systemctl_daemon' do
+  command "systemctl daemon-reload"
+  action :nothing
+end
 template '/etc/systemd/system/varnish.service' do
   path '/etc/systemd/system/varnish.service'
   source 'varnish.service.erb'
@@ -101,5 +105,6 @@ template '/etc/systemd/system/varnish.service' do
   group 'root'
   mode '0644'
   action :create
+  notifies :run, 'execute[restart_systemctl_daemon]', :immediately
   notifies :restart, 'service[varnish]', :delayed
 end

@@ -41,7 +41,7 @@
       ]
     },
     "varnish": {
-      "vcl_cookbook": "scratchpads"
+      "listen_port": "80"
     }
   },
   "run_list": [

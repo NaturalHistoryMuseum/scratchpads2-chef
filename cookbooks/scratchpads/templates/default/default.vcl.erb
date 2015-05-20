@@ -12,7 +12,7 @@ backend control {
 }
 <% @sp_app_servers.each_with_index do |app_server, n| -%>
 backend sp_app_<%= n %> {
-	.host = "<%= app_server %>";
+	.host = "<%= app_server['fqdn'] %>";
 	.port = "80";
 	.first_byte_timeout = 600s;
 	.between_bytes_timeout = 600s;

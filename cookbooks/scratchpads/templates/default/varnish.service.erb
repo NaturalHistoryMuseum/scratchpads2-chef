@@ -5,11 +5,10 @@ Description=Varnish HTTP accelerator
 Type=forking
 LimitNOFILE=<%= node['varnish']['nfiles'] %>
 LimitMEMLOCK=<%= node['varnish']['memlock'] %>
+EnvironmentFile=/etc/default/varnish
 ExecStartPre=/usr/sbin/varnishd -C -f <%= node['varnish']['dir'] %>/<%= node['varnish']['vcl_conf'] %>
-ExecStart=/usr/sbin/varnishd -a <%= node['varnish']['listen_address'] %>:<%= node['varnish']['listen_port'] %> -f <%= node['varnish']['dir'] %>/<%= node['varnish']['vcl_conf'] %> -T <%= node['varnish']['listen_address'] %>:<%= node['varnish']['admin_listen_port'] %> -t <%= node['varnish']['ttl'] %> -S <%= node['varnish']['secret_file'] %> -s malloc,<%= node['varnish']['storage_size'] %> -s file,<%= node['varnish']['storage_file'] %>,20G -p connect_timeout=<%= node['varnish']['parameters']['thread_pool_timeout'] %> -p thread_pools=<%= node['varnish']['parameters']['thread_pools'] %> -p pipe_timeout=<%= node['varnish']['parameters']['thread_pool_timeout'] %>
-Environment=TIME=$(date +%s)
-ExecReload=/usr/bin/varnishadm -S <%= node['varnish']['secret_file'] %> -T <%= node['varnish']['listen_address'] %>:<%= node['varnish']['admin_listen_port'] %> vcl.load $TIME <%= node['varnish']['dir'] %>/<%= node['varnish']['vcl_conf'] %>
-ExecReload=/usr/bin/varnishadm -S <%= node['varnish']['secret_file'] %> -T <%= node['varnish']['listen_address'] %>:<%= node['varnish']['admin_listen_port'] %> vcl.use $TIME
+ExecStart=/usr/sbin/varnishd $DAEMON_OPTS
+ExecReload=/usr/share/varnish/reload-vcl
 
 [Install]
 WantedBy=multi-user.target

@@ -80,11 +80,11 @@ execute 'install hostmaster' do
 end
 
 # Link the aegir configuration to the apache sites folder
-link "/var/aegir/config/apache.conf" do
+link "/etc/apache2/sites-available/aegir.conf" do
   action :create
   group "root"
   owner "root"
-  to "/etc/apache2/sites-available/aegir.conf"
+  to "/var/aegir/config/apache.conf"
 end
 
 # Enable the aegir configuration

@@ -70,8 +70,29 @@ include_recipe 'imagemagick'
 
 include_recipe 'gkrellmd'
 
+# Varnish
 node.default['varnish']['listen_address'] = node['fqdn']
 include_recipe 'varnish'
+# Note, we hardcode the cookbook here to scratchpads so that the varnish
+# default recipe uses its own cookbook which builds and allows the service
+# to be restarted.
+if Chef::Config[:solo]
+  app_hosts = search(:node, "role:#{node['postfix']['relayhost_role']}")
+else
+  app_hosts = search(:node, "role:#{node['postfix']['relayhost_role']}")
+end
+template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
+  source node['varnish']['vcl_source']
+  cookbook "scratchpads"
+  owner 'root'
+  group 'root'
+  mode 0644
+  notifies :reload, 'service[varnish]', :delayed
+  only_if { node['varnish']['vcl_generated'] == true }
+  variables({
+    :sp_app_servers => app_hosts
+  })
+end
 template '/etc/systemd/system/varnish.service' do
   path '/etc/systemd/system/varnish.service'
   source 'varnish.service.erb'

@@ -3,6 +3,8 @@
 .chef/encrypted_data_bag_secret
 .chef/syntaxcache
 nodes
+groups
+clients
 
 # Vagrant
 .vagrant

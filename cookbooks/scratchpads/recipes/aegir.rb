@@ -89,6 +89,5 @@ end
 
 # Enable the aegir configuration
 apache_site "aegir" do
-  name "aegir"
   enable true
 end

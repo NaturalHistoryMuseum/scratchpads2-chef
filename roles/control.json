@@ -2,6 +2,9 @@
   "name": "control",
   "description": "Main Aegir server role.",
   "default_attributes": {
+    "chef_client": {
+      "init_style": "systemd"
+    },
     "gkrellmd": {
       "allowed_hosts": [
         "157.140.126.246",

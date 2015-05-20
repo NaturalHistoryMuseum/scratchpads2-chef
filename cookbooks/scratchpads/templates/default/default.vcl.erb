@@ -10,13 +10,15 @@ backend control {
 	.between_bytes_timeout = 600s;
 	.connect_timeout = 600s;
 }
-backend sp_app_1 {
-	.host = "sp-app-1";
+<% @sp_app_servers.each_with_index do |app_server, n| -%>
+backend sp_app_<%= n %> {
+	.host = "<%= app_server %>";
 	.port = "80";
 	.first_byte_timeout = 600s;
 	.between_bytes_timeout = 600s;
 	.connect_timeout = 600s;
 }
+<% end -%>
 backend selenium {
 	.host = "selenium";
 	.port = "80";
@@ -79,8 +81,9 @@ sub set_no_cache_domains{
 }
 sub vcl_init {
 	new balanced = directors.round_robin();
-	balanced.add_backend(sp_app_1);
-#	balanced.add_backend(sp_app_n);
+<% @sp_app_servers.each_with_index do |app_server, n| -%>
+	balanced.add_backend(sp_app_<%= n %>);
+<% end -%>
 }
 sub vcl_recv {
 	# Redirect dev. and dev- domains if outside the museum

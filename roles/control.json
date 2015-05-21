@@ -52,8 +52,8 @@
     "recipe[git]",
     "recipe[imagemagick]",
     "recipe[scratchpads::percona]",
-    "recipe[scratchpads::aegir]",
     "recipe[scratchpads::webserver]",
+    "recipe[scratchpads::aegir]",
     "recipe[scratchpads::nfs]",
     "recipe[scratchpads::varnish]"
   ]

@@ -1,7 +1,6 @@
 # Scratchpads Vagrant file.
 VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.omnibus.chef_version = :latest
   # Control VM - Aegir, Varnish
   config.vm.define "control" do |control|
     control.vm.hostname = "sp-control-1.nhm.ac.uk"

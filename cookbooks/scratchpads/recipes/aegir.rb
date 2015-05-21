@@ -193,6 +193,14 @@ if node.automatic.roles.index("control") then
     group node["scratchpads"]["aegir"]["group"]
     mode 0644
   end
+else
+  # We download the SSH key from the control server. We should use data bags for this.
+  # SSH ##########################################################################
+  # mkdir /var/aegir/.ssh
+  # wget http://sp-control-1.nhm.ac.uk/id_rsa.pub -O /var/aegir/.ssh/authorized_keys
+  # chown -R aegir:aegir /var/aegir/.ssh
+  # chmod 700 /var/aegir/.ssh
+  # chmod 600 /var/aegir/.ssh/authorized_keys
 end
 
 # Link the aegir configuration to the apache sites folder

@@ -1,0 +1,9 @@
+{
+  "id": "aegir",
+  "admin": {
+    "encrypted_data": "Ci5zX+xCHDl2r0/idD09SUkEfA/hpKguwNJw0BFxqdN4oNgu9zVIQKToKNQb\nf4UqkzpsjwoQ4kRByG2Z1gTqQDzA9ouFDZZAhaCNXqd5dMM=\n",
+    "iv": "Exi47dU2DVuwKEYoc25GTw==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  }
+}

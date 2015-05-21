@@ -71,5 +71,3 @@ mysql_database_user node['scratchpads']['control']['aegir']['dbuser'] do
   action [:create, :grant]
   grant_option true
 end
-
-

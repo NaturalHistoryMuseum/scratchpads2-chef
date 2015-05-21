@@ -1,0 +1,25 @@
+<?php
+// We don"t use Memcache on the sandbox as the cache would persist after
+// a rebuild.
+if($_SERVER["HTTP_HOST"] != "sandbox.scratchpads.eu"){
+  // Memcache settings.  This file should only be present on servers that
+  // have a local copy of memcache running.  For other servers, the default
+  // Drupal cache mechanism will do.
+  global $conf;
+  $conf["memcache_key_prefix"] = md5($db_url["default"]);
+  $conf["memcache_data_max_length"] = 3145728;
+  $conf["memcache_extension"] = "Memcache";
+  $conf["memcache_persistent"] = TRUE;
+  $conf["memcache_servers"] = array(
+<% @sp_data_servers.each do |data_server| -%>
+    "<%= data_server['fqdn'] %>" => "default",
+<% end -%>
+  );
+  $conf["cache_backends"][] = "sites/all/modules/contrib/memcache/memcache.inc";
+  $conf["cache_default_class"] = "MemCacheDrupal";
+  $conf["lock_inc"] = "sites/all/modules/contrib/memcache/memcache-lock.inc";
+  $conf["memcache_stampede_protection"] = TRUE;
+  $conf["cache_class_cache_gm3_polygon"] = "DrupalDatabaseCache";
+  $conf["cache_class_cache_image_sizes"] = "DrupalDatabaseCache";
+  $conf["cache_class_cache_form"] = "DrupalDatabaseCache";
+}

@@ -13,6 +13,7 @@
     },
     "percona": {
       "use_percona_repos": false,
+      "apt_keyserver": "keyserver.ubuntu.com",
       "server": {
         "bind_address": ""
       }

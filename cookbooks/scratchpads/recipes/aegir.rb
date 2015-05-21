@@ -172,6 +172,13 @@ if node.automatic.roles.index("control") then
       :varnish_secret => varnish_secret
     })
   end
+  template "#{node["scratchpads"]["aegir"]["home_folder"]}/config/includes/gloabl.inc" do
+    source "global.inc.erb"
+    cookbook "scratchpads"
+    owner node["scratchpads"]["aegir"]["user"]
+    group node["scratchpads"]["aegir"]["group"]
+    mode 0644
+  end
 end
 
 # Link the aegir configuration to the apache sites folder

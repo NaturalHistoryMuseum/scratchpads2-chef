@@ -4,15 +4,6 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
-
-# Create the aegir directory
-directory node["scratchpads"]["aegir"]["home_folder"] do
-  owner node["scratchpads"]["aegir"]["user"]
-  group node["scratchpads"]["aegir"]["group"]
-  mode 0755
-  action :create
-end
-
 # Create the aegir user
 user 'aegir' do
   group 'www-data'
@@ -26,6 +17,14 @@ end
 sudo 'aegir' do
   user 'aegir'
   nopasswd true
+end
+
+# Create the aegir directory
+directory node["scratchpads"]["aegir"]["home_folder"] do
+  owner node["scratchpads"]["aegir"]["user"]
+  group node["scratchpads"]["aegir"]["group"]
+  mode 0755
+  action :create
 end
 
 # Install hostmaster/provision if the role is "control"

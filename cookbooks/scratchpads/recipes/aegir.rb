@@ -115,14 +115,21 @@ if node.automatic.roles.index("control") then
   #
   # FIX CRON FOR AEGIR USER.
   #
-  
-  # Generate SSH keys
-  execute 'generate keys' do
-    command "ssh-keygen -t rsa -N '' -f #{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/id_rsa"
-    cwd node["scratchpads"]["aegir"]["home_folder"]
+
+  # Save SSH keys
+  enc_data_bag = EncryptedPasswords.new(node, "ssh")
+  lines = enc_data_bag.find_password "aegir", "private"
+  template "#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/id_rsa" do
+    path "#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/id_rsa"
+    source 'empty-file.erb'
+    cookbook 'scratchpads'
+    owner node["scratchpads"]["aegir"]["user"]
     group node["scratchpads"]["aegir"]["group"]
-    user node["scratchpads"]["aegir"]["user"]
-    not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/id_rsa")}
+    mode '0600'
+    action :create
+    variables({
+      :lines => lines
+    })
   end
   # May be possible to do this using Chef - need to investigate.
   #

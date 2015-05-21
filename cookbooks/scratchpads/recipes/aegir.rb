@@ -66,27 +66,74 @@ if node.automatic.roles.index("control") then
       'HOME' => '/var/aegir'
     )
   end
-# # Download the memcache module, and move it to the correct folder (under 
-# # contrib)
-# su -l -s /bin/bash -c "drush @hm dl memcache varnish" aegir
-# mkdir `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/contrib
-# mv `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/memcache `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/varnish `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/contrib
-# # Install additional modules
-# su -l -s /bin/bash -c "drush @hm en hosting_queued hosting_alias hosting_clone hosting_cron hosting_migrate hosting_signup hosting_task_gc hosting_web_pack -y" aegir
-# # Set the password for the admin user to "password", just to make it easier to
-# # access and reset
-# su -l -s /bin/bash -c "drush @hm upwd admin --password=scratchpads -y" aegir
-# # Update the cron for the aegir user
-# # su -l -s /bin/bash -c 'echo "NEW CRON LINE"|crontab -' aegir 
-# # Generate SSH keys
-# su -l -s /bin/bash -c "ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa" aegir
-# # COPY THE key to the webserver, and download it from there on to each host we
-# # setup
-# cp /var/aegir/.ssh/id_rsa.pub `ls -d1 /var/aegir/hostmaster*`
-# echo "Host *
-#    StrictHostKeyChecking no
-#    UserKnownHostsFile=/dev/null" > ~aegir/.ssh/config
-# chown aegir:aegir ~aegir/.ssh/config
+  # su -l -s /bin/bash -c "drush @hm dl memcache varnish" aegir
+  execute 'download memcache module' do
+    command 'drush @hm dl memcache varnish'
+    cwd '/var/aegir'
+    group 'www-data',
+    user 'aegir',
+    not_if { ::File.exists?("/var/aegir/hostmaster/sites/all/modules/contrib/memcache")}
+  end
+  # mkdir `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/contrib
+  directory '/var/aegir/hostmaster/sites/all/modules/contrib' do
+    owner 'aegir'
+    group 'www-data'
+    mode 0755
+    action :create
+  end
+  # mv `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/memcache `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/varnish `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/contrib
+  execute 'move memcache module' do
+    command 'mv /var/aegir/hostmaster/sites/all/modules/memcache /var/aegir/hostmaster/sites/all/modules/contrib'
+    cwd '/var/aegir'
+    group 'www-data'
+    user 'aegir'
+    not_if { ::File.exists?("/var/aegir/hostmaster/sites/all/modules/contrib/memcache")}
+  end
+  # su -l -s /bin/bash -c "drush @hm en hosting_queued hosting_alias hosting_clone hosting_cron hosting_migrate hosting_signup hosting_task_gc hosting_web_pack -y" aegir
+  execute 'enable additional modules' do
+    command 'drush @hm en hosting_queued hosting_alias hosting_clone hosting_cron hosting_migrate hosting_signup hosting_task_gc hosting_web_pack -y'
+    cwd '/var/aegir'
+    group 'www-data',
+    user 'aegir'
+  end
+  # su -l -s /bin/bash -c "drush @hm upwd admin --password=scratchpads -y" aegir
+  execute 'set the admin user password' do
+    command 'drush @hm upwd admin --password=scratchpads -y'
+    cwd '/var/aegir'
+    group 'www-data',
+    user 'aegir'
+  end
+  #
+  # FIX CRON FOR AEGIR USER.
+  #
+  
+  # Generate SSH keys
+  execute 'generate keys' do
+    command 'ssh-keygen -t rsa -N '' -f /var/aegir/.ssh/id_rsa'
+    cwd '/var/aegir'
+    group 'www-data',
+    user 'aegir'
+    not_if { ::File.exists?("/var/aegir/.ssh/id_rsa")}
+  end
+  # May be possible to do this using Chef - need to investigate.
+  #
+  # Copy public key to a location where it can be download from (no security issue here, it's the public key)
+  execute 'copy public key' do
+    command 'cp /var/aegir/.ssh/id_rsa.pub /var/aegir/hostmaster'
+    cwd '/var/aegir'
+    group 'www-data',
+    user 'aegir'
+    not_if { ::File.exists?("/var/aegir/hostmaster/id_rsa.pub")}
+  end
+  template '/var/aegir/.ssh/config' do
+    path '/var/aegir/.ssh/config'
+    source 'aegir-ssh-config.erb'
+    cookbook 'scratchpads'
+    owner 'aegir'
+    group 'www-data'
+    mode '0644'
+    action :create
+  end
 
   template '/etc/systemd/system/hosting-queued.service' do
     path '/etc/systemd/system/hosting-queued.service'

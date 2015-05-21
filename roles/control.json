@@ -48,13 +48,14 @@
     }
   },
   "run_list": [
-    "recipe[scratchpads]",
     "recipe[git]",
     "recipe[imagemagick]",
+    "recipe[scratchpads]",
     "recipe[scratchpads::percona]",
     "recipe[scratchpads::webserver]",
     "recipe[scratchpads::aegir]",
     "recipe[scratchpads::nfs]",
-    "recipe[scratchpads::varnish]"
+    "recipe[scratchpads::varnish]",
+    "recipe[scratchpads::postfix]"
   ]
 }

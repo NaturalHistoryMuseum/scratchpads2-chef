@@ -70,8 +70,8 @@ if node.automatic.roles.index("control") then
   execute 'download memcache module' do
     command 'drush @hm dl memcache varnish'
     cwd '/var/aegir'
-    group 'www-data',
-    user 'aegir',
+    group 'www-data'
+    user 'aegir'
     not_if { ::File.exists?("/var/aegir/hostmaster/sites/all/modules/contrib/memcache")}
   end
   # mkdir `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/contrib
@@ -93,14 +93,14 @@ if node.automatic.roles.index("control") then
   execute 'enable additional modules' do
     command 'drush @hm en hosting_queued hosting_alias hosting_clone hosting_cron hosting_migrate hosting_signup hosting_task_gc hosting_web_pack -y'
     cwd '/var/aegir'
-    group 'www-data',
+    group 'www-data'
     user 'aegir'
   end
   # su -l -s /bin/bash -c "drush @hm upwd admin --password=scratchpads -y" aegir
   execute 'set the admin user password' do
     command 'drush @hm upwd admin --password=scratchpads -y'
     cwd '/var/aegir'
-    group 'www-data',
+    group 'www-data'
     user 'aegir'
   end
   #
@@ -111,7 +111,7 @@ if node.automatic.roles.index("control") then
   execute 'generate keys' do
     command 'ssh-keygen -t rsa -N '' -f /var/aegir/.ssh/id_rsa'
     cwd '/var/aegir'
-    group 'www-data',
+    group 'www-data'
     user 'aegir'
     not_if { ::File.exists?("/var/aegir/.ssh/id_rsa")}
   end
@@ -121,7 +121,7 @@ if node.automatic.roles.index("control") then
   execute 'copy public key' do
     command 'cp /var/aegir/.ssh/id_rsa.pub /var/aegir/hostmaster'
     cwd '/var/aegir'
-    group 'www-data',
+    group 'www-data'
     user 'aegir'
     not_if { ::File.exists?("/var/aegir/hostmaster/id_rsa.pub")}
   end

@@ -116,6 +116,13 @@ if node.automatic.roles.index("control") then
   # FIX CRON FOR AEGIR USER.
   #
 
+  # Create the .ssh directory
+  directory "#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh" do
+    owner node["scratchpads"]["aegir"]["user"]
+    group node["scratchpads"]["aegir"]["group"]
+    mode 0700
+    action :create
+  end
   # Save SSH keys
   enc_data_bag = EncryptedPasswords.new(node, "ssh")
   lines = enc_data_bag.find_password "aegir", "private"

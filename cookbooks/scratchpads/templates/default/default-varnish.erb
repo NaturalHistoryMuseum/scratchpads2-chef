@@ -2,7 +2,7 @@
 # Local modifications will be overwritten.
 
 # Pass the Daemon options
-DAEMON_OPTS="-a sp-control-1.nhm.ac.uk:80 \
+DAEMON_OPTS="-a <%= node['varnish']['listen_address'] %>:<%= node['varnish']['listen_port'] %> \
               -f <%= node['varnish']['dir'] %>/<%= node['varnish']['vcl_conf'] %> \
               -T <%= node['varnish']['listen_address'] %>:<%= node['varnish']['admin_listen_port'] %> \
               -u <%= node['varnish']['user'] %> -g <%= node['varnish']['group'] %> \

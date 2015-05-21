@@ -7,8 +7,8 @@
 
 # Create the aegir directory
 directory node["scratchpads"]["aegir"]["home_folder"] do
-  owner 'aegir'
-  group 'www-data'
+  owner node["scratchpads"]["aegir"]["user"]
+  group node["scratchpads"]["aegir"]["group"]
   mode 0755
   action :create
 end
@@ -17,17 +17,17 @@ end
 if node.automatic.roles.index("control") then
   # Create the .drush folder
   directory "#{node["scratchpads"]["aegir"]["home_folder"]}/.drush" do
-    owner 'aegir'
-    group 'www-data'
+    owner node["scratchpads"]["aegir"]["user"]
+    group node["scratchpads"]["aegir"]["group"]
     mode 0755
     action :create
   end
   # Execute the basic drush commands to download the code
   execute 'download provision' do
-    command "drush dl --destination=#{node["scratchpads"]["aegir"]["home_folder"]}/.drush provision-7.x-3.x"
+    command "drush dl --destination=#{node["scratchpads"]["aegir"]["home_folder"]}/.drush #{["scratchpads"]["aegir"]["provision_version"]}"
     cwd node["scratchpads"]["aegir"]["home_folder"]
-    group 'www-data'
-    user 'aegir'
+    group node["scratchpads"]["aegir"]["group"]
+    user node["scratchpads"]["aegir"]["user"]
     not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/.drush/provision/provision.info")}
   end
 
@@ -35,65 +35,67 @@ if node.automatic.roles.index("control") then
   execute 'clear drush cache' do
     command 'drush cache-clear drush'
     cwd node["scratchpads"]["aegir"]["home_folder"]
-    group 'www-data'
-    user 'aegir'
+    group node["scratchpads"]["aegir"]["group"]
+    user node["scratchpads"]["aegir"]["user"]
   end
-  
+
   passwords = EncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
   aegir_pw = passwords.find_password "mysql", "aegir"
   execute 'install hostmaster' do
     command "drush hostmaster-install \
              --aegir_db_pass='#{aegir_pw}' \
              --root=#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster \
-             --aegir_db_user=#{node['scratchpads']['control']['aegir']['dbuser']} \
+             --aegir_db_user=#{node['scratchpads']['control'][node["scratchpads"]["aegir"]["user"]]['dbuser']} \
              --aegir_db_host=#{node['scratchpads']['control']['dbserver']} \
              --client_email=#{node['scratchpads']['control']['admin_email']} \
              #{node['scratchpads']['control']['fqdn']} \
              -y"
     cwd node["scratchpads"]["aegir"]["home_folder"]
-    group 'www-data'
-    user 'aegir'
+    group node["scratchpads"]["aegir"]["group"]
+    user node["scratchpads"]["aegir"]["user"]
     not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/.drush/hm.alias.drushrc.php")}
     environment node["scratchpads"]["aegir"]["environment"]
   end
-  # su -l -s /bin/bash -c "drush @hm dl memcache varnish" aegir
-  execute 'download memcache module' do
-    command 'drush @hm dl memcache varnish'
-    environment node["scratchpads"]["aegir"]["environment"]
-    cwd node["scratchpads"]["aegir"]["home_folder"]
-    group 'www-data'
-    user 'aegir'
-    not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/memcache")}
-  end
   # mkdir `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/contrib
   directory "#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib" do
-    owner 'aegir'
-    group 'www-data'
+    owner node["scratchpads"]["aegir"]["user"]
+    group node["scratchpads"]["aegir"]["group"]
     mode 0755
     action :create
   end
-  # mv `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/memcache `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/varnish `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/contrib
-  execute 'move memcache module' do
-    command "mv #{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/memcache #{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib"
-    cwd node["scratchpads"]["aegir"]["home_folder"]
-    group 'www-data'
-    user 'aegir'
-    not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/memcache")}
+  node["scratchpads"]["aegir"]["modules_to_download"].each do|module_name|
+    # su -l -s /bin/bash -c "drush @hm dl memcache varnish" aegir
+    execute "download #{module_name} module" do
+      command "drush @hm dl #{module_name}"
+      environment node["scratchpads"]["aegir"]["environment"]
+      cwd node["scratchpads"]["aegir"]["home_folder"]
+      group node["scratchpads"]["aegir"]["group"]
+      user node["scratchpads"]["aegir"]["user"]
+      not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/#{module_name}")}
+    end
+    # mv `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/memcache `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/varnish `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/contrib
+    execute "move #{module_name} module" do
+      command "mv #{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/#{module_name} #{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib"
+      cwd node["scratchpads"]["aegir"]["home_folder"]
+      group node["scratchpads"]["aegir"]["group"]
+      user node["scratchpads"]["aegir"]["user"]
+      not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/#{module_name}")}
+    end
   end
   # su -l -s /bin/bash -c "drush @hm en hosting_queued hosting_alias hosting_clone hosting_cron hosting_migrate hosting_signup hosting_task_gc hosting_web_pack -y" aegir
   execute 'enable additional modules' do
-    command 'drush @hm en hosting_queued hosting_alias hosting_clone hosting_cron hosting_migrate hosting_signup hosting_task_gc hosting_web_pack -y'
+    command "drush @hm en #{node["scratchpads"]["aegir"]["modules_to_install"].join(" ")} -y"
     cwd node["scratchpads"]["aegir"]["home_folder"]
-    group 'www-data'
-    user 'aegir'
+    group node["scratchpads"]["aegir"]["group"]
+    user node["scratchpads"]["aegir"]["user"]
     environment node["scratchpads"]["aegir"]["environment"]
   end
   # su -l -s /bin/bash -c "drush @hm upwd admin --password=scratchpads -y" aegir
   execute 'set the admin user password' do
     command 'drush @hm upwd admin --password=scratchpads -y'
     cwd node["scratchpads"]["aegir"]["home_folder"]
-    group 'www-data'
-    user 'aegir'
+    group node["scratchpads"]["aegir"]["group"]
+    user node["scratchpads"]["aegir"]["user"]
     environment node["scratchpads"]["aegir"]["environment"]
   end
   #
@@ -104,8 +106,8 @@ if node.automatic.roles.index("control") then
   execute 'generate keys' do
     command "ssh-keygen -t rsa -N '' -f #{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/id_rsa"
     cwd node["scratchpads"]["aegir"]["home_folder"]
-    group 'www-data'
-    user 'aegir'
+    group node["scratchpads"]["aegir"]["group"]
+    user node["scratchpads"]["aegir"]["user"]
     not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/id_rsa")}
   end
   # May be possible to do this using Chef - need to investigate.
@@ -114,16 +116,16 @@ if node.automatic.roles.index("control") then
   execute 'copy public key' do
     command "cp #{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/id_rsa.pub #{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster"
     cwd node["scratchpads"]["aegir"]["home_folder"]
-    group 'www-data'
-    user 'aegir'
+    group node["scratchpads"]["aegir"]["group"]
+    user node["scratchpads"]["aegir"]["user"]
     not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/id_rsa.pub")}
   end
   template "#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/config" do
     path "#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/config"
     source 'aegir-ssh-config.erb'
     cookbook 'scratchpads'
-    owner 'aegir'
-    group 'www-data'
+    owner node["scratchpads"]["aegir"]["user"]
+    group node["scratchpads"]["aegir"]["group"]
     mode '0644'
     action :create
   end
@@ -151,8 +153,8 @@ if node.automatic.roles.index("control") then
   template "#{node["scratchpads"]["aegir"]["home_folder"]}/config/includes/memcache.inc" do
     source "memcache.inc.erb"
     cookbook "scratchpads"
-    owner 'aegir'
-    group 'www-data'
+    owner node["scratchpads"]["aegir"]["user"]
+    group node["scratchpads"]["aegir"]["group"]
     mode 0644
     variables({
       :sp_data_servers => data_hosts

@@ -4,20 +4,6 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
-# Create the aegir user
-user 'aegir' do
-  group 'www-data'
-  system true
-  shell '/bin/bash'
-  comment 'User which runs all of the behind the scenes actions.'
-  home '/var/aegir'
-  manage_home
-end
-
-sudo 'aegir' do
-  user 'aegir'
-  nopasswd true
-end
 
 # Create the aegir directory
 directory '/var/aegir' do

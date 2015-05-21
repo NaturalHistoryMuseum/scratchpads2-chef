@@ -55,4 +55,21 @@ execute 'secure installation' do
   command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < #{node['scratchpads']['percona']['secure-installation-file']}"
 end
 
+# Create the aegir user
+# Add a database user using the password in the passwords bag.
+passwords = EncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
+root_pw = passwords.root_password
+aegir_pw = passwords.find_password "mysql", "aegir"
+mysql_database_user node['scratchpads']['control']['aegir']['dbuser'] do
+  connection(
+    :host => node['scratchpads']['control']['dbserver'],
+    :username => node['scratchpads']['control']['dbuser'],
+    :password => root_pw
+  )
+  password aegir_pw
+  host node['scratchpads']['control']['aegir']['dbuserhost']
+  action [:create, :grant]
+  grant_option true
+end
+
 

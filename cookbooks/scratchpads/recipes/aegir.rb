@@ -13,6 +13,21 @@ directory node["scratchpads"]["aegir"]["home_folder"] do
   action :create
 end
 
+# Create the aegir user
+user 'aegir' do
+  group 'www-data'
+  system true
+  shell '/bin/bash'
+  comment 'User which runs all of the behind the scenes actions.'
+  home '/var/aegir'
+  manage_home
+end
+# Add the aegir user to sudoers and ensure it does not need a password.
+sudo 'aegir' do
+  user 'aegir'
+  nopasswd true
+end
+
 # Install hostmaster/provision if the role is "control"
 if node.automatic.roles.index("control") then
   # Create the .drush folder

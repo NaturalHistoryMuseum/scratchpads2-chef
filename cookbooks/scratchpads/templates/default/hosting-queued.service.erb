@@ -1,0 +1,12 @@
+[Unit]
+Description=Aegir Hosting Daemon
+After=syslog.target
+
+[Service]
+ExecStart=/usr/bin/drush --quiet @hostmaster hosting-queued
+User=aegir
+Group=aegir
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

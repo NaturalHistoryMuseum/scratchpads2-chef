@@ -13,7 +13,6 @@
     },
     "percona": {
       "use_percona_repos": false,
-      "apt_keyserver": "hkp://pgp.mit.edu:80",
       "server": {
         "bind_address": ""
       }

@@ -37,6 +37,7 @@
   "run_list": [
     "recipe[imagemagick]",
     "recipe[scratchpads]",
+    "recipe[scratchpads::percona]",
     "recipe[scratchpads::webserver]",
     "recipe[scratchpads::aegir]",
     "recipe[scratchpads::nfs]",

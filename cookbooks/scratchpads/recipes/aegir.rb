@@ -24,7 +24,7 @@ if node.automatic.roles.index("control") then
   end
   # Execute the basic drush commands to download the code
   execute 'download provision' do
-    command "drush dl --destination=#{node["scratchpads"]["aegir"]["home_folder"]}/.drush #{["scratchpads"]["aegir"]["provision_version"]}"
+    command "drush dl --destination=#{node["scratchpads"]["aegir"]["home_folder"]}/.drush #{node["scratchpads"]["aegir"]["provision_version"]}"
     cwd node["scratchpads"]["aegir"]["home_folder"]
     group node["scratchpads"]["aegir"]["group"]
     user node["scratchpads"]["aegir"]["user"]
@@ -158,6 +158,18 @@ if node.automatic.roles.index("control") then
     mode 0644
     variables({
       :sp_data_servers => data_hosts
+    })
+  end
+  passwords = EncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
+  varnish_secret = passwords.find_password "varnish", "secret"
+  template "#{node["scratchpads"]["aegir"]["home_folder"]}/config/includes/varnish.inc" do
+    source "varnish.inc.erb"
+    cookbook "scratchpads"
+    owner node["scratchpads"]["aegir"]["user"]
+    group node["scratchpads"]["aegir"]["group"]
+    mode 0644
+    variables({
+      :varnish_secret => varnish_secret
     })
   end
 end

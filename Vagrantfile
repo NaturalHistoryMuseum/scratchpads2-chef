@@ -28,7 +28,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
   # Data VM - Percona/MySQL, Memcached
-  config.vm.define "data1", autostart: false do |data1|
+  config.vm.define "data1" do |data1|
     data1.vm.hostname = "sp-data-1.nhm.ac.uk"
     data1.vm.box = "scratchpads/debian8"
     data1.vm.provider "virtualbox" do |vb|

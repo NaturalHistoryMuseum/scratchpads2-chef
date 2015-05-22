@@ -105,8 +105,10 @@ if node.automatic.roles.index("control") then
     environment node["scratchpads"]["aegir"]["environment"]
   end
   # su -l -s /bin/bash -c "drush @hm upwd admin --password=scratchpads -y" aegir
+  passwords = EncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
+  admin_pw = passwords.find_password "aegir", "admin"
   execute 'set the admin user password' do
-    command 'drush @hm upwd admin --password=scratchpads -y'
+    command "drush @hm upwd admin --password=#{admin_pw} -y"
     cwd node["scratchpads"]["aegir"]["home_folder"]
     group node["scratchpads"]["aegir"]["group"]
     user node["scratchpads"]["aegir"]["user"]

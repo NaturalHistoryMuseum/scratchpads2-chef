@@ -7,5 +7,5 @@ node_name                "simor"
 client_key               "#{current_dir}/user.pem"
 validation_client_name   "nhm"
 validation_key           "#{current_dir}/nhm.pem"
-chef_server_url          "https://sp-chef.nhm.ac.uk/organizations/nhm"
+chef_server_url          "https://chef.nhm.ac.uk/organizations/nhm"
 cookbook_path            ["#{current_dir}/../cookbooks"]

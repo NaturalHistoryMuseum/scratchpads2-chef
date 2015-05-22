@@ -8,7 +8,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     control.vm.network "public_network"
     control.vm.network "forwarded_port", guest: 80, host: 8888
     control.vm.provision "chef_client" do |chef|
-      chef.chef_server_url = "https://sp-chef.nhm.ac.uk/organizations/nhm"
+      chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
       chef.validation_key_path = ".chef/user.pem"
       chef.validation_client_name = "simor"
     end
@@ -22,7 +22,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     app1.vm.network "public_network"
     app1.vm.provision "chef_client" do |chef|
-      chef.chef_server_url = "https://sp-chef.nhm.ac.uk/organizations/nhm"
+      chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
       chef.validation_key_path = ".chef/user.pem"
       chef.validation_client_name = "simor"
     end
@@ -36,7 +36,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     data1.vm.network "public_network"
     data1.vm.provision "chef_client" do |chef|
-      chef.chef_server_url = "https://sp-chef.nhm.ac.uk/organizations/nhm"
+      chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
       chef.validation_key_path = ".chef/user.pem"
       chef.validation_client_name = "simor"
     end

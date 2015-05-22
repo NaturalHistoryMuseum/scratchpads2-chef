@@ -138,16 +138,7 @@ if node.automatic.roles.index("control") then
       :lines => lines
     })
   end
-  # May be possible to do this using Chef - need to investigate.
-  #
-  # Copy public key to a location where it can be download from (no security issue here, it's the public key)
-  execute 'copy public key' do
-    command "cp #{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/id_rsa.pub #{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster"
-    cwd node["scratchpads"]["aegir"]["home_folder"]
-    group node["scratchpads"]["aegir"]["group"]
-    user node["scratchpads"]["aegir"]["user"]
-    not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/id_rsa.pub")}
-  end
+  # Create config file so that we don't fuss about ssh conflicts (could be a security issue - need to find a way around this)
   template "#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/config" do
     path "#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/config"
     source 'aegir-ssh-config.erb'
@@ -208,13 +199,28 @@ if node.automatic.roles.index("control") then
     mode 0644
   end
 else
-  # We download the SSH key from the control server. We should use data bags for this.
-  # SSH ##########################################################################
-  # mkdir /var/aegir/.ssh
-  # wget http://sp-control-1.nhm.ac.uk/id_rsa.pub -O /var/aegir/.ssh/authorized_keys
-  # chown -R aegir:aegir /var/aegir/.ssh
-  # chmod 700 /var/aegir/.ssh
-  # chmod 600 /var/aegir/.ssh/authorized_keys
+  # Create the .ssh directory
+  directory "#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh" do
+    owner node["scratchpads"]["aegir"]["user"]
+    group node["scratchpads"]["aegir"]["group"]
+    mode 0700
+    action :create
+  end
+  # Save SSH keys
+  enc_data_bag = EncryptedPasswords.new(node, "ssh")
+  lines = enc_data_bag.find_password "aegir", "public"
+  template "#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/authorized_keys" do
+    path "#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/authorized_keys"
+    source 'empty-file.erb'
+    cookbook 'scratchpads'
+    owner node["scratchpads"]["aegir"]["user"]
+    group node["scratchpads"]["aegir"]["group"]
+    mode '0744'
+    action :create
+    variables({
+      :lines => lines
+    })
+  end
 end
 
 # Link the aegir configuration to the apache sites folder

@@ -28,6 +28,7 @@
     "recipe[scratchpads::aegir]",
     "recipe[scratchpads::percona-server]",
     "recipe[scratchpads::postfix]",
-    "recipe[scratchpads::monit]"
+    "recipe[scratchpads::monit]",
+    "recipe[memcached]"
   ]
 }

@@ -159,8 +159,9 @@ if node.automatic.roles.index("control") then
     action :create
     notifies :run, 'execute[restart_systemctl_daemon]', :immediately
   end
-  system "hosting-queued" do
-    action :enable,:restart
+  service "hosting-queued" do
+    supports :restart => true
+    action [:enable,:start]
   end
   # Create the memcache.inc file which will configure sites
   # to use the memcache servers on the role:data servers.
@@ -217,13 +218,72 @@ if node.automatic.roles.index("control") then
   end
   app_hosts.each do|app_host|
     sanitised_server_name = app_host.gsub(/[^a-z0-9]/, '')
+    # Create the server
     execute 'create the server node' do
-      command "drush provision-save @server_#{sanitised_server_name} --context_type=server --remove_host=#{app_host} --http_service_type='apache' --http_port=80"
+      command "drush @hm provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{app_host} --http_service_type='apache' --http_port=80"
       cwd node["scratchpads"]["aegir"]["home_folder"]
       group node["scratchpads"]["aegir"]["group"]
       user node["scratchpads"]["aegir"]["user"]
       environment node["scratchpads"]["aegir"]["environment"]
       not_if{::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/.drush/server_#{sanitised_server_name}.alias.drushrc.php")}
+    end
+    # Verify the server
+    execute 'verify the server node' do
+      command "drush @server_#{sanitised_server_name} provision-verify"
+      cwd node["scratchpads"]["aegir"]["home_folder"]
+      group node["scratchpads"]["aegir"]["group"]
+      user node["scratchpads"]["aegir"]["user"]
+      environment node["scratchpads"]["aegir"]["environment"]
+    end
+    #drush @hm hosting-import @server_spapp1nhmacuk
+    # Import the server into the front end
+    execute 'import the server into front end' do
+      command "drush @hm hosting-import @server_#{sanitised_server_name}"
+      cwd node["scratchpads"]["aegir"]["home_folder"]
+      group node["scratchpads"]["aegir"]["group"]
+      user node["scratchpads"]["aegir"]["user"]
+      environment node["scratchpads"]["aegir"]["environment"]
+    end
+  end
+  # Create database servers for each database server we know about and that
+  # has not already been created.
+  data_hosts = ["sp-data-1"]
+  unless Chef::Config[:solo]
+    data_hosts_search = search(:node, "role:data")
+    data_hosts = []
+    data_hosts_search.each do|data_host|
+      data_hosts << data_host['fqdn']
+    end
+  end
+  data_hosts.each do|data_host|
+    sanitised_server_name = data_host.gsub(/[^a-z0-9]/, '')
+    # Create the server
+    passwords = ScratchpadsEncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
+    aegir_pw = passwords.find_password "mysql", "aegir"
+    execute 'create the server node' do
+      command "drush @hm provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{data_host} --db_service_type='mysql' --master_db='mysql://aegir:#{aegir_pw}@#{data_host}'"
+      cwd node["scratchpads"]["aegir"]["home_folder"]
+      group node["scratchpads"]["aegir"]["group"]
+      user node["scratchpads"]["aegir"]["user"]
+      environment node["scratchpads"]["aegir"]["environment"]
+      not_if{::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/.drush/server_#{sanitised_server_name}.alias.drushrc.php")}
+    end
+    # Verify the server
+    execute 'verify the server node' do
+      command "drush @server_#{sanitised_server_name} provision-verify"
+      cwd node["scratchpads"]["aegir"]["home_folder"]
+      group node["scratchpads"]["aegir"]["group"]
+      user node["scratchpads"]["aegir"]["user"]
+      environment node["scratchpads"]["aegir"]["environment"]
+    end
+    #drush @hm hosting-import @server_spapp1nhmacuk
+    # Import the server into the front end
+    execute 'import the server into front end' do
+      command "drush @hm hosting-import @server_#{sanitised_server_name}"
+      cwd node["scratchpads"]["aegir"]["home_folder"]
+      group node["scratchpads"]["aegir"]["group"]
+      user node["scratchpads"]["aegir"]["user"]
+      environment node["scratchpads"]["aegir"]["environment"]
     end
   end
 else

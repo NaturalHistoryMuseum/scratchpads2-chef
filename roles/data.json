@@ -25,6 +25,7 @@
   },
   "run_list": [
     "recipe[scratchpads]",
+    "recipe[scratchpads::aegir]",
     "recipe[scratchpads::percona-server]",
     "recipe[scratchpads::postfix]"
   ]

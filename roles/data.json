@@ -10,6 +10,10 @@
         "monkey.nhm.ac.uk"
       ]
     },
+    "memcached": {
+      "max_object_size": "3M",
+      "memory": 4000
+    },
     "percona": {
       "use_percona_repos": false,
       "apt_keyserver": "keyserver.ubuntu.com",

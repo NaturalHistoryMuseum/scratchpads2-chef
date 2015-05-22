@@ -35,6 +35,7 @@ else
     group 'www-data'
     mode 0777
     action :create
+    not_if { ::File.exists?('/var/aegir/platforms')}
   end
   # Mount the folder from the control server
   include_recipe 'nfs::client4'

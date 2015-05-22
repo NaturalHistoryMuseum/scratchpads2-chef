@@ -12,7 +12,7 @@ if($_SERVER["HTTP_HOST"] != "sandbox.scratchpads.eu"){
   $conf["memcache_persistent"] = TRUE;
   $conf["memcache_servers"] = array(
 <% @sp_data_servers.each do |data_server| -%>
-    "<%= data_server['fqdn'] %>" => "default",
+    "<%= data_server %>" => "default",
 <% end -%>
   );
   $conf["cache_backends"][] = "sites/all/modules/contrib/memcache/memcache.inc";

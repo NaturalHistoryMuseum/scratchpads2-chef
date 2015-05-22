@@ -4,8 +4,9 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
-# Install NFS server and set it to allow access to certain servers.
+# Check if we are the Control server, which has the NFS server installed.
 if node.automatic.roles.index("control") then
+  # Install NFS server and set it to allow access to certain servers.
   include_recipe 'nfs::server4'
   app_hosts = ["sp-app-1"]
   unless Chef::Config[:solo]
@@ -21,7 +22,13 @@ if node.automatic.roles.index("control") then
     sync true
     options ['root_squash','no_subtree_check']
   end
+  # Restart nfs-server components
+  service node['nfs']['service']['server'] do
+    action [:stop, :start]
+  end
 else
+  # We are not the control server, so must be an app server. We install the
+  # client and add a mount point and mount!
   # Create the aegir directory
   directory '/var/aegir/platforms' do
     owner 'aegir'

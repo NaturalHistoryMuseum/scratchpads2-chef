@@ -1,0 +1,26 @@
+{
+  "name": "data",
+  "default_attributes": {
+    "chef_client": {
+      "init_style": "systemd"
+    },
+    "gkrellmd": {
+      "allowed_hosts": [
+        "157.140.126.246",
+        "monkey.nhm.ac.uk"
+      ]
+    },
+    "percona": {
+      "use_percona_repos": false,
+      "apt_keyserver": "keyserver.ubuntu.com",
+      "server": {
+        "bind_address": ""
+      }
+    }
+  },
+  "run_list": [
+    "recipe[scratchpads]",
+    "recipe[scratchpads::percona-server]",
+    "recipe[scratchpads::postfix]"
+  ]
+}

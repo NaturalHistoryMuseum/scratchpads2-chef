@@ -53,7 +53,7 @@ if node.automatic.roles.index("control") then
     user node["scratchpads"]["aegir"]["user"]
   end
 
-  passwords = EncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
+  passwords = ScratchpadsEncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
   aegir_pw = passwords.find_password "mysql", "aegir"
   execute 'install hostmaster' do
     command "drush hostmaster-install \
@@ -105,7 +105,7 @@ if node.automatic.roles.index("control") then
     environment node["scratchpads"]["aegir"]["environment"]
   end
   # su -l -s /bin/bash -c "drush @hm upwd admin --password=scratchpads -y" aegir
-  passwords = EncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
+  passwords = ScratchpadsEncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
   admin_pw = passwords.find_password "aegir", "admin"
   execute 'set the admin user password' do
     command "drush @hm upwd admin --password=#{admin_pw} -y"
@@ -126,7 +126,7 @@ if node.automatic.roles.index("control") then
     action :create
   end
   # Save SSH keys
-  enc_data_bag = EncryptedPasswords.new(node, "ssh")
+  enc_data_bag = ScratchpadsEncryptedPasswords.new(node, "ssh")
   lines = enc_data_bag.find_password "aegir", "private"
   template "#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/id_rsa" do
     path "#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/id_rsa"
@@ -181,7 +181,7 @@ if node.automatic.roles.index("control") then
       :sp_data_servers => data_hosts
     })
   end
-  passwords = EncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
+  passwords = ScratchpadsEncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
   varnish_secret = passwords.find_password "varnish", "secret"
   template "#{node["scratchpads"]["aegir"]["home_folder"]}/config/includes/varnish.inc" do
     source "varnish.inc.erb"
@@ -209,7 +209,7 @@ else
     action :create
   end
   # Save SSH keys
-  enc_data_bag = EncryptedPasswords.new(node, "ssh")
+  enc_data_bag = ScratchpadsEncryptedPasswords.new(node, "ssh")
   lines = enc_data_bag.find_password "aegir", "public"
   template "#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/authorized_keys" do
     path "#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh/authorized_keys"

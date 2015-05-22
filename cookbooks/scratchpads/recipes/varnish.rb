@@ -52,7 +52,7 @@ template '/etc/default/varnish' do
   action :create
   notifies :restart, 'service[varnish]', :delayed
 end
-passwords = EncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
+passwords = ScratchpadsEncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
 varnish_secret = passwords.find_password "varnish", "secret"
 execute 'update varnish secret file' do
   command "echo \"#{varnish_secret}\" > #{node['varnish']['secret_file']}"

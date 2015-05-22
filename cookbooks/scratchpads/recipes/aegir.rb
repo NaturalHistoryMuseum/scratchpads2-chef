@@ -199,7 +199,7 @@ if node.automatic.roles.index("control") then
       :varnish_secret => varnish_secret
     })
   end
-  template "#{node["scratchpads"]["aegir"]["home_folder"]}/config/includes/gloabl.inc" do
+  template "#{node["scratchpads"]["aegir"]["home_folder"]}/config/includes/global.inc" do
     source "global.inc.erb"
     cookbook "scratchpads"
     owner node["scratchpads"]["aegir"]["user"]

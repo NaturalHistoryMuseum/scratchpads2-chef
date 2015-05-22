@@ -18,7 +18,6 @@ sudo 'aegir' do
   user 'aegir'
   nopasswd true
 end
-
 # Create the aegir directory
 directory node["scratchpads"]["aegir"]["home_folder"] do
   owner node["scratchpads"]["aegir"]["user"]
@@ -26,8 +25,8 @@ directory node["scratchpads"]["aegir"]["home_folder"] do
   mode 0755
   action :create
 end
-
-# Install hostmaster/provision if the role is "control"
+# Check to see if we are running the "control" role. If so we install Aegir, and if not
+# we just ensure that the aegir user on control can ssh to this box.
 if node.automatic.roles.index("control") then
   # Create the .drush folder
   directory "#{node["scratchpads"]["aegir"]["home_folder"]}/.drush" do
@@ -36,7 +35,7 @@ if node.automatic.roles.index("control") then
     mode 0755
     action :create
   end
-  # Execute the basic drush commands to download the code
+  # Execute the basic drush commands to download the provision code
   execute 'download provision' do
     command "drush dl --destination=#{node["scratchpads"]["aegir"]["home_folder"]}/.drush #{node["scratchpads"]["aegir"]["provision_version"]}"
     cwd node["scratchpads"]["aegir"]["home_folder"]
@@ -44,7 +43,6 @@ if node.automatic.roles.index("control") then
     user node["scratchpads"]["aegir"]["user"]
     not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/.drush/provision/provision.info")}
   end
-
   # Clear the drush cache so that the provision command is found.
   execute 'clear drush cache' do
     command 'drush cache-clear drush'
@@ -52,7 +50,8 @@ if node.automatic.roles.index("control") then
     group node["scratchpads"]["aegir"]["group"]
     user node["scratchpads"]["aegir"]["user"]
   end
-
+  # Install the hostmaster site on this server using the database also on this
+  # server.
   passwords = ScratchpadsEncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
   aegir_pw = passwords.find_password "mysql", "aegir"
   execute 'install hostmaster' do
@@ -70,7 +69,7 @@ if node.automatic.roles.index("control") then
     not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/.drush/hm.alias.drushrc.php")}
     environment node["scratchpads"]["aegir"]["environment"]
   end
-  # mkdir `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/contrib
+  # Create the "contrib" folder under sites/all for the memcache, varnish and any other modules to go into
   directory "#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib" do
     owner node["scratchpads"]["aegir"]["user"]
     group node["scratchpads"]["aegir"]["group"]
@@ -78,7 +77,7 @@ if node.automatic.roles.index("control") then
     action :create
   end
   node["scratchpads"]["aegir"]["modules_to_download"].each do|module_name|
-    # su -l -s /bin/bash -c "drush @hm dl memcache varnish" aegir
+    # Download the additional module.
     execute "download #{module_name} module" do
       command "drush @hm dl #{module_name}"
       environment node["scratchpads"]["aegir"]["environment"]
@@ -87,7 +86,7 @@ if node.automatic.roles.index("control") then
       user node["scratchpads"]["aegir"]["user"]
       not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/#{module_name}")}
     end
-    # mv `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/memcache `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/varnish `ls -d1 /var/aegir/hostmaster*`/sites/all/modules/contrib
+    # Move the additional module into the contrib folder (which is where it is in the scratchpads code base)
     execute "move #{module_name} module" do
       command "mv #{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/#{module_name} #{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib"
       cwd node["scratchpads"]["aegir"]["home_folder"]
@@ -96,7 +95,7 @@ if node.automatic.roles.index("control") then
       not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/#{module_name}")}
     end
   end
-  # su -l -s /bin/bash -c "drush @hm en hosting_queued hosting_alias hosting_clone hosting_cron hosting_migrate hosting_signup hosting_task_gc hosting_web_pack -y" aegir
+  # Enable any additional modules as configured.
   execute 'enable additional modules' do
     command "drush @hm en #{node["scratchpads"]["aegir"]["modules_to_install"].join(" ")} -y"
     cwd node["scratchpads"]["aegir"]["home_folder"]
@@ -104,7 +103,7 @@ if node.automatic.roles.index("control") then
     user node["scratchpads"]["aegir"]["user"]
     environment node["scratchpads"]["aegir"]["environment"]
   end
-  # su -l -s /bin/bash -c "drush @hm upwd admin --password=scratchpads -y" aegir
+  # Set the admin password to one contained in an encrypted data bag.
   passwords = ScratchpadsEncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
   admin_pw = passwords.find_password "aegir", "admin"
   execute 'set the admin user password' do
@@ -117,7 +116,6 @@ if node.automatic.roles.index("control") then
   #
   # FIX CRON FOR AEGIR USER.
   #
-
   # Create the .ssh directory
   directory "#{node["scratchpads"]["aegir"]["home_folder"]}/.ssh" do
     owner node["scratchpads"]["aegir"]["user"]
@@ -166,10 +164,13 @@ if node.automatic.roles.index("control") then
   end
   # Create the memcache.inc file which will configure sites
   # to use the memcache servers on the role:data servers.
-  if Chef::Config[:solo]
-    data_hosts = {"sp-data-1" => {"fqdn" => "sp-data-1"}}
-  else
-    data_hosts = search(:node, "role:data")
+  data_hosts = ["sp-data-1"]
+  unless Chef::Config[:solo]
+    data_hosts_search = search(:node, "role:data")
+    data_hosts = []
+    data_hosts_search.each do|data_host|
+      data_hosts << data_host['fqdn']
+    end
   end
   template "#{node["scratchpads"]["aegir"]["home_folder"]}/config/includes/memcache.inc" do
     source "memcache.inc.erb"
@@ -181,6 +182,10 @@ if node.automatic.roles.index("control") then
       :sp_data_servers => data_hosts
     })
   end
+  # Create the varnish.inc file which contains the /etc/varnish/secret contents from an encrypted data bag
+  # This allows us to know the secret on all servers, and therefore allows us to
+  # control the Varnish server remotely (i.e. sp-app-xxx can clear varnish cache
+  # for a specific site)
   passwords = ScratchpadsEncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
   varnish_secret = passwords.find_password "varnish", "secret"
   template "#{node["scratchpads"]["aegir"]["home_folder"]}/config/includes/varnish.inc" do
@@ -199,6 +204,27 @@ if node.automatic.roles.index("control") then
     owner node["scratchpads"]["aegir"]["user"]
     group node["scratchpads"]["aegir"]["group"]
     mode 0644
+  end
+  # Create Application servers for each application server we know about and that
+  # has not already been created.
+  app_hosts = ["sp-app-1"]
+  unless Chef::Config[:solo]
+    app_hosts_search = search(:node, "role:app")
+    app_hosts = []
+    app_hosts_search.each do|app_host|
+      app_hosts << app_host['fqdn']
+    end
+  end
+  app_hosts.each do|app_host|
+    sanitised_server_name = app_host.gsub(/[^a-z0-9]/, '')
+    execute 'create the server node' do
+      command "drush provision-save @server_#{sanitised_server_name} --context_type=server --remove_host=#{app_host} --http_service_type='apache' --http_port=80"
+      cwd node["scratchpads"]["aegir"]["home_folder"]
+      group node["scratchpads"]["aegir"]["group"]
+      user node["scratchpads"]["aegir"]["user"]
+      environment node["scratchpads"]["aegir"]["environment"]
+      not_if{::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/.drush/server_#{sanitised_server_name}.alias.drushrc.php")}
+    end
   end
 else
   # Create the .ssh directory
@@ -223,29 +249,7 @@ else
       :lines => lines
     })
   end
-  # Create Application servers for each application server we know about and that
-  # has not already been created.
-  app_hosts = ["sp-app-1"]
-  unless Chef::Config[:solo]
-    app_hosts_search = search(:node, "role:app")
-    app_hosts = []
-    app_hosts_search.each do|app_host|
-      app_hosts << app_host['fqdn']
-    end
-  end
-  app_hosts.each do|app_host|
-    sanitised_server_name = app_host.gsub(/[^a-z0-9]/, '')
-    execute 'create the server node' do
-      command "drush provision-save @server_#{sanitised_server_name} --context_type=server --remove_host=#{app_host} --http_service_type='apache' --http_port=80"
-      cwd node["scratchpads"]["aegir"]["home_folder"]
-      group node["scratchpads"]["aegir"]["group"]
-      user node["scratchpads"]["aegir"]["user"]
-      environment node["scratchpads"]["aegir"]["environment"]
-      not_if{::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/.drush/server_#{sanitised_server_name}.alias.drushrc.php")}
-    end
-  end
 end
-
 # Link the aegir configuration to the apache sites folder
 link "/etc/apache2/sites-available/aegir.conf" do
   action :create
@@ -254,7 +258,6 @@ link "/etc/apache2/sites-available/aegir.conf" do
   to "#{node["scratchpads"]["aegir"]["home_folder"]}/config/apache.conf"
   only_if {::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/config/apache.conf")}
 end
-
 # Enable the aegir configuration
 apache_site "aegir" do
   enable true

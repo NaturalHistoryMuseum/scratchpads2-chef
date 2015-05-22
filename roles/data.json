@@ -18,6 +18,11 @@
       }
     }
   },
+  "override_attributes": {
+    "percona": {
+      "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret"
+    }
+  },
   "run_list": [
     "recipe[scratchpads]",
     "recipe[scratchpads::percona-server]",

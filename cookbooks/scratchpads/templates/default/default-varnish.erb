@@ -4,7 +4,7 @@
 # Pass the Daemon options
 DAEMON_OPTS="-a <%= node['varnish']['listen_address'] %>:<%= node['varnish']['listen_port'] %> \
               -f <%= node['varnish']['dir'] %>/<%= node['varnish']['vcl_conf'] %> \
-              -T <%= node['varnish']['listen_address'] %>:<%= node['varnish']['admin_listen_port'] %> \
+              -T 0.0.0.0:<%= node['varnish']['admin_listen_port'] %> \
               -u <%= node['varnish']['user'] %> -g <%= node['varnish']['group'] %> \
               -t <%= node['varnish']['ttl'] %> \
               -n <%= node['varnish']['instance'] %> \

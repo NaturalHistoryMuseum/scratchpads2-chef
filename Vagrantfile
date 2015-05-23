@@ -27,6 +27,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.validation_client_name = "simor"
     end
   end
+  config.vm.define "app2" do |app2|
+    app2.vm.hostname = "sp-app-2.nhm.ac.uk"
+    app2.vm.box = "scratchpads/debian8"
+    app2.vm.provider "virtualbox" do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "512"]
+    end
+    app2.vm.network "public_network"
+    app2.vm.provision "chef_client" do |chef|
+      chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
+      chef.validation_key_path = ".chef/user.pem"
+      chef.validation_client_name = "simor"
+    end
+  end
   # Data VM - Percona/MySQL, Memcached
   config.vm.define "data1" do |data1|
     data1.vm.hostname = "sp-data-1.nhm.ac.uk"
@@ -36,6 +49,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
     data1.vm.network "public_network"
     data1.vm.provision "chef_client" do |chef|
+      chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
+      chef.validation_key_path = ".chef/user.pem"
+      chef.validation_client_name = "simor"
+    end
+  end
+  config.vm.define "data2" do |data2|
+    data2.vm.hostname = "sp-data-2.nhm.ac.uk"
+    data2.vm.box = "scratchpads/debian8"
+    data2.vm.provider "virtualbox" do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "512"]
+    end
+    data2.vm.network "public_network"
+    data2.vm.provision "chef_client" do |chef|
       chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
       chef.validation_key_path = ".chef/user.pem"
       chef.validation_client_name = "simor"

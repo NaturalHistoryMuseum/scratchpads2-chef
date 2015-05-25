@@ -248,27 +248,29 @@ if node.automatic.roles.index("control") then
     end
   end
   # Create a "pack" for all
-  sanitised_names = sanitised_names.join(",")
-  execute 'create pack server' do
-    command "drush @hm provision-save pack_apps --context_type=server --http_service_type='pack' --slave_web_servers='#{sanitised_names}' --master_web_servers='@server_master' --remote_host='pack-servers'"
-    cwd node["scratchpads"]["aegir"]["home_folder"]
-    group node["scratchpads"]["aegir"]["group"]
-    user node["scratchpads"]["aegir"]["user"]
-    environment node["scratchpads"]["aegir"]["environment"]
-  end
-  execute 'verify pack server' do
-    command "drush @pack_apps provision-verify"
-    cwd node["scratchpads"]["aegir"]["home_folder"]
-    group node["scratchpads"]["aegir"]["group"]
-    user node["scratchpads"]["aegir"]["user"]
-    environment node["scratchpads"]["aegir"]["environment"]
-  end
-  execute 'import pack server' do
-    command "drush @hm hosting-import @pack_apps"
-    cwd node["scratchpads"]["aegir"]["home_folder"]
-    group node["scratchpads"]["aegir"]["group"]
-    user node["scratchpads"]["aegir"]["user"]
-    environment node["scratchpads"]["aegir"]["environment"]
+  if sanitised_names.length then
+    sanitised_names = sanitised_names.join(",")
+    execute 'create pack server' do
+      command "drush @hm provision-save pack_apps --context_type=server --http_service_type='pack' --slave_web_servers='#{sanitised_names}' --master_web_servers='@server_master' --remote_host='pack-servers'"
+      cwd node["scratchpads"]["aegir"]["home_folder"]
+      group node["scratchpads"]["aegir"]["group"]
+      user node["scratchpads"]["aegir"]["user"]
+      environment node["scratchpads"]["aegir"]["environment"]
+    end
+    execute 'verify pack server' do
+      command "drush @pack_apps provision-verify"
+      cwd node["scratchpads"]["aegir"]["home_folder"]
+      group node["scratchpads"]["aegir"]["group"]
+      user node["scratchpads"]["aegir"]["user"]
+      environment node["scratchpads"]["aegir"]["environment"]
+    end
+    execute 'import pack server' do
+      command "drush @hm hosting-import @pack_apps"
+      cwd node["scratchpads"]["aegir"]["home_folder"]
+      group node["scratchpads"]["aegir"]["group"]
+      user node["scratchpads"]["aegir"]["user"]
+      environment node["scratchpads"]["aegir"]["environment"]
+    end
   end
   # Create database servers for each database server we know about and that
   # has not already been created.

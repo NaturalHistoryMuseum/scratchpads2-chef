@@ -248,7 +248,7 @@ if node.automatic.roles.index("control") then
     end
   end
   # Create a "pack" for all
-  if sanitised_names.length then
+  if sanitised_names.length > 0 then
     sanitised_names = sanitised_names.join(",")
     execute 'create pack server' do
       command "drush @hm provision-save pack_apps --context_type=server --http_service_type='pack' --slave_web_servers='#{sanitised_names}' --master_web_servers='@server_master' --remote_host='pack-servers'"

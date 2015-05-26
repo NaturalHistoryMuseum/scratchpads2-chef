@@ -286,13 +286,26 @@ if node.automatic.roles.index("control") then
   end
   # Create a "pack" for all
   if sanitised_names.length > 0 then
-    sanitised_names = sanitised_names.join(",")
-    execute 'create pack server' do
-      command "drush @hm provision-save pack_apps --context_type=server --http_service_type='pack' --slave_web_servers='#{sanitised_names}' --master_web_servers='@server_master' --remote_host='pack-servers'"
-      cwd node["scratchpads"]["aegir"]["home_folder"]
+    # sanitised_names = sanitised_names.join(",")
+    # execute 'create pack server' do
+    #   command "drush @hm provision-save pack_apps --context_type=server --http_service_type='pack' --slave_web_servers='#{sanitised_names}' --master_web_servers='@server_master' --remote_host='pack-servers'"
+    #   cwd node["scratchpads"]["aegir"]["home_folder"]
+    #   group node["scratchpads"]["aegir"]["group"]
+    #   user node["scratchpads"]["aegir"]["user"]
+    #   environment node["scratchpads"]["aegir"]["environment"]
+    # end  
+    template "#{node["scratchpads"]["aegir"]["home_folder"]}/.drush/pack_apps.alias.drushrc.php" do
+      path "#{node["scratchpads"]["aegir"]["home_folder"]}/.drush/pack_apps.alias.drushrc.php"
+      source 'pack_apps.alias.drushrc.php.erb'
+      cookbook 'scratchpads'
+      owner node["scratchpads"]["aegir"]["user"]
       group node["scratchpads"]["aegir"]["group"]
-      user node["scratchpads"]["aegir"]["user"]
-      environment node["scratchpads"]["aegir"]["environment"]
+      mode '0744'
+      action :create
+      variables({
+        :app_servers => sanitised_names,
+        :node_fqdn => node['scratchpads']['control']['fqdn']
+      })
     end
     execute 'verify pack server' do
       command "drush @pack_apps provision-verify"

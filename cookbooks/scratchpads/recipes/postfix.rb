@@ -8,5 +8,5 @@
 if node.automatic.roles.index("control") then
   include_recipe 'postfix'
 else
-
+  include_recipe 'postfix::client'
 end

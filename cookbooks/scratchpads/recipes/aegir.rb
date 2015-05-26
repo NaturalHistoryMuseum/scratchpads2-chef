@@ -308,7 +308,7 @@ if node.automatic.roles.index("control") then
       })
     end
     execute 'verify pack server' do
-      command "drush @pack_apps provision-verify"
+      command "drush @hm provision-verify @pack_apps"
       cwd node["scratchpads"]["aegir"]["home_folder"]
       group node["scratchpads"]["aegir"]["group"]
       user node["scratchpads"]["aegir"]["user"]

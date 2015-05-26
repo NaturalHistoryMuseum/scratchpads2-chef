@@ -167,7 +167,7 @@ if node.automatic.roles.index("control") then
   # to use the memcache servers on the role:data servers.
   data_hosts = ["sp-data-1"]
   unless Chef::Config[:solo]
-    data_hosts_search = search(:node, "flags:up AND role:data")
+    data_hosts_search = search(:node, "flags:UP AND role:data")
     data_hosts = []
     data_hosts_search.each do|data_host|
       data_hosts << data_host['fqdn']
@@ -210,7 +210,7 @@ if node.automatic.roles.index("control") then
   # has not already been created.
   app_hosts = ["sp-app-1"]
   unless Chef::Config[:solo]
-    app_hosts_search = search(:node, "flags:up AND role:app")
+    app_hosts_search = search(:node, "flags:UP AND role:app")
     app_hosts = []
     app_hosts_search.each do|app_host|
       app_hosts << app_host['fqdn']
@@ -276,7 +276,7 @@ if node.automatic.roles.index("control") then
   # has not already been created.
   data_hosts = ["sp-data-1"]
   unless Chef::Config[:solo]
-    data_hosts_search = search(:node, "flags:up AND role:data")
+    data_hosts_search = search(:node, "flags:UP AND role:data")
     data_hosts = []
     data_hosts_search.each do|data_host|
       data_hosts << data_host['fqdn']

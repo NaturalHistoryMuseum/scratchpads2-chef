@@ -15,7 +15,14 @@ if node.automatic.roles.index("control") then
     mode '0755'
     action :create
   end
+  domains = `/usr/local/bin/all-aegir-domains`
+  domains.each_line do|line|
+    default['postfix']['virtual_aliases_domains'][line] = line
+    default['postfix']['virtual_aliases']["@#{line}"] = "aegir"
+  end
   include_recipe 'postfix::server'
+  include_recipe 'postfix::aliases'
+  include_recipe 'postfix::virtual_aliases'
 else
   include_recipe 'postfix::client'
 end

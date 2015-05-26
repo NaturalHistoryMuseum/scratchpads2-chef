@@ -322,6 +322,17 @@ if node.automatic.roles.index("control") then
       environment node["scratchpads"]["aegir"]["environment"]
     end
   end
+  # Create the scratchpads-master platform on the pack server
+  # First get the code
+  execute 'download scratchpads code for scratchpads-master platform' do
+    command "git clone https://git.scratchpads.eu/git/scratchpads-2.0.git scratchpads-master"
+    cwd "#{node["scratchpads"]["aegir"]["home_folder"]}/platforms"
+    group node["scratchpads"]["aegir"]["group"]
+    user node["scratchpads"]["aegir"]["user"]
+    environment node["scratchpads"]["aegir"]["environment"]
+    not_if{::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/platforms/scratchpads-master")}
+    retries 5
+  end
   # Create database servers for each database server we know about and that
   # has not already been created.
   data_hosts = ["sp-data-1"]

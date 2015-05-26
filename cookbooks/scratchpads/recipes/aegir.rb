@@ -69,6 +69,25 @@ if node.automatic.roles.index("control") then
     not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/.drush/hm.alias.drushrc.php")}
     environment node["scratchpads"]["aegir"]["environment"]
   end
+  # Copy the patch
+  cookbook_file "pack.patch" do
+    path "#{node["scratchpads"]["aegir"]["home_folder"]}/.drush/provision/http/Provision/Service/http/pack.patch"
+    owner node["scratchpads"]["aegir"]["user"]
+    group node["scratchpads"]["aegir"]["group"]
+    mode 0755
+    action :create_if_missing
+  end
+  # Patch the pack.php file to allow us to create pack servers.
+  execute 'patch pack' do
+    command "cd #{node["scratchpads"]["aegir"]["home_folder"]}/.drush/provision/http/Provision/Service/http/ ;\
+            cp pack.php pack.php.unpatched;\
+            patch < pack.patch"
+    cwd node["scratchpads"]["aegir"]["home_folder"]
+    group node["scratchpads"]["aegir"]["group"]
+    user node["scratchpads"]["aegir"]["user"]
+    not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/.drush/provision/http/Provision/Service/http/pack.php.unpatched")}
+    environment node["scratchpads"]["aegir"]["environment"]
+  end
   # Create the "contrib" folder under sites/all for the memcache, varnish and any other modules to go into
   directory "#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib" do
     owner node["scratchpads"]["aegir"]["user"]

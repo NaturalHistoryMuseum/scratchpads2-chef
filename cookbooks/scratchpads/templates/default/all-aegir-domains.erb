@@ -3,4 +3,4 @@
 # This function produces a new line separated list of domain names
 # for which this server handles a Scratchpad.  The list is used by
 # the Exim4 MTA
-ls -1d <%= node["scratchpads"]["aegir"]["home_folder"] %>/platforms/*/sites/* | sed "s|.*/||" | grep "\." | grep -v "\.php$" | grep -v "\.txt$"
+ls -1d <%= node["scratchpads"]["aegir"]["home_folder"] %>/platforms/*/sites/* | sed "s|.*/||" | grep "\." | grep -v "\.php$" | grep -v "\.txt$" | sort

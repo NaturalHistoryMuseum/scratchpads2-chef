@@ -331,7 +331,7 @@ if node.automatic.roles.index("control") then
     user node["scratchpads"]["aegir"]["user"]
     environment node["scratchpads"]["aegir"]["environment"]
     not_if{::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/platforms/scratchpads-master")}
-    retries 5
+    retries 15
   end
   # Create database servers for each database server we know about and that
   # has not already been created.

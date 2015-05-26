@@ -84,7 +84,6 @@ if node.automatic.roles.index("control") then
       cwd node["scratchpads"]["aegir"]["home_folder"]
       group node["scratchpads"]["aegir"]["group"]
       user node["scratchpads"]["aegir"]["user"]
-      not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/#{module_name}")}
     end
   else
     execute "download Hosting Reinstall module" do
@@ -93,7 +92,6 @@ if node.automatic.roles.index("control") then
       cwd node["scratchpads"]["aegir"]["home_folder"]
       group node["scratchpads"]["aegir"]["group"]
       user node["scratchpads"]["aegir"]["user"]
-      not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/#{module_name}")}
     end
   end
   node["scratchpads"]["aegir"]["modules_to_download"].each do|module_name|

@@ -39,5 +39,5 @@ default["scratchpads"]["aegir"]["environment"] = ({
 default["scratchpads"]["aegir"]["group"] = "www-data"
 default["scratchpads"]["aegir"]["user"] = "aegir"
 default["scratchpads"]["aegir"]["provision_version"] = "provision-7.x-3.x"
-default["scratchpads"]["aegir"]["modules_to_install"] = ["hosting_queued","hosting_alias","hosting_clone","hosting_cron","hosting_migrate","hosting_signup","hosting_task_gc","hosting_web_pack"]
+default["scratchpads"]["aegir"]["modules_to_install"] = ["hosting_queued","hosting_alias","hosting_clone","hosting_cron","hosting_migrate","hosting_signup","hosting_task_gc","hosting_web_pack","hosting_reinstall"]
 default["scratchpads"]["aegir"]["modules_to_download"] = ["memcache","varnish"]

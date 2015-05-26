@@ -76,6 +76,22 @@ if node.automatic.roles.index("control") then
     mode 0755
     action :create
   end
+  # Download the Hosting Reinstall module which is currently a Sandbox, and therefore can't be downloaded using the method below.
+  execute "download Hosting Reinstall module" do
+    command "git clone --branch 7.x-3.x http://git.drupal.org/sandbox/ergonlogic/2386543.git #{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/hosting_reinstall"
+    environment node["scratchpads"]["aegir"]["environment"]
+    cwd node["scratchpads"]["aegir"]["home_folder"]
+    group node["scratchpads"]["aegir"]["group"]
+    user node["scratchpads"]["aegir"]["user"]
+    not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/#{module_name}")}
+  else
+    command "cd #{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/hosting_reinstall ; git pull"
+    environment node["scratchpads"]["aegir"]["environment"]
+    cwd node["scratchpads"]["aegir"]["home_folder"]
+    group node["scratchpads"]["aegir"]["group"]
+    user node["scratchpads"]["aegir"]["user"]
+    not_if { ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/#{module_name}")}
+  end
   node["scratchpads"]["aegir"]["modules_to_download"].each do|module_name|
     # Download the additional module.
     execute "download #{module_name} module" do

@@ -23,8 +23,10 @@ if node.automatic.roles.index("control") then
     options ['root_squash','no_subtree_check']
   end
   # Restart nfs-server components
-  service node['nfs']['service']['server'] do
-    action [:stop, :start]
+  execute 'restart the NFS server' do
+    command "/bin/systemctl restart nfs-kernel-server"
+    group "root"
+    user "root"
   end
 else
   # We are not the control server, so must be an app server. We install the

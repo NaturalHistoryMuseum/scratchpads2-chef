@@ -6,3 +6,4 @@ default["mmonit"]["source"]["filename"] = "mmonit-#{node['mmonit']['source']['ve
 default["mmonit"]["source"]["url"] = "http://mmonit.com/dist/#{node['mmonit']['source']['filename']}"
 default["mmonit"]["license_owner"] = "Tildeslash Ltd. - Trial License"
 default["mmonit"]["license"] = nil
+default["mmonit"]["init_style"] = "systemd"

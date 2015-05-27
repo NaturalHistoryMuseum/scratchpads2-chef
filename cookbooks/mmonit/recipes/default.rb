@@ -47,11 +47,11 @@ template "mmonit service script" do
 end
 
 service "mmonit" do
-  case node['platform']
-  when 'debian'
-    supports [:start]
-  when 'ubuntu'
-    supports [:status, :restart, :reload]
+  case node['mmonit']['init_style']
+  when 'systemd'
+    provider Chef::Provider::Service::Systemd
+  when 'upstart'
+    provider Chef::Provider::Service::Upstart
   end
   action [:enable, :start]
 end

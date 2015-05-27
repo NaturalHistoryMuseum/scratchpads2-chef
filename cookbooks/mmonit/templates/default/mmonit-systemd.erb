@@ -2,8 +2,8 @@
 Description="M/Monit system monitoring"
 
 [Service]
-Type=forking
-ExecStart=<%= node["mmonit"]["dir"] %>/bin/mmonit
+ExecStartPre=<%= node["mmonit"]["dir"] %>/bin/mmonit -c <%= node['mmonit']['dir'] %>/conf/server.xml -r <%= node['mmonit']['dir'] %> -t
+ExecStart=<%= node["mmonit"]["dir"] %>/bin/mmonit -c <%= node['mmonit']['dir'] %>/conf/server.xml -r <%= node['mmonit']['dir'] %> -p /var/run -i start
 
 [Install]
 WantedBy=multi-user.target

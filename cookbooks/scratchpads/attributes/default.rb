@@ -27,6 +27,7 @@ default['scratchpads']['percona']['secure-installation-file'] = '/tmp/secure-ins
 
 # Drush config folder
 default['scratchpads']['control']['drush_config_folder'] = '.drush'
+default['scratchpads']['control']['drush_command'] = '/usr/bin/drush'
 
 # Aegir settings
 default['scratchpads']['aegir']['home_folder'] = '/var/aegir'
@@ -56,4 +57,4 @@ default['scratchpads']['aegir']['hosting_reinstall']['checkout_branch'] = '7.x-3
 # Scratchpads repository
 default['scratchpads']['aegir']['scratchpads_master']['repository'] = 'https://git.scratchpads.eu/git/scratchpads-2.0.git'
 default['scratchpads']['aegir']['scratchpads_master']['checkout_branch'] = 'master'
-default['scratchpads']['aegir']['scratchpads_master']['timeout'] = 300
+default['scratchpads']['aegir']['scratchpads_master']['timeout'] = 600

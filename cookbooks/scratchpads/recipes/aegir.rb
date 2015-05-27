@@ -43,7 +43,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   end
   # Execute the basic drush commands to download the provision code
   execute 'download provision' do
-    command "drush dl --destination=#{node['scratchpads']['aegir']['home_folder']}/.drush #{node['scratchpads']['aegir']['provision_version']}"
+    command "#{node['scratchpads']['control']['drush_command']} dl --destination=#{node['scratchpads']['aegir']['home_folder']}/.drush #{node['scratchpads']['aegir']['provision_version']}"
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
@@ -51,7 +51,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   end
   # Clear the drush cache so that the provision command is found.
   execute 'clear drush cache' do
-    command 'drush cache-clear drush'
+    command "#{node['scratchpads']['control']['drush_command']} cache-clear drush"
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
@@ -61,7 +61,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
   aegir_pw = passwords.find_password 'mysql', 'aegir'
   execute 'install hostmaster' do
-    command "drush hostmaster-install \
+    command "#{node['scratchpads']['control']['drush_command']} hostmaster-install \
              --aegir_db_pass='#{aegir_pw}' \
              --root=#{node['scratchpads']['aegir']['home_folder']}/hostmaster \
              --aegir_db_user=#{node['scratchpads']['control'][node['scratchpads']['aegir']['user']]['dbuser']} \
@@ -113,7 +113,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   node['scratchpads']['aegir']['modules_to_download'].each do|module_name|
     # Download the additional module.
     execute "download #{module_name} module" do
-      command "drush @hm dl #{module_name}"
+      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster dl #{module_name}"
       environment node['scratchpads']['aegir']['environment']
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
@@ -131,7 +131,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   end
   # Enable any additional modules as configured.
   execute 'enable additional modules' do
-    command "drush @hm en #{node['scratchpads']['aegir']['modules_to_install'].join(' ')} -y"
+    command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster en #{node['scratchpads']['aegir']['modules_to_install'].join(' ')} -y"
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
@@ -141,7 +141,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
   admin_pw = passwords.find_password 'aegir', 'admin'
   execute 'set the admin user password' do
-    command "drush @hm upwd admin --password=#{admin_pw} -y"
+    command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster upwd admin --password=#{admin_pw} -y"
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
@@ -256,7 +256,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     sanitised_names << "@server_#{sanitised_server_name}"
     # Create the server
     execute 'create the server node' do
-      command "drush @hm provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{app_host} --http_service_type='apache' --http_port=80"
+      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{app_host} --http_service_type='apache' --http_port=80"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']
@@ -265,7 +265,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     end
     # Verify the server
     execute 'verify the server node' do
-      command "drush @server_#{sanitised_server_name} provision-verify"
+      command "#{node['scratchpads']['control']['drush_command']} @server_#{sanitised_server_name} provision-verify"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']
@@ -274,7 +274,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     #drush @hm hosting-import @server_spapp1nhmacuk
     # Import the server into the front end
     execute 'import the server into front end' do
-      command "drush @hm hosting-import @server_#{sanitised_server_name}"
+      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster hosting-import @server_#{sanitised_server_name}"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']
@@ -285,7 +285,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   if sanitised_names.length > 0 then
     # sanitised_names = sanitised_names.join(',')
     # execute 'create pack server' do
-    #   command "drush @hm provision-save pack_apps --context_type=server --http_service_type='pack' --slave_web_servers='#{sanitised_names}' --master_web_servers='@server_master' --remote_host='pack-servers'"
+    #   command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster provision-save pack_apps --context_type=server --http_service_type='pack' --slave_web_servers='#{sanitised_names}' --master_web_servers='@server_master' --remote_host='pack-servers'"
     #   cwd node['scratchpads']['aegir']['home_folder']
     #   group node['scratchpads']['aegir']['group']
     #   user node['scratchpads']['aegir']['user']
@@ -305,14 +305,14 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
       })
     end
     execute 'verify pack server' do
-      command 'drush @hm provision-verify @pack_apps'
+      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster provision-verify @pack_apps"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']
       environment node['scratchpads']['aegir']['environment']
     end
     execute 'import pack server' do
-      command 'drush @hm hosting-import @pack_apps'
+      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster hosting-import @pack_apps"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']
@@ -330,7 +330,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   end
   # Create the scratchpads-master platform
   execute 'create the platform node' do
-    command "drush @hm provision-save --context_type=platform --platform='@pack_apps' --root='/var/aegir/platforms/scratchpads-master'"
+    command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster provision-save --context_type=platform --platform='@pack_apps' --root='/var/aegir/platforms/scratchpads-master'"
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
@@ -370,7 +370,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
     aegir_pw = passwords.find_password 'mysql', 'aegir'
     execute 'create the server node' do
-      command "drush @hm provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{data_host} --db_service_type='mysql' --master_db='mysql://aegir:#{aegir_pw}@#{data_host}'"
+      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{data_host} --db_service_type='mysql' --master_db='mysql://aegir:#{aegir_pw}@#{data_host}'"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']
@@ -379,7 +379,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     end
     # Verify the server
     execute 'verify the server node' do
-      command "drush @server_#{sanitised_server_name} provision-verify"
+      command "#{node['scratchpads']['control']['drush_command']} @server_#{sanitised_server_name} provision-verify"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']
@@ -388,7 +388,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     #drush @hm hosting-import @server_spapp1nhmacuk
     # Import the server into the front end
     execute 'import the server into front end' do
-      command "drush @hm hosting-import @server_#{sanitised_server_name}"
+      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster hosting-import @server_#{sanitised_server_name}"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']

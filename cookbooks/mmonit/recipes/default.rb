@@ -35,7 +35,7 @@ end
 template "mmonit service script" do
   case node['platform']
   when 'debian'
-    path "/etc/init/mmonit.conf"
+    path "/etc/systemd/system/mmonit.service"
     source "mmonit-systemd.erb"
   when 'ubuntu'
     path "/etc/init/mmonit.conf"
@@ -49,10 +49,8 @@ end
 service "mmonit" do
   case node['platform']
   when 'debian'
-    provider Chef::Provider::Service::Debian
     supports [:start]
   when 'ubuntu'
-    provider Chef::Provider::Service::Ubuntu
     supports [:status, :restart, :reload]
   end
   action [:enable, :start]

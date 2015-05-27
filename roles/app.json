@@ -49,7 +49,6 @@
     "recipe[scratchpads::webserver]",
     "recipe[scratchpads::aegir]",
     "recipe[scratchpads::nfs]",
-    "recipe[scratchpads::varnish]",
     "recipe[scratchpads::postfix]",
     "recipe[scratchpads::monit]"
   ]

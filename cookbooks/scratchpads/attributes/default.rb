@@ -43,10 +43,8 @@ default["scratchpads"]["aegir"]["modules_to_install"] = ["hosting_queued","hosti
 default["scratchpads"]["aegir"]["modules_to_download"] = ["memcache","varnish"]
 # Hosting Reinstall module settings for aegir
 default["scratchpads"]["aegir"]["hosting_reinstall"]["repository"] = "http://git.drupal.org/sandbox/ergonlogic/2386543.git"
-default["scratchpads"]["aegir"]["hosting_reinstall"]["revision"] = "HEAD"
 default["scratchpads"]["aegir"]["hosting_reinstall"]["checkout_branch"] = "7.x-3.x"
 # Scratchpads repository
 default["scratchpads"]["aegir"]["scratchpads_master"]["repository"] = "http://git.drupal.org/sandbox/ergonlogic/2386543.git"
-default["scratchpads"]["aegir"]["scratchpads_master"]["revision"] = "HEAD"
 default["scratchpads"]["aegir"]["scratchpads_master"]["checkout_branch"] = "master"
 default["scratchpads"]["aegir"]["scratchpads_master"]["timeout"] = 300

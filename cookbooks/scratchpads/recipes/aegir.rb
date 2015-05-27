@@ -99,7 +99,6 @@ if node["roles"].index("control") then
   git "#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/hosting_reinstall" do
     repository node["scratchpads"]["aegir"]["hosting_reinstall"]["repository"]
     checkout_branch node["scratchpads"]["aegir"]["hosting_reinstall"]["checkout_branch"]
-    revision node["scratchpads"]["aegir"]["hosting_reinstall"]["revision"]
     group node["scratchpads"]["aegir"]["group"]
     user node["scratchpads"]["aegir"]["user"]
   end
@@ -318,7 +317,6 @@ if node["roles"].index("control") then
   git "#{node["scratchpads"]["aegir"]["home_folder"]}/platforms/scratchpads-master" do
     repository node["scratchpads"]["aegir"]["scratchpads_master"]["repository"]
     checkout_branch node["scratchpads"]["aegir"]["scratchpads_master"]["checkout_branch"]
-    revision node["scratchpads"]["aegir"]["scratchpads_master"]["revision"]
     group node["scratchpads"]["aegir"]["group"]
     user node["scratchpads"]["aegir"]["user"]
     timeout node["scratchpads"]["aegir"]["scratchpads_master"]["timeout"]

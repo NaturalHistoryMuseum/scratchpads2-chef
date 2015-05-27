@@ -11,6 +11,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
       chef.validation_key_path = ".chef/user.pem"
       chef.validation_client_name = "simor"
+      chef.add_role "control"
     end
   end
   # App VM - Apache
@@ -25,6 +26,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
       chef.validation_key_path = ".chef/user.pem"
       chef.validation_client_name = "simor"
+      chef.add_role "app"
     end
   end
   config.vm.define "app2" do |app2|
@@ -38,6 +40,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
       chef.validation_key_path = ".chef/user.pem"
       chef.validation_client_name = "simor"
+      chef.add_role "app"
     end
   end
   # Data VM - Percona/MySQL, Memcached
@@ -52,6 +55,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
       chef.validation_key_path = ".chef/user.pem"
       chef.validation_client_name = "simor"
+      chef.add_role "data"
     end
   end
   config.vm.define "data2" do |data2|
@@ -65,6 +69,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
       chef.validation_key_path = ".chef/user.pem"
       chef.validation_client_name = "simor"
+      chef.add_role "data"
     end
   end
 end

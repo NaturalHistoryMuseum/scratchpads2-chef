@@ -14,10 +14,10 @@ include_recipe 'apache2::mod_php5'
 # other features/settings.
 include_recipe 'php'
 # Install drush from pear
-dc = php_pear_channel "pear.drush.org" do
+dc = php_pear_channel 'pear.drush.org' do
   action :discover
 end
-php_pear "drush" do
+php_pear 'drush' do
   channel dc.channel_name
   action :install
 end

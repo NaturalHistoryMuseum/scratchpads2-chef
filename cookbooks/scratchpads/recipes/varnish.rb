@@ -11,13 +11,13 @@ include_recipe 'varnish'
 # default recipe uses its own cookbook which builds and allows the service
 # to be restarted.
 if Chef::Config[:solo]
-  app_hosts = {"sp-app-1" => {"fqdn" => "sp-app-1"}}
+  app_hosts = {'sp-app-1' => {'fqdn' => 'sp-app-1'}}
 else
-  app_hosts = search(:node, "flags:UP AND role:app")
+  app_hosts = search(:node, 'flags:UP AND role:app')
 end
 template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
   source node['varnish']['vcl_source']
-  cookbook "scratchpads"
+  cookbook 'scratchpads'
   owner 'root'
   group 'root'
   mode 0644
@@ -28,7 +28,7 @@ template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
   })
 end
 execute 'restart_systemctl_daemon' do
-  command "systemctl daemon-reload"
+  command 'systemctl daemon-reload'
   action :nothing
 end
 template '/etc/systemd/system/varnish.service' do
@@ -52,8 +52,8 @@ template '/etc/default/varnish' do
   action :create
   notifies :restart, 'service[varnish]', :delayed
 end
-passwords = ScratchpadsEncryptedPasswords.new(node, node["scratchpads"]["encrypted_data_bag"])
-varnish_secret = passwords.find_password "varnish", "secret"
+passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
+varnish_secret = passwords.find_password 'varnish', 'secret'
 execute 'update varnish secret file' do
   command "echo \"#{varnish_secret}\" > #{node['varnish']['secret_file']}"
   group 'root'

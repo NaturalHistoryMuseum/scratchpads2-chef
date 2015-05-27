@@ -328,6 +328,32 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     user node['scratchpads']['aegir']['user']
     timeout node['scratchpads']['aegir']['scratchpads_master']['timeout']
   end
+  # Create the scratchpads-master platform
+  execute 'create the platform node' do
+    command "drush @hm provision-save --context_type=platform --platform='@pack_apps' --root='/var/aegir/platforms/scratchpads-master'"
+    cwd node['scratchpads']['aegir']['home_folder']
+    group node['scratchpads']['aegir']['group']
+    user node['scratchpads']['aegir']['user']
+    environment node['scratchpads']['aegir']['environment']
+    not_if{::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
+  end
+  # Verify the server
+  execute 'verify the platform node' do
+    command "drush @platform_scratchpads-master provision-verify"
+    cwd node['scratchpads']['aegir']['home_folder']
+    group node['scratchpads']['aegir']['group']
+    user node['scratchpads']['aegir']['user']
+    environment node['scratchpads']['aegir']['environment']
+  end
+  #drush @hm hosting-import @server_spapp1nhmacuk
+  # Import the server into the front end
+  execute 'import the server into front end' do
+    command "drush @hm hosting-import @server_scratchpads-master"
+    cwd node['scratchpads']['aegir']['home_folder']
+    group node['scratchpads']['aegir']['group']
+    user node['scratchpads']['aegir']['user']
+    environment node['scratchpads']['aegir']['environment']
+  end
   # Create database servers for each database server we know about and that
   # has not already been created.
   data_hosts = ['sp-data-1']

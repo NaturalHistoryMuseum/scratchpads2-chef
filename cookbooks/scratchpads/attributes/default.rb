@@ -7,6 +7,9 @@ default['scratchpads']['encrypted_data_bag'] = 'passwords'
 # FQDN of the control server (this probably shouldn't be set here)
 default['scratchpads']['control']['fqdn'] = 'sp-control-1.nhm.ac.uk'
 
+# Role of the control server
+default['scratchpads']['control']['role'] = 'control'
+
 # Aegir database user
 default['scratchpads']['control']['aegir']['dbuser'] = 'aegir'
 default['scratchpads']['control']['aegir']['dbuserhost'] = '%'
@@ -21,6 +24,9 @@ default['scratchpads']['control']['admin_email'] = 's.rycroft@nhm.ac.uk'
 # Extra SQL files
 default['scratchpads']['percona']['percona-functions-file'] = '/tmp/percona-functions.sql'
 default['scratchpads']['percona']['secure-installation-file'] = '/tmp/secure-installation.sql'
+
+# Drush config folder
+default['scratchpads']['control']['drush_config_folder'] = '.drush'
 
 # Aegir settings
 default['scratchpads']['aegir']['home_folder'] = '/var/aegir'

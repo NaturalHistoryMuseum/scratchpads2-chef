@@ -291,33 +291,33 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     #   user node['scratchpads']['aegir']['user']
     #   environment node['scratchpads']['aegir']['environment']
     # end  
-    template "#{node['scratchpads']['aegir']['home_folder']}/.drush/pack_apps.alias.drushrc.php" do
-      path "#{node['scratchpads']['aegir']['home_folder']}/.drush/pack_apps.alias.drushrc.php"
-      source 'pack_apps.alias.drushrc.php.erb'
-      cookbook 'scratchpads'
-      owner node['scratchpads']['aegir']['user']
-      group node['scratchpads']['aegir']['group']
-      mode '0744'
-      action :create
-      variables({
-        :app_servers => sanitised_names,
-        :node_fqdn => node['scratchpads']['control']['fqdn']
-      })
-    end
-    execute 'verify pack server' do
-      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster provision-verify @pack_apps"
-      cwd node['scratchpads']['aegir']['home_folder']
-      group node['scratchpads']['aegir']['group']
-      user node['scratchpads']['aegir']['user']
-      environment node['scratchpads']['aegir']['environment']
-    end
-    execute 'import pack server' do
-      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster hosting-import @pack_apps"
-      cwd node['scratchpads']['aegir']['home_folder']
-      group node['scratchpads']['aegir']['group']
-      user node['scratchpads']['aegir']['user']
-      environment node['scratchpads']['aegir']['environment']
-    end
+    # template "#{node['scratchpads']['aegir']['home_folder']}/.drush/pack_apps.alias.drushrc.php" do
+    #   path "#{node['scratchpads']['aegir']['home_folder']}/.drush/pack_apps.alias.drushrc.php"
+    #   source 'pack_apps.alias.drushrc.php.erb'
+    #   cookbook 'scratchpads'
+    #   owner node['scratchpads']['aegir']['user']
+    #   group node['scratchpads']['aegir']['group']
+    #   mode '0744'
+    #   action :create
+    #   variables({
+    #     :app_servers => sanitised_names,
+    #     :node_fqdn => node['scratchpads']['control']['fqdn']
+    #   })
+    # end
+    # execute 'verify pack server' do
+    #   command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster provision-verify @pack_apps"
+    #   cwd node['scratchpads']['aegir']['home_folder']
+    #   group node['scratchpads']['aegir']['group']
+    #   user node['scratchpads']['aegir']['user']
+    #   environment node['scratchpads']['aegir']['environment']
+    # end
+    # execute 'import pack server' do
+    #   command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster hosting-import @pack_apps"
+    #   cwd node['scratchpads']['aegir']['home_folder']
+    #   group node['scratchpads']['aegir']['group']
+    #   user node['scratchpads']['aegir']['user']
+    #   environment node['scratchpads']['aegir']['environment']
+    # end
   end
   # Create the scratchpads-master platform on the pack server
   # First get the code

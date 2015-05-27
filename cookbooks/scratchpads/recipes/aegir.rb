@@ -323,7 +323,7 @@ if node["roles"].index("control") then
   # First get the code
   git "#{node["scratchpads"]["aegir"]["home_folder"]}/platforms/scratchpads-master" do
     repository node["scratchpads"]["aegir"]["scratchpads_master"]["repository"]
-    checkout_branch node["scratchpads"]["aegir"]["scratchpads_master"]["checkout_branch"]
+    #checkout_branch node["scratchpads"]["aegir"]["scratchpads_master"]["checkout_branch"]
     group node["scratchpads"]["aegir"]["group"]
     user node["scratchpads"]["aegir"]["user"]
     timeout node["scratchpads"]["aegir"]["scratchpads_master"]["timeout"]

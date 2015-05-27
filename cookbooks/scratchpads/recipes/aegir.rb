@@ -4,6 +4,11 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
+# Alter the www-data group, ensuring it always has the ID of 33.
+group 'www-data' do
+  gid 33
+  action :manage
+end
 # Create the aegir user
 user 'aegir' do
   group 'www-data'
@@ -12,6 +17,7 @@ user 'aegir' do
   comment 'User which runs all of the behind the scenes actions.'
   home '/var/aegir'
   manage_home
+  uid 997
 end
 # Add the aegir user to sudoers and ensure it does not need a password.
 sudo 'aegir' do

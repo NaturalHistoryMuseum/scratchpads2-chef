@@ -1,0 +1,9 @@
+[Unit]
+Description="M/Monit system monitoring"
+
+[Service]
+Type=forking
+ExecStart=<%= node["mmonit"]["dir"] %>/bin/mmonit
+
+[Install]
+WantedBy=multi-user.target

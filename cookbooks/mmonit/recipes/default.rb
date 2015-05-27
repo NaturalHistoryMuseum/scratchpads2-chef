@@ -32,15 +32,28 @@ template "#{node['mmonit']['dir']}/conf/server.xml" do
   notifies :restart, "service[mmonit]"
 end
 
-template "/etc/init/mmonit.conf" do
-  source "mmonit-upstart.conf.erb"
+template "mmonit service script" do
+  case node['platform']
+  when 'debian'
+    path "/etc/init/mmonit.conf"
+    source "mmonit-systemd.erb"
+  when 'ubuntu'
+    path "/etc/init/mmonit.conf"
+    source "mmonit-upstart.conf.erb"
+  end
   owner  "root"
   group  "root"
   mode   "0644"
 end
 
 service "mmonit" do
-  provider Chef::Provider::Service::Upstart
-  supports status: true, restart: true, reload: true
-  action   [:enable, :start]
+  case node['platform']
+  when 'debian'
+    provider Chef::Provider::Service::Debian
+    supports [:start]
+  when 'ubuntu'
+    provider Chef::Provider::Service::Ubuntu
+    supports [:status, :restart, :reload]
+  end
+  action [:enable, :start]
 end

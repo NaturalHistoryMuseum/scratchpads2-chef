@@ -29,7 +29,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.add_role "app"
     end
   end
-  config.vm.define "app2" do |app2|
+  config.vm.define "app2", autostart: false do |app2|
     app2.vm.hostname = "sp-app-2.nhm.ac.uk"
     app2.vm.box = "scratchpads/debian8"
     app2.vm.provider "virtualbox" do |vb|
@@ -58,7 +58,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.add_role "data"
     end
   end
-  config.vm.define "data2" do |data2|
+  config.vm.define "data2", autostart: false do |data2|
     data2.vm.hostname = "sp-data-2.nhm.ac.uk"
     data2.vm.box = "scratchpads/debian8"
     data2.vm.provider "virtualbox" do |vb|

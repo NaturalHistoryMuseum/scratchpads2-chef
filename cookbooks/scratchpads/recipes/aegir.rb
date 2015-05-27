@@ -5,23 +5,23 @@
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
 # Alter the www-data group, ensuring it always has the ID of 33.
-group 'www-data' do
+group node['scratchpads']['aegir']['group'] do
   gid 33
   action :manage
 end
 # Create the aegir user
-user 'aegir' do
-  group 'www-data'
+user node['scratchpads']['aegir']['user'] do
+  group node['scratchpads']['aegir']['group']
   system true
-  shell '/bin/bash'
-  comment 'User which runs all of the behind the scenes actions.'
-  home '/var/aegir'
+  shell node['scratchpads']['aegir']['shell']
+  comment node['scratchpads']['aegir']['comment']
+  home node['scratchpads']['aegir']['home_folder']
   manage_home
   uid 997
 end
 # Add the aegir user to sudoers and ensure it does not need a password.
-sudo 'aegir' do
-  user 'aegir'
+sudo node['scratchpads']['aegir']['user'] do
+  user node['scratchpads']['aegir']['user']
   nopasswd true
 end
 # Create the aegir directory
@@ -33,9 +33,9 @@ directory node['scratchpads']['aegir']['home_folder'] do
 end
 # Check to see if we are running the 'control' role. If so we install Aegir, and if not
 # we just ensure that the aegir user on control can ssh to this box.
-if node['roles'].index('control') then
+if node['roles'].index(node['scratchpads']['control']['role']) then
   # Create the .drush folder
-  directory "#{node['scratchpads']['aegir']['home_folder']}/.drush" do
+  directory "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}" do
     owner node['scratchpads']['aegir']['user']
     group node['scratchpads']['aegir']['group']
     mode 0755
@@ -47,7 +47,7 @@ if node['roles'].index('control') then
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
-    not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/provision/provision.info")}
+    not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}/provision/provision.info")}
   end
   # Clear the drush cache so that the provision command is found.
   execute 'clear drush cache' do

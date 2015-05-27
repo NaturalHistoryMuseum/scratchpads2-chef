@@ -36,6 +36,8 @@ default['scratchpads']['aegir']['environment'] = ({
   'SHLVL' => '1',
   'HOME' => default['scratchpads']['aegir']['home_folder']
 })
+default['scratchpads']['aegir']['shell'] = '/bin/bash'
+default['scratchpads']['aegir']['comment'] = 'User which runs all of the behind the scenes actions.'
 default['scratchpads']['aegir']['group'] = 'www-data'
 default['scratchpads']['aegir']['user'] = 'aegir'
 default['scratchpads']['aegir']['provision_version'] = 'provision-7.x-3.x'

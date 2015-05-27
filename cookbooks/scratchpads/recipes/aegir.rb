@@ -96,23 +96,14 @@ if node["roles"]["control"] then
     action :create
   end
   # Download the Hosting Reinstall module which is currently a Sandbox, and therefore can't be downloaded using the method below.
-  if ::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/hosting_reinstall") then
-    execute "update Hosting Reinstall module code" do
-      command "cd #{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/hosting_reinstall ; git pull"
-      environment node["scratchpads"]["aegir"]["environment"]
-      cwd node["scratchpads"]["aegir"]["home_folder"]
-      group node["scratchpads"]["aegir"]["group"]
-      user node["scratchpads"]["aegir"]["user"]
-    end
-  else
-    execute "download Hosting Reinstall module" do
-      command "git clone --branch 7.x-3.x http://git.drupal.org/sandbox/ergonlogic/2386543.git #{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/hosting_reinstall"
-      environment node["scratchpads"]["aegir"]["environment"]
-      cwd node["scratchpads"]["aegir"]["home_folder"]
-      group node["scratchpads"]["aegir"]["group"]
-      user node["scratchpads"]["aegir"]["user"]
-    end
+  git "#{node["scratchpads"]["aegir"]["home_folder"]}/hostmaster/sites/all/modules/contrib/hosting_reinstall" do
+    repository node["scratchpads"]["aegir"]["hosting_reinstall"]["repository"]
+    checkout_branch node["scratchpads"]["aegir"]["hosting_reinstall"]["checkout_branch"]
+    revision node["scratchpads"]["aegir"]["hosting_reinstall"]["revision"]
+    group node["scratchpads"]["aegir"]["group"]
+    user node["scratchpads"]["aegir"]["user"]
   end
+
   node["scratchpads"]["aegir"]["modules_to_download"].each do|module_name|
     # Download the additional module.
     execute "download #{module_name} module" do
@@ -324,14 +315,13 @@ if node["roles"]["control"] then
   end
   # Create the scratchpads-master platform on the pack server
   # First get the code
-  execute 'download scratchpads code for scratchpads-master platform' do
-    command "git clone https://git.scratchpads.eu/git/scratchpads-2.0.git scratchpads-master"
-    cwd "#{node["scratchpads"]["aegir"]["home_folder"]}/platforms"
+  git "#{node["scratchpads"]["aegir"]["home_folder"]}/platforms/scratchpads-master" do
+    repository node["scratchpads"]["aegir"]["scratchpads_master"]["repository"]
+    checkout_branch node["scratchpads"]["aegir"]["scratchpads_master"]["checkout_branch"]
+    revision node["scratchpads"]["aegir"]["scratchpads_master"]["revision"]
     group node["scratchpads"]["aegir"]["group"]
     user node["scratchpads"]["aegir"]["user"]
-    environment node["scratchpads"]["aegir"]["environment"]
-    not_if{::File.exists?("#{node["scratchpads"]["aegir"]["home_folder"]}/platforms/scratchpads-master")}
-    retries 15
+    timeout node["scratchpads"]["aegir"]["scratchpads_master"]["timeout"]
   end
   # Create database servers for each database server we know about and that
   # has not already been created.

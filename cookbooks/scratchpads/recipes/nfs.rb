@@ -5,7 +5,7 @@
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
 # Check if we are the Control server, which has the NFS server installed.
-if node.automatic.roles.index("control") then
+if node["roles"]["control"] then
   # Install NFS server and set it to allow access to certain servers.
   include_recipe 'nfs::server4'
   app_hosts = ["sp-app-1"]

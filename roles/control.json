@@ -11,6 +11,11 @@
         "monkey.nhm.ac.uk"
       ]
     },
+    "mmonit": {
+      "source": {
+        "version": "3.5"
+      }
+    },
     "percona": {
       "use_percona_repos": false,
       "apt_keyserver": "keyserver.ubuntu.com",

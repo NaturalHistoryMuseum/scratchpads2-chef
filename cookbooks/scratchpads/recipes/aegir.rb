@@ -27,7 +27,7 @@ directory node["scratchpads"]["aegir"]["home_folder"] do
 end
 # Check to see if we are running the "control" role. If so we install Aegir, and if not
 # we just ensure that the aegir user on control can ssh to this box.
-if node["roles"]["control"] then
+if node["roles"].index("control") then
   # Create the .drush folder
   directory "#{node["scratchpads"]["aegir"]["home_folder"]}/.drush" do
     owner node["scratchpads"]["aegir"]["user"]

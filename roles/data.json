@@ -18,7 +18,10 @@
       "use_percona_repos": false,
       "apt_keyserver": "keyserver.ubuntu.com",
       "server": {
-        "bind_address": ""
+        "bind_address": "",
+        "innodb_log_file_size": "100M",
+        "group_concat_max_len": "4294967295",
+        "innodb_file_format": "Barracuda"
       }
     }
   },

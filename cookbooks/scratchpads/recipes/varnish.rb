@@ -22,7 +22,6 @@ template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
   group 'root'
   mode 0644
   notifies :reload, 'service[varnish]', :delayed
-  only_if { node['varnish']['vcl_generated'] == true }
   variables({
     :sp_app_servers => app_hosts
   })

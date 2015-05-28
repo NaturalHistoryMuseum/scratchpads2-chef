@@ -287,7 +287,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   # Create a 'pack' for all
   if sanitised_names.length > 0 then
     execute 'create the platform node' do
-      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster provision-save --context_type=platform --platform='@server_automatic-pack' --root='/var/aegir/platforms/scratchpads-master'"
+      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster provision-save --context_type=platform --platform='@server_automaticpack' --root='/var/aegir/platforms/scratchpads-master'"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']

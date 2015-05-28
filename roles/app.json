@@ -35,6 +35,11 @@
     }
   },
   "override_attributes": {
+    "apache": {
+      "listen_addresses": [
+        "0.0.0.0"
+      ]
+    },
     "percona": {
       "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret"
     },

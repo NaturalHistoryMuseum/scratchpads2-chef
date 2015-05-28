@@ -284,7 +284,6 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     timeout node['scratchpads']['aegir']['scratchpads_master']['timeout']
   end
   # Create the scratchpads-master platform
-  # Create a 'pack' for all
   if sanitised_names.length > 0 then
     execute 'create the platform node' do
       command "#{node['scratchpads']['control']['drush_command']} provision-save --context_type=platform --platform='@server_automaticpack' --root='/var/aegir/platforms/scratchpads-master' platform_scratchpads-master"

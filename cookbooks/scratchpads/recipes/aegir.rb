@@ -75,31 +75,25 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/hm.alias.drushrc.php")}
     environment node['scratchpads']['aegir']['environment']
   end
-  # # Copy the patch
-  # cookbook_file 'pack.patch' do
-  #   path "#{node['scratchpads']['aegir']['home_folder']}/.drush/provision/http/Provision/Service/http/pack.patch"
-  #   owner node['scratchpads']['aegir']['user']
-  #   group node['scratchpads']['aegir']['group']
-  #   mode 0755
-  #   action :create_if_missing
-  # end
-  # # Patch the pack.php file to allow us to create pack servers.
-  # execute 'patch pack' do
-  #   command "cd #{node['scratchpads']['aegir']['home_folder']}/.drush/provision/http/Provision/Service/http/ ;\
-  #           cp pack.php pack.php.unpatched;\
-  #           patch < pack.patch"
-  #   cwd node['scratchpads']['aegir']['home_folder']
-  #   group node['scratchpads']['aegir']['group']
-  #   user node['scratchpads']['aegir']['user']
-  #   not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/provision/http/Provision/Service/http/pack.php.unpatched")}
-  #   environment node['scratchpads']['aegir']['environment']
-  # end
   # Create the 'contrib' folder under sites/all for the memcache, varnish and any other modules to go into
   directory "#{node['scratchpads']['aegir']['home_folder']}/hostmaster/sites/all/modules/contrib" do
     owner node['scratchpads']['aegir']['user']
     group node['scratchpads']['aegir']['group']
     mode 0755
     action :create
+  end
+  # Create the 'custom' folder under sites/all for the hosting_auto_pack and any other custom modules to go into
+  directory "#{node['scratchpads']['aegir']['home_folder']}/hostmaster/sites/all/modules/custom" do
+    owner node['scratchpads']['aegir']['user']
+    group node['scratchpads']['aegir']['group']
+    mode 0755
+    action :create
+  end
+  # Download the Hosting Auto Pack module from our Git repository
+  git "#{node['scratchpads']['aegir']['home_folder']}/hostmaster/sites/all/modules/custom/hosting_auto_pack" do
+    repository node['scratchpads']['aegir']['hosting_auto_pack']['repository']
+    group node['scratchpads']['aegir']['group']
+    user node['scratchpads']['aegir']['user']
   end
   # Download the Hosting Reinstall module which is currently a Sandbox, and therefore can't be downloaded using the method below.
   git "#{node['scratchpads']['aegir']['home_folder']}/hostmaster/sites/all/modules/contrib/hosting_reinstall" do
@@ -281,78 +275,47 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
       environment node['scratchpads']['aegir']['environment']
     end
   end
-  # Create a 'pack' for all
-  if sanitised_names.length > 0 then
-    # sanitised_names = sanitised_names.join(',')
-    # execute 'create pack server' do
-    #   command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster provision-save server_pack --context_type=server --http_service_type='pack' --slave_web_servers='#{sanitised_names}' --master_web_servers='@server_master' --remote_host='pack-servers'"
-    #   cwd node['scratchpads']['aegir']['home_folder']
-    #   group node['scratchpads']['aegir']['group']
-    #   user node['scratchpads']['aegir']['user']
-    #   environment node['scratchpads']['aegir']['environment']
-    # end  
-    # template "#{node['scratchpads']['aegir']['home_folder']}/.drush/server_pack.alias.drushrc.php" do
-    #   path "#{node['scratchpads']['aegir']['home_folder']}/.drush/server_pack.alias.drushrc.php"
-    #   source 'server_pack.alias.drushrc.php.erb'
-    #   cookbook 'scratchpads'
-    #   owner node['scratchpads']['aegir']['user']
-    #   group node['scratchpads']['aegir']['group']
-    #   mode '0744'
-    #   action :create
-    #   variables({
-    #     :app_servers => sanitised_names,
-    #     :node_fqdn => node['scratchpads']['control']['fqdn']
-    #   })
-    # end
-    # execute 'verify pack server' do
-    #   command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster provision-verify @server_pack"
-    #   cwd node['scratchpads']['aegir']['home_folder']
-    #   group node['scratchpads']['aegir']['group']
-    #   user node['scratchpads']['aegir']['user']
-    #   environment node['scratchpads']['aegir']['environment']
-    # end
-    # execute 'import pack server' do
-    #   command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster hosting-import @server_pack"
-    #   cwd node['scratchpads']['aegir']['home_folder']
-    #   group node['scratchpads']['aegir']['group']
-    #   user node['scratchpads']['aegir']['user']
-    #   environment node['scratchpads']['aegir']['environment']
-    # end
-  end
   # Create the scratchpads-master platform on the pack server
   # First get the code
   git "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads-master" do
     repository node['scratchpads']['aegir']['scratchpads_master']['repository']
-    #checkout_branch node['scratchpads']['aegir']['scratchpads_master']['checkout_branch']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
     timeout node['scratchpads']['aegir']['scratchpads_master']['timeout']
   end
   # Create the scratchpads-master platform
-  execute 'create the platform node' do
-    command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster provision-save --context_type=platform --platform='@pack_apps' --root='/var/aegir/platforms/scratchpads-master'"
-    cwd node['scratchpads']['aegir']['home_folder']
-    group node['scratchpads']['aegir']['group']
-    user node['scratchpads']['aegir']['user']
-    environment node['scratchpads']['aegir']['environment']
-    not_if{::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
-  end
-  # Verify the server
-  execute 'verify the platform node' do
-    command "drush @platform_scratchpads-master provision-verify"
-    cwd node['scratchpads']['aegir']['home_folder']
-    group node['scratchpads']['aegir']['group']
-    user node['scratchpads']['aegir']['user']
-    environment node['scratchpads']['aegir']['environment']
-  end
-  #drush @hm hosting-import @server_spapp1nhmacuk
-  # Import the server into the front end
-  execute 'import the server into front end' do
-    command "drush @hm hosting-import @server_scratchpads-master"
-    cwd node['scratchpads']['aegir']['home_folder']
-    group node['scratchpads']['aegir']['group']
-    user node['scratchpads']['aegir']['user']
-    environment node['scratchpads']['aegir']['environment']
+  # Create a 'pack' for all
+  if sanitised_names.length > 0 then
+    execute 'create the platform node' do
+      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster provision-save --context_type=platform --platform='@server_automatic-pack' --root='/var/aegir/platforms/scratchpads-master'"
+      cwd node['scratchpads']['aegir']['home_folder']
+      group node['scratchpads']['aegir']['group']
+      user node['scratchpads']['aegir']['user']
+      environment node['scratchpads']['aegir']['environment']
+      not_if{::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
+      only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
+    end
+    # Verify the server
+    execute 'verify the platform node' do
+      command "drush @platform_scratchpads-master provision-verify"
+      cwd node['scratchpads']['aegir']['home_folder']
+      group node['scratchpads']['aegir']['group']
+      user node['scratchpads']['aegir']['user']
+      environment node['scratchpads']['aegir']['environment']
+      not_if{::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
+      only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
+    end
+    #drush @hm hosting-import @server_spapp1nhmacuk
+    # Import the platform into the front end
+    execute 'import the server into front end' do
+      command "drush @hm hosting-import @server_scratchpads-master"
+      cwd node['scratchpads']['aegir']['home_folder']
+      group node['scratchpads']['aegir']['group']
+      user node['scratchpads']['aegir']['user']
+      environment node['scratchpads']['aegir']['environment']
+      not_if{::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
+      only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
+    end
   end
   # Create database servers for each database server we know about and that
   # has not already been created.

@@ -42,16 +42,6 @@ template '/etc/systemd/system/varnish.service' do
   notifies :run, 'execute[restart_systemctl_daemon]', :immediately
   notifies :restart, 'service[varnish]', :delayed
 end
-template '/etc/default/varnish' do
-  path '/etc/default/varnish'
-  source 'default-varnish.erb'
-  cookbook 'scratchpads'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  action :create
-  notifies :restart, 'service[varnish]', :delayed
-end
 passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
 varnish_secret = passwords.find_password 'varnish', 'secret'
 execute 'update varnish secret file' do

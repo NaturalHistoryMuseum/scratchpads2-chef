@@ -286,33 +286,33 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   # Create the scratchpads-master platform
   if sanitised_names.length > 0 then
     execute 'create the platform node' do
-      command "#{node['scratchpads']['control']['drush_command']} provision-save --context_type=platform --platform='@server_automaticpack' --root='/var/aegir/platforms/scratchpads-master' platform_scratchpads-master"
+      command "#{node['scratchpads']['control']['drush_command']} provision-save --context_type=platform --web_server='@server_automaticpack' --root='/var/aegir/platforms/scratchpads-master' platform_scratchpads-master"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']
       environment node['scratchpads']['aegir']['environment']
-      not_if{::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadsmaster.alias.drushrc.php")}
+      not_if{::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
       only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
     end
     # Verify the server
     execute 'verify the platform node' do
-      command "drush @platform_scratchpadsmaster provision-verify"
+      command "drush @platform_scratchpads-master provision-verify"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']
       environment node['scratchpads']['aegir']['environment']
-      only_if{::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadsmaster.alias.drushrc.php")}
+      only_if{::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
       only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
     end
     #drush @hm hosting-import @server_spapp1nhmacuk
     # Import the platform into the front end
     execute 'import the server into front end' do
-      command "drush @hm hosting-import @server_scratchpadsmaster"
+      command "drush @hm hosting-import @platform_scratchpads-master"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']
       environment node['scratchpads']['aegir']['environment']
-      only_if{::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadsmaster.alias.drushrc.php")}
+      only_if{::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
       only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
     end
   end

@@ -53,7 +53,8 @@
     "varnish": {
       "listen_port": "80",
       "conf_source": "default-varnish.erb",
-      "conf_cookbook": "scratchpads"
+      "conf_cookbook": "scratchpads",
+      "vcl_generated": false
     }
   },
   "run_list": [

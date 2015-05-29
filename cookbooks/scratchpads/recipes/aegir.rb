@@ -192,10 +192,10 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     action [:enable,:start]
   end
   # Create the memcache.inc file which will configure sites
-  # to use the memcache servers on the role:data servers.
+  # to use the memcache servers on the roles:data servers.
   data_hosts = ['sp-data-1']
   unless Chef::Config[:solo]
-    data_hosts_search = search(:node, 'flags:UP AND role:data')
+    data_hosts_search = search(:node, 'flags:UP AND roles:data')
     data_hosts = []
     data_hosts_search.each do|data_host|
       data_hosts << data_host['fqdn']
@@ -238,7 +238,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   # has not already been created.
   app_hosts = ['sp-app-1']
   unless Chef::Config[:solo]
-    app_hosts_search = search(:node, 'flags:UP AND role:app')
+    app_hosts_search = search(:node, 'flags:UP AND roles:app')
     app_hosts = []
     app_hosts_search.each do|app_host|
       app_hosts << app_host['fqdn']
@@ -320,7 +320,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   # has not already been created.
   data_hosts = ['sp-data-1']
   unless Chef::Config[:solo]
-    data_hosts_search = search(:node, 'flags:UP AND role:data')
+    data_hosts_search = search(:node, 'flags:UP AND roles:data')
     data_hosts = []
     data_hosts_search.each do|data_host|
       data_hosts << data_host['fqdn']

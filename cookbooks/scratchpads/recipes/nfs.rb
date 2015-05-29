@@ -10,7 +10,7 @@ if node['roles'].index('control') then
   include_recipe 'nfs::server4'
   app_hosts = ['sp-app-1']
   unless Chef::Config[:solo]
-    app_hosts_search = search(:node, 'role:app')
+    app_hosts_search = search(:node, 'roles:app')
     app_hosts = []
     app_hosts_search.each do|app_host|
       app_hosts << app_host['fqdn']
@@ -44,7 +44,7 @@ else
   if Chef::Config[:solo]
     control_hosts = {'sp-control-1' => {'fqdn' => 'sp-control-1'}}
   else
-    control_hosts = search(:node, 'flags:UP AND role:control')
+    control_hosts = search(:node, 'flags:UP AND roles:control')
   end
   control_host = control_hosts.first
   mount '/var/aegir/platforms' do

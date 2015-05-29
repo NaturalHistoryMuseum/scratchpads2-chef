@@ -27,6 +27,8 @@
         "php5-cli",
         "php5-curl",
         "php5-gd",
+        "php5-gmp",
+        "php5-mcrypt",
         "php5-mysql",
         "php5-memcache",
         "php-console-table"
@@ -41,7 +43,8 @@
     "apache": {
       "listen_addresses": [
         "127.0.0.1"
-      ]
+      ],
+      "mpm": "prefork"
     },
     "percona": {
       "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret"

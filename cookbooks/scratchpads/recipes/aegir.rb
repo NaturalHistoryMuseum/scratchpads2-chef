@@ -84,27 +84,27 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     environment node['scratchpads']['aegir']['environment']
   end
   # Create the 'contrib' folder under sites/all for the memcache, varnish and any other modules to go into
-  directory "#{node['scratchpads']['aegir']['home_folder']}/hostmaster/sites/all/modules/contrib" do
+  directory "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib" do
     owner node['scratchpads']['aegir']['user']
     group node['scratchpads']['aegir']['group']
     mode 0755
     action :create
   end
   # Create the 'custom' folder under sites/all for the hosting_auto_pack and any other custom modules to go into
-  directory "#{node['scratchpads']['aegir']['home_folder']}/hostmaster/sites/all/modules/custom" do
+  directory "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/custom" do
     owner node['scratchpads']['aegir']['user']
     group node['scratchpads']['aegir']['group']
     mode 0755
     action :create
   end
   # Download the Hosting Auto Pack module from our Git repository
-  git "#{node['scratchpads']['aegir']['home_folder']}/hostmaster/sites/all/modules/custom/hosting_auto_pack" do
+  git "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/custom/hosting_auto_pack" do
     repository node['scratchpads']['aegir']['hosting_auto_pack']['repository']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
   end
   # Download the Hosting Reinstall module which is currently a Sandbox, and therefore can't be downloaded using the method below.
-  git "#{node['scratchpads']['aegir']['home_folder']}/hostmaster/sites/all/modules/contrib/hosting_reinstall" do
+  git "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib/hosting_reinstall" do
     repository node['scratchpads']['aegir']['hosting_reinstall']['repository']
     checkout_branch node['scratchpads']['aegir']['hosting_reinstall']['checkout_branch']
     revision node['scratchpads']['aegir']['hosting_reinstall']['revision']
@@ -115,25 +115,25 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   node['scratchpads']['aegir']['modules_to_download'].each do|module_name|
     # Download the additional module.
     execute "download #{module_name} module" do
-      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster dl #{module_name}"
+      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} dl #{module_name}"
       environment node['scratchpads']['aegir']['environment']
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']
-      not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/hostmaster/sites/all/modules/contrib/#{module_name}")}
+      not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib/#{module_name}")}
     end
     # Move the additional module into the contrib folder (which is where it is in the scratchpads code base)
     execute "move #{module_name} module" do
-      command "mv #{node['scratchpads']['aegir']['home_folder']}/hostmaster/sites/all/modules/#{module_name} #{node['scratchpads']['aegir']['home_folder']}/hostmaster/sites/all/modules/contrib"
+      command "mv #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/#{module_name} #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']
-      not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/hostmaster/sites/all/modules/contrib/#{module_name}")}
+      not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib/#{module_name}")}
     end
   end
   # Enable any additional modules as configured.
   execute 'enable additional modules' do
-    command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster en #{node['scratchpads']['aegir']['modules_to_install'].join(' ')} -y"
+    command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} en #{node['scratchpads']['aegir']['modules_to_install'].join(' ')} -y"
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
@@ -143,7 +143,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
   admin_pw = passwords.find_password 'aegir', 'admin'
   execute 'set the admin user password' do
-    command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster upwd admin --password=#{admin_pw} -y"
+    command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} upwd admin --password=#{admin_pw} -y"
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
@@ -272,7 +272,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     sanitised_names << "@server_#{sanitised_server_name}"
     # Create the server
     execute 'create the application server node' do
-      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{app_host} --http_service_type='apache' --http_port=80"
+      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{app_host} --http_service_type='apache' --http_port=80"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']
@@ -290,7 +290,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     #drush @hm hosting-import @server_spapp1nhmacuk
     # Import the server into the front end
     execute 'import the application server into front end' do
-      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster hosting-import @server_#{sanitised_server_name}"
+      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} hosting-import @server_#{sanitised_server_name}"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']
@@ -354,7 +354,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
     aegir_pw = passwords.find_password 'mysql', 'aegir'
     execute 'create the database server node' do
-      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{data_host} --db_service_type='mysql' --master_db='mysql://aegir:#{aegir_pw}@#{data_host}'"
+      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{data_host} --db_service_type='mysql' --master_db='mysql://aegir:#{aegir_pw}@#{data_host}'"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']
@@ -371,7 +371,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     end
     # Import the server into the front end
     execute 'import the database server into front end' do
-      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/hostmaster hosting-import @server_#{sanitised_server_name}"
+      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} hosting-import @server_#{sanitised_server_name}"
       cwd node['scratchpads']['aegir']['home_folder']
       group node['scratchpads']['aegir']['group']
       user node['scratchpads']['aegir']['user']

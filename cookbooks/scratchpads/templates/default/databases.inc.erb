@@ -1,14 +1,6 @@
 <?php
 global $databases;
-$databases['default']['default'] = array(
-  'driver' => $databases['default']['default']['driver'],
-  'database' => $databases['default']['default']['database'],
-  'username' => $databases['default']['default']['username'],
-  'password' => $databases['default']['default']['password'],
-  'host' => $databases['default']['default']['host'],
-  'port' => $databases['default']['default']['port'],
-  'charset' => 'utf8mb4'
-);
+$databases['default']['default']['charset'] = 'utf8mb4';
 $databases['gm3']['default'] = array(
   'driver' => $databases['default']['default']['driver'],
   'database' => "gm3",

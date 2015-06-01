@@ -16,6 +16,11 @@
       "oracle": {
         "accept_oracle_download_terms": true
       }
+    },
+    "scratchpads": {
+      "solr-undertow": {
+        "options": ""
+      }
     }
   },
   "override_attributes": {

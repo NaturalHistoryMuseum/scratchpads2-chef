@@ -95,6 +95,20 @@ default['scratchpads']['solr-undertow']['conf_file']['source'] = 'solr-undertow.
 default['scratchpads']['solr-undertow']['conf_file']['owner'] = 'root'
 default['scratchpads']['solr-undertow']['conf_file']['group'] = 'root'
 default['scratchpads']['solr-undertow']['conf_file']['mode'] = '0755'
+# Configuration xml file
+default['scratchpads']['solr-undertow']['conf_file']['path'] = '/var/lib/solr-undertow/solr-home/solr.xml'
+default['scratchpads']['solr-undertow']['conf_file']['cookbook'] = 'scratchpads'
+default['scratchpads']['solr-undertow']['conf_file']['source'] = 'solr.xml.erb'
+default['scratchpads']['solr-undertow']['conf_file']['owner'] = 'root'
+default['scratchpads']['solr-undertow']['conf_file']['group'] = 'root'
+default['scratchpads']['solr-undertow']['conf_file']['mode'] = '0755'
+# Configuration zoo file
+default['scratchpads']['solr-undertow']['cfg_file']['path'] = '/var/lib/solr-undertow/solr-home/zoo.cfg'
+default['scratchpads']['solr-undertow']['cfg_file']['cookbook'] = 'scratchpads'
+default['scratchpads']['solr-undertow']['cfg_file']['source'] = 'zoo.cfg.erb'
+default['scratchpads']['solr-undertow']['cfg_file']['owner'] = 'root'
+default['scratchpads']['solr-undertow']['cfg_file']['group'] = 'root'
+default['scratchpads']['solr-undertow']['cfg_file']['mode'] = '0755'
 # Service file
 default['scratchpads']['solr-undertow']['systemd_service']['path'] = '/etc/systemd/system/solr-undertow.service'
 default['scratchpads']['solr-undertow']['systemd_service']['source'] = 'solr-undertow.service.erb'

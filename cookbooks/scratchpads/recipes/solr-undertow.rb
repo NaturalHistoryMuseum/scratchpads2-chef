@@ -82,6 +82,28 @@ execute 'link to wars folder' do
   not_if { ::File.exists?("#{node['scratchpads']['solr-undertow']['data_folder']}/solr-wars")}
 end
 
+# Create another configuration file that is used to start solr-undertow
+template node['scratchpads']['solr-undertow']['conf_xml']['path'] do
+  path node['scratchpads']['solr-undertow']['conf_xml']['path']
+  source node['scratchpads']['solr-undertow']['conf_xml']['source']
+  cookbook node['scratchpads']['solr-undertow']['conf_xml']['cookbook']
+  owner node['scratchpads']['solr-undertow']['conf_xml']['owner']
+  group node['scratchpads']['solr-undertow']['conf_xml']['group']
+  mode node['scratchpads']['solr-undertow']['conf_xml']['mode']
+  action :create
+end
+
+# Create the configuration file that is used to start solr-undertow
+template node['scratchpads']['solr-undertow']['cfg_file']['path'] do
+  path node['scratchpads']['solr-undertow']['cfg_file']['path']
+  source node['scratchpads']['solr-undertow']['cfg_file']['source']
+  cookbook node['scratchpads']['solr-undertow']['cfg_file']['cookbook']
+  owner node['scratchpads']['solr-undertow']['cfg_file']['owner']
+  group node['scratchpads']['solr-undertow']['cfg_file']['group']
+  mode node['scratchpads']['solr-undertow']['cfg_file']['mode']
+  action :create
+end
+
 # Create the bash script that starts the server
 template node['scratchpads']['solr-undertow']['bash_script']['path'] do
   path node['scratchpads']['solr-undertow']['bash_script']['path']

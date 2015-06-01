@@ -9,6 +9,13 @@
         "157.140.126.246",
         "monkey.nhm.ac.uk"
       ]
+    },
+    "java": {
+      "install_flavor": "oracle",
+      "jdk_version": "8",
+      "oracle": {
+        "accept_oracle_download_terms": true
+      }
     }
   },
   "override_attributes": {
@@ -17,6 +24,7 @@
     }
   },
   "run_list": [
+    "recipe[java]",
     "recipe[scratchpads]",
     "recipe[scratchpads::solr-undertow]",
     "recipe[scratchpads::postfix]"

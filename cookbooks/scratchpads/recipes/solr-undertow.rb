@@ -29,12 +29,12 @@ directory node['scratchpads']['solr-undertow']['data_folder'] do
   mode 0755
   action :create
 end
-directory "#{node['scratchpads']['solr-undertow']['data_folder']}/#{node['scratchpads']['solr-undertow']['solr_home_folder']}/scratchpads2" do
+directory "#{node['scratchpads']['solr-undertow']['data_folder']}/#{node['scratchpads']['solr-undertow']['solr_home_folder']}/scratchpads2/data" do
   owner node['scratchpads']['solr-undertow']['user']
   group node['scratchpads']['solr-undertow']['group']
   mode 0755
   action :create
-  recursive
+  recursive true
 end
 directory "#{node['scratchpads']['solr-undertow']['solr_logs_folder']}" do
   owner node['scratchpads']['solr-undertow']['user']
@@ -63,15 +63,16 @@ unless(::File.exists?("#{node['scratchpads']['solr-undertow']['application_folde
   end
 end
 
-# Create the configuration file that is used to start solr-undertow
-template node['scratchpads']['solr-undertow']['conf_file']['path'] do
-  path node['scratchpads']['solr-undertow']['conf_file']['path']
-  source node['scratchpads']['solr-undertow']['conf_file']['source']
-  cookbook node['scratchpads']['solr-undertow']['conf_file']['cookbook']
-  owner node['scratchpads']['solr-undertow']['conf_file']['owner']
-  group node['scratchpads']['solr-undertow']['conf_file']['group']
-  mode node['scratchpads']['solr-undertow']['conf_file']['mode']
-  action :create
+node['scratchpads']['solr-undertow']['templates'].each do|tmplte|
+  template tmplte['path'] do
+    path tmplte['path']
+    source tmplte['source']
+    cookbook tmplte['cookbook']
+    owner tmplte['owner']
+    group tmplte['group']
+    mode tmplte['mode']
+    action :create
+  end
 end
 
 # Create a symlink to the wars folder
@@ -81,28 +82,6 @@ execute 'link to wars folder' do
   user node['scratchpads']['solr-undertow']['user']
   group node['scratchpads']['solr-undertow']['group']
   not_if { ::File.exists?("#{node['scratchpads']['solr-undertow']['data_folder']}/solr-wars")}
-end
-
-# Create another configuration file that is used to start solr-undertow
-template node['scratchpads']['solr-undertow']['conf_xml']['path'] do
-  path node['scratchpads']['solr-undertow']['conf_xml']['path']
-  source node['scratchpads']['solr-undertow']['conf_xml']['source']
-  cookbook node['scratchpads']['solr-undertow']['conf_xml']['cookbook']
-  owner node['scratchpads']['solr-undertow']['conf_xml']['owner']
-  group node['scratchpads']['solr-undertow']['conf_xml']['group']
-  mode node['scratchpads']['solr-undertow']['conf_xml']['mode']
-  action :create
-end
-
-# Create the configuration file that is used to start solr-undertow
-template node['scratchpads']['solr-undertow']['cfg_file']['path'] do
-  path node['scratchpads']['solr-undertow']['cfg_file']['path']
-  source node['scratchpads']['solr-undertow']['cfg_file']['source']
-  cookbook node['scratchpads']['solr-undertow']['cfg_file']['cookbook']
-  owner node['scratchpads']['solr-undertow']['cfg_file']['owner']
-  group node['scratchpads']['solr-undertow']['cfg_file']['group']
-  mode node['scratchpads']['solr-undertow']['cfg_file']['mode']
-  action :create
 end
 
 # Copy the configuration from Scratchpads which is held in a tar.gz file
@@ -123,31 +102,10 @@ execute 'extract the scratchpads conf' do
   not_if { ::File.exists?("#{node['scratchpads']['solr-undertow']['data_folder']}/solr-home/scratchpads2/conf")}
 end
 
-# Create the bash script that starts the server
-template node['scratchpads']['solr-undertow']['bash_script']['path'] do
-  path node['scratchpads']['solr-undertow']['bash_script']['path']
-  source node['scratchpads']['solr-undertow']['bash_script']['source']
-  cookbook node['scratchpads']['solr-undertow']['bash_script']['cookbook']
-  owner node['scratchpads']['solr-undertow']['bash_script']['owner']
-  group node['scratchpads']['solr-undertow']['bash_script']['group']
-  mode node['scratchpads']['solr-undertow']['bash_script']['mode']
-  action :create
-end
-
 # Create solr-undertow service
 execute 'restart_systemctl_daemon' do
   command 'systemctl daemon-reload'
   action :nothing
-end
-template node['scratchpads']['solr-undertow']['systemd_service']['path'] do
-  path node['scratchpads']['solr-undertow']['systemd_service']['path']
-  source node['scratchpads']['solr-undertow']['systemd_service']['source']
-  cookbook node['scratchpads']['solr-undertow']['systemd_service']['cookbook']
-  owner node['scratchpads']['solr-undertow']['systemd_service']['owner']
-  group node['scratchpads']['solr-undertow']['systemd_service']['group']
-  mode node['scratchpads']['solr-undertow']['systemd_service']['mode']
-  action :create
-  notifies :run, 'execute[restart_systemctl_daemon]', :immediately
 end
 
 # Start the service

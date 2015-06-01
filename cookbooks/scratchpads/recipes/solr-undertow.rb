@@ -29,11 +29,12 @@ directory node['scratchpads']['solr-undertow']['data_folder'] do
   mode 0755
   action :create
 end
-directory "#{node['scratchpads']['solr-undertow']['data_folder']}/#{node['scratchpads']['solr-undertow']['solr_home_folder']}" do
+directory "#{node['scratchpads']['solr-undertow']['data_folder']}/#{node['scratchpads']['solr-undertow']['solr_home_folder']}/scratchpads2" do
   owner node['scratchpads']['solr-undertow']['user']
   group node['scratchpads']['solr-undertow']['group']
   mode 0755
   action :create
+  recursive
 end
 directory "#{node['scratchpads']['solr-undertow']['solr_logs_folder']}" do
   owner node['scratchpads']['solr-undertow']['user']
@@ -102,6 +103,24 @@ template node['scratchpads']['solr-undertow']['cfg_file']['path'] do
   group node['scratchpads']['solr-undertow']['cfg_file']['group']
   mode node['scratchpads']['solr-undertow']['cfg_file']['mode']
   action :create
+end
+
+# Copy the configuration from Scratchpads which is held in a tar.gz file
+cookbook_file node['scratchpads']['solr-undertow']['scratchpads_conf']['path'] do
+  path node['scratchpads']['solr-undertow']['scratchpads_conf']['path']
+  source node['scratchpads']['solr-undertow']['scratchpads_conf']['source']
+  cookbook node['scratchpads']['solr-undertow']['scratchpads_conf']['cookbook']
+  owner node['scratchpads']['solr-undertow']['scratchpads_conf']['owner']
+  group node['scratchpads']['solr-undertow']['scratchpads_conf']['group']
+  mode node['scratchpads']['solr-undertow']['scratchpads_conf']['mode']
+end
+# Extract the scratchpads conf
+execute 'extract the scratchpads conf' do
+  cwd "#{node['scratchpads']['solr-undertow']['data_folder']}/solr-home/scratchpads2"
+  command "tar xfz #{node['scratchpads']['solr-undertow']['scratchpads_conf']['source']}"
+  user node['scratchpads']['solr-undertow']['user']
+  group node['scratchpads']['solr-undertow']['group']
+  not_if { ::File.exists?("#{node['scratchpads']['solr-undertow']['data_folder']}/solr-home/scratchpads2/conf")}
 end
 
 # Create the bash script that starts the server

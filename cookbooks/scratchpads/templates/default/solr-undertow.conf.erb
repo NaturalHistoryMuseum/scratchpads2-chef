@@ -1,0 +1,8 @@
+solr.undertow: {
+  httpClusterPort: <%= node['scratchpads']['solr-undertow']['port'] %>
+  solrHome: "<%= node['scratchpads']['solr-undertow']['solr_home_folder'] %>"
+  solrLogs: "<%= node['scratchpads']['solr-undertow']['solr_logs_folder'] %>"
+  tempDir: "<%= node['scratchpads']['solr-undertow']['solr_temp_folder'] %>"
+  solrVersion: "<%= node['scratchpads']['solr-undertow']['solr_version'] %>"
+  solrWarFile: <%= node['scratchpads']['solr-undertow']['solr_wars_folder'] %>/solr-${solr.undertow.solrVersion}.war
+}

@@ -72,4 +72,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.add_role "data"
     end
   end
+  config.vm.define "search1" do |search1|
+    search1.vm.hostname = "sp-search-1.nhm.ac.uk"
+    search1.vm.box = "scratchpads/debian8"
+    search1.vm.provider "virtualbox" do |vb|
+      vb.customize ["modifyvm", :id, "--memory", "512"]
+    end
+    search1.vm.network "public_network"
+    search1.vm.provision "chef_client" do |chef|
+      chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
+      chef.validation_key_path = ".chef/user.pem"
+      chef.validation_client_name = "simor"
+      chef.add_role "search"
+    end
+  end
 end

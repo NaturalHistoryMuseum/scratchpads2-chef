@@ -61,3 +61,19 @@ default['scratchpads']['aegir']['hosting_auto_pack']['checkout_branch'] = 'maste
 default['scratchpads']['aegir']['scratchpads_master']['repository'] = 'https://git.scratchpads.eu/git/scratchpads-2.0.git'
 default['scratchpads']['aegir']['scratchpads_master']['checkout_branch'] = 'master'
 default['scratchpads']['aegir']['scratchpads_master']['timeout'] = 600
+
+# Solr
+default['scratchpads']['solr-undertow']['repository'] = 'https://github.com/bremeld/solr-undertow.git'
+default['scratchpads']['solr-undertow']['application_folder'] = '/usr/local/share/solr-undertow'
+default['scratchpads']['solr-undertow']['user'] = 'solrundertow'
+default['scratchpads']['solr-undertow']['group'] = 'solrundertow'
+default['scratchpads']['solr-undertow']['shell'] = '/bin/bash'
+default['scratchpads']['solr-undertow']['memory']['xms'] = '8G'
+default['scratchpads']['solr-undertow']['memory']['xmx'] = '8G'
+default['scratchpads']['solr-undertow']['memory']['maxpermsize'] = '512m'
+default['scratchpads']['solr-undertow']['memory']['permsize'] = '256m'
+default['scratchpads']['solr-undertow']['configuration_folder'] = 'scratchpads-2'
+default['scratchpads']['solr-undertow']['bash_script'] = '/usr/local/sbin/solr-undertow'
+default['scratchpads']['solr-undertow']['service_path'] = '/etc/systemd/system/solr-undertow.service'
+default['scratchpads']['solr-undertow']['service_template'] = 'solr-undertow.service.erb'
+default['scratchpads']['solr-undertow']['service_template_cookbook'] = 'scratchpads'

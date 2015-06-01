@@ -1,0 +1,24 @@
+{
+  "name": "search",
+  "default_attributes": {
+    "chef_client": {
+      "init_style": "systemd"
+    },
+    "gkrellmd": {
+      "allowed_hosts": [
+        "157.140.126.246",
+        "monkey.nhm.ac.uk"
+      ]
+    }
+  },
+  "override_attributes": {
+    "postfix": {
+      "relayhost_role": "control"
+    }
+  },
+  "run_list": [
+    "recipe[scratchpads]",
+    "recipe[scratchpads::solr-undertow]",
+    "recipe[scratchpads::postfix]"
+  ]
+}

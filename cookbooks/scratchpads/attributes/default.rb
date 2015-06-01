@@ -31,7 +31,7 @@ default['scratchpads']['control']['drush_command'] = '/usr/bin/drush'
 
 # Aegir settings
 default['scratchpads']['aegir']['home_folder'] = '/var/aegir'
-default['scratchpads']['aegir']['hostmaster_folder'] = 'hostmaster'
+default['scratchpads']['aegir']['hostmaster_folder'] = 'platforms/hostmaster'
 default['scratchpads']['aegir']['environment'] = ({
   'SHELL' => '/bin/bash',
   'TERM' => 'xterm',

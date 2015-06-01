@@ -60,10 +60,18 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   # server.
   passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
   aegir_pw = passwords.find_password 'mysql', 'aegir'
+  # Create the platforms folder
+  directory "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}" do
+    owner node['scratchpads']['aegir']['user']
+    group node['scratchpads']['aegir']['group']
+    mode 0755
+    action :create
+  end
+  # FIXME: The --aegir_db_user=... below is "odd"!
   execute 'install hostmaster' do
     command "#{node['scratchpads']['control']['drush_command']} hostmaster-install \
              --aegir_db_pass='#{aegir_pw}' \
-             --root=#{node['scratchpads']['aegir']['home_folder']}/hostmaster \
+             --root=#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} \
              --aegir_db_user=#{node['scratchpads']['control'][node['scratchpads']['aegir']['user']]['dbuser']} \
              --aegir_db_host=#{node['scratchpads']['control']['dbserver']} \
              --client_email=#{node['scratchpads']['control']['admin_email']} \

@@ -29,6 +29,20 @@ directory node['scratchpads']['solr-undertow']['data_folder'] do
   mode 0755
   action :create
 end
+directory "#{node['scratchpads']['solr-undertow']['data_folder']}/#{node['scratchpads']['solr-undertow']['solr_home_folder']}" do
+  owner node['scratchpads']['solr-undertow']['user']
+  group node['scratchpads']['solr-undertow']['group']
+  mode 0755
+  action :create
+  recursive true
+end
+directory "#{node['scratchpads']['solr-undertow']['data_folder']}/#{node['scratchpads']['solr-undertow']['solr_home_folder']}/scratchpads"2 do
+  owner node['scratchpads']['solr-undertow']['user']
+  group node['scratchpads']['solr-undertow']['group']
+  mode 0755
+  action :create
+  recursive true
+end
 directory "#{node['scratchpads']['solr-undertow']['data_folder']}/#{node['scratchpads']['solr-undertow']['solr_home_folder']}/scratchpads2/data" do
   owner node['scratchpads']['solr-undertow']['user']
   group node['scratchpads']['solr-undertow']['group']

@@ -3,6 +3,7 @@ Description=Varnish HTTP accelerator
 
 [Service]
 Type=forking
+Restart=always
 LimitNOFILE=<%= node['varnish']['nfiles'] %>
 LimitMEMLOCK=<%= node['varnish']['memlock'] %>
 EnvironmentFile=/etc/default/varnish

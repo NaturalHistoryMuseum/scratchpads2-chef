@@ -42,7 +42,7 @@ end
 template "#{node['scratchpads']['solr-undertow']['service_path']}" do
   path "#{node['scratchpads']['solr-undertow']['service_path']}"
   source "#{node['scratchpads']['solr-undertow']['service_template']}"
-  cookbook "#{['scratchpads']['solr-undertow']['service_template_cookbook']}"
+  cookbook "#{node['scratchpads']['solr-undertow']['service_template_cookbook']}"
   owner 'root'
   group 'root'
   mode '0644'

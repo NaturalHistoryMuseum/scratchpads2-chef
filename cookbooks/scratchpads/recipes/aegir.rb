@@ -235,6 +235,20 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
       :varnish_secret => varnish_secret
     })
   end
+  passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
+  gm3_password = passwords.find_password 'mysql', 'gm3'
+  template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/databases.inc" do
+    source 'databases.inc.erb'
+    cookbook 'scratchpads'
+    owner node['scratchpads']['aegir']['user']
+    group node['scratchpads']['aegir']['group']
+    mode 0644
+    variables({
+      :gm3_password => gm3_password
+    })
+  end
+  # Create the global.inc file which has general settings, and also includes the memcache.inc, 
+  # varnish.inc and databases.inc files.
   template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/global.inc" do
     source 'global.inc.erb'
     cookbook 'scratchpads'

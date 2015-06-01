@@ -63,7 +63,7 @@ unless(::File.exists?("#{node['scratchpads']['solr-undertow']['application_folde
   end
 end
 
-node['scratchpads']['solr-undertow']['templates'].each do|tmplte|
+node['scratchpads']['solr-undertow']['templates'].each do|name,tmplte|
   template tmplte['path'] do
     path tmplte['path']
     source tmplte['source']

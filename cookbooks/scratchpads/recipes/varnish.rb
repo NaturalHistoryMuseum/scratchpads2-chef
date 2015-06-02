@@ -14,6 +14,8 @@ if Chef::Config[:solo]
   app_hosts = {'sp-app-1' => {'fqdn' => 'sp-app-1'}}
 else
   app_hosts = search(:node, 'flags:UP AND roles:app')
+  search_master_hosts = search(:node, 'flags:UP AND roles:search')
+  search_slave_hosts = search(:node, 'flags:UP AND roles:search-slave')
 end
 template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
   source node['varnish']['vcl_source']
@@ -23,7 +25,9 @@ template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
   mode 0644
   notifies :reload, 'service[varnish]', :delayed
   variables({
-    :sp_app_servers => app_hosts
+    :sp_app_servers => app_hosts,
+    :sp_search_master_servers => search_master_hosts,
+    :sp_search_slave_servers => search_slave_hosts
   })
 end
 execute 'restart_systemctl_daemon' do

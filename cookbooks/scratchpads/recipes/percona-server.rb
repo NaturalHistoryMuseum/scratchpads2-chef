@@ -50,7 +50,7 @@ unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['secure-installatio
 end
 
 # Copy the gm3.sql.gz SQL file and load it
-unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['secure-installation-file']}"))
+unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['gm3_data_file']}"))
   cookbook_file "/tmp/#{node['scratchpads']['percona']['gm3_data_file']}" do
     source node['scratchpads']['percona']['gm3_data_file']
     cookbook scratchpads

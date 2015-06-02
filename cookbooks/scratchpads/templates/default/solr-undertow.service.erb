@@ -4,7 +4,7 @@ Description=Solr-Undertow
 [Service]
 Type=simple
 Restart=always
-ExecStart=<%= node['scratchpads']['solr-undertow']['bash_script'] %>
+ExecStart=<%= node['scratchpads']['solr-undertow']['templates']['bash_script']['path'] %>
 User=<%= node['scratchpads']['solr-undertow']['user'] %>
 Group=<%= node['scratchpads']['solr-undertow']['group'] %>
 

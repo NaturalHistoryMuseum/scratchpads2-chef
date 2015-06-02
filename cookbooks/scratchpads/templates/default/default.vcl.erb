@@ -1,284 +1,335 @@
 vcl 4.0;
 import directors;
-acl nhm_network {
-	"157.140.0.0"/16;
+acl trusted_network {
+  <%= node['scratchpads']['varnish']['trusted_network'] %>;
 }
 backend control {
-	.host = "127.0.0.1";
-	.port = "80";
-	.first_byte_timeout = 600s;
-	.between_bytes_timeout = 600s;
-	.connect_timeout = 600s;
+  .host = "<%= node['scratchpads']['varnish']['control']['host'] %>";
+  .port = "<%= node['scratchpads']['varnish']['control']['port'] %>";
+  .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
+  .between_bytes_timeout = <%= node['scratchpads']['varnish']['between_bytes_timeout'] %>;
+  .connect_timeout = <%= node['scratchpads']['varnish']['connect_timeout'] %>;
+  .max_connections = <%= node['scratchpads']['varnish']['control']['max_connections'] %>;
 }
 <% @sp_app_servers.each_with_index do |app_server, n| -%>
 backend sp_app_<%= n %> {
-	.host = "<%= app_server['fqdn'] %>";
-	.port = "80";
-	.first_byte_timeout = 600s;
-	.between_bytes_timeout = 600s;
-	.connect_timeout = 600s;
+  .host = "<%= app_server['fqdn'] %>";
+  .port = "<%= node['scratchpads']['varnish']['sp_app_server_port'] %>";
+  .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
+  .between_bytes_timeout = <%= node['scratchpads']['varnish']['between_bytes_timeout'] %>;
+  .connect_timeout = <%= node['scratchpads']['varnish']['connect_timeout'] %>;
+}
+<% end -%>
+<% @sp_search_master_servers.each_with_index do |search_server, n| -%>
+backend sp_search_master_<%= n %> {
+  .host = "<%= search_server['fqdn'] %>";
+  .port = "<%= node['scratchpads']['solr-undertow']['port'] %>";
+  .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
+  .between_bytes_timeout = <%= node['scratchpads']['varnish']['between_bytes_timeout'] %>;
+  .connect_timeout = <%= node['scratchpads']['varnish']['connect_timeout'] %>;
+}
+<% end -%>
+<% @sp_search_slave_servers.each_with_index do |search_server, n| -%>
+backend sp_search_slave_<%= n %> {
+  .host = "<%= search_server['fqdn'] %>";
+  .port = "<%= node['scratchpads']['solr-undertow']['port'] %>";
+  .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
+  .between_bytes_timeout = <%= node['scratchpads']['varnish']['between_bytes_timeout'] %>;
+  .connect_timeout = <%= node['scratchpads']['varnish']['connect_timeout'] %>;
 }
 <% end -%>
 backend selenium {
-	.host = "selenium";
-	.port = "80";
-	.first_byte_timeout = 600s;
-	.between_bytes_timeout = 600s;
-	.connect_timeout = 600s;
-	.max_connections = 150;
+  .host = "<%= node['scratchpads']['varnish']['selenium']['host'] %>";
+  .port = "<%= node['scratchpads']['varnish']['selenium']['port'] %>";
+  .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
+  .between_bytes_timeout = <%= node['scratchpads']['varnish']['between_bytes_timeout'] %>;
+  .connect_timeout = <%= node['scratchpads']['varnish']['connect_timeout'] %>;
+  .max_connections = <%= node['scratchpads']['varnish']['selenium']['max_connections'] %>;
 }
 backend redmine {
-	.host = "web-scratchpad-solr.nhm.ac.uk";
-	.port = "3000";
-	.first_byte_timeout = 600s;
-	.between_bytes_timeout = 600s;
-	.connect_timeout = 600s;
-	.max_connections = 150;
+  .host = "<%= node['scratchpads']['varnish']['redmine']['host'] %>";
+  .port = "<%= node['scratchpads']['varnish']['redmine']['port'] %>";
+  .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
+  .between_bytes_timeout = <%= node['scratchpads']['varnish']['between_bytes_timeout'] %>;
+  .connect_timeout = <%= node['scratchpads']['varnish']['connect_timeout'] %>;
+  .max_connections = <%= node['scratchpads']['varnish']['redmine']['max_connections'] %>;
 }
 backend monit {
-	.host = "127.0.0.1";
-	.port = "8080";
-	.first_byte_timeout = 600s;
-	.between_bytes_timeout = 600s;
-	.connect_timeout = 600s;
-	.max_connections = 10;
+  .host = "<%= node['scratchpads']['varnish']['monit']['host'] %>";
+  .port = "<%= node['scratchpads']['varnish']['monit']['port'] %>";
+  .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
+  .between_bytes_timeout = <%= node['scratchpads']['varnish']['between_bytes_timeout'] %>;
+  .connect_timeout = <%= node['scratchpads']['varnish']['connect_timeout'] %>;
+  .max_connections = <%= node['scratchpads']['varnish']['monit']['max_connections'] %>;
 }
 sub set_control_domains{
-	if(	
-		req.http.host ~ "^get.scratchpads.eu$" ||
-		req.http.host ~ "^sp-control-1.nhm.ac.uk$"){
-		set req.backend_hint = control;
-	}
+<%
+  domains = []
+  node['scratchpads']['varnish']['control']['domains'].each_with_index do|domain, n|
+    domains[n] = 'req.http.host ~ "^'+domain+'$"'
+  end
+%>
+  if(<%= domains.join(' || ') %>){
+    set req.backend_hint = control;
+  }
 }
 sub set_selenium_domains{
-	if(	req.http.host ~ "^qa.scratchpads.eu$"){
-		# Absolutely NO CACHING for the qa.scratchpads.eu site
-		set req.backend_hint = selenium;
-		return (pipe);
-	}
+<%
+  domains = []
+  node['scratchpads']['varnish']['selenium']['domains'].each_with_index do|domain, n|
+    domains[n] = 'req.http.host ~ "^'+domain+'$"'
+  end
+%>
+  if(<%= domains.join(' || ') %>){
+    # Absolutely NO CACHING for the qa.scratchpads.eu site
+    set req.backend_hint = selenium;
+    return (pipe);
+  }
 }
 sub set_monit_domains{
-	if(	req.http.host ~ "^monit.scratchpads.eu$"){
-		set req.backend_hint = monit;
-		return (pass);
-	}
+<%
+  domains = []
+  node['scratchpads']['varnish']['monit']['domains'].each_with_index do|domain, n|
+    domains[n] = 'req.http.host ~ "^'+domain+'$"'
+  end
+%>
+  if(<%= domains.join(' || ') %>){
+    set req.backend_hint = monit;
+    return (pass);
+  }
 }
 sub set_redmine_domains{
-	if(	req.http.host ~ "^support.scratchpads.eu$"){
-		set req.backend_hint = redmine;
-	}
+<%
+  domains = []
+  node['scratchpads']['varnish']['redmine']['domains'].each_with_index do|domain, n|
+    domains[n] = 'req.http.host ~ "^'+domain+'$"'
+  end
+%>
+  if(<%= domains.join(' || ') %>){
+    set req.backend_hint = redmine;
+  }
 }
 sub set_no_cache_domains{
-	if(	req.http.host ~ "^zooemu.nhm.ac.uk$" ||
-		req.http.host ~ "^edit.nhm.ac.uk$"){
-                if (req.http.x-forwarded-for) {
-                        set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
-                } else {
-                        set req.http.X-Forwarded-For = client.ip;
-                }
-		return (pipe);
-	}
+<%
+  domains = []
+  node['scratchpads']['varnish']['no_cache_domains'].each_with_index do|domain, n|
+    domains[n] = 'req.http.host ~ "^'+domain+'$"'
+  end
+%>
+  if(<%= domains.join(' || ') %>){
+    if (req.http.x-forwarded-for) {
+      set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
+    } else {
+      set req.http.X-Forwarded-For = client.ip;
+    }
+    return (pipe);
+  }
 }
 sub vcl_init {
-	new balanced = directors.round_robin();
+  new balanced = directors.round_robin();
+  new balanced_search_slaves = directors.round_robin();
+  new balanced_search_masters = directors.round_robin();
 <% @sp_app_servers.each_with_index do |app_server, n| -%>
-	balanced.add_backend(sp_app_<%= n %>);
+  balanced.add_backend(sp_app_<%= n %>);
+<% end -%>
+<% @sp_search_slave_servers.each_with_index do |search_server, n| -%>
+  balanced_search_slaves.add_backend(sp_search_slave_<%= n %>);
+<% end -%>
+<% @sp_search_master_servers.each_with_index do |search_server, n| -%>
+  balanced_search_masters.add_backend(sp_search_master_<%= n %>);
 <% end -%>
 }
 sub vcl_recv {
-	# Redirect dev. and dev- domains if outside the museum
-	if(	
-		client.ip !~ nhm_network &&
-		(	req.http.host ~ "^dev." ||
-			req.http.host ~ "^dev-"
-		)
-	){
-		return (synth(750, "http://scratchpads.eu/"));
-	}
+<%
+  domains = []
+  node['scratchpads']['varnish']['trusted_network_only_domain_paterns'].each_with_index do|domain, n|
+    domains[n] = 'req.http.host ~ "'+domain+'"'
+  end
+%>
+  # Redirect dev. and dev- domains if outside the museum
+  if(client.ip !~ trusted_network && ( <%= domains.join(' || ') %> ) ){
+    return (synth(750, "http://scratchpads.eu/"));
+  }
 
-	# Default to the balanced backend.
-	set req.backend_hint = balanced.backend();
-	# Override the default for specific domains.
-	call set_control_domains;
-	call set_redmine_domains;
-	call set_monit_domains;
-	call set_selenium_domains;
-	call set_no_cache_domains;
+  # Default to the balanced backend.
+  set req.backend_hint = balanced.backend();
+  # Override the default for specific domains.
+  call set_control_domains;
+  call set_redmine_domains;
+  call set_monit_domains;
+  call set_selenium_domains;
+  call set_no_cache_domains;
+  # Set the search domains
+<%
+  domains = []
+  node['scratchpads']['varnish']['search']['domains'].each_with_index do|domain, n|
+    domains[n] = 'req.http.host ~ "^'+domain+'$"'
+  end
+%>
+  if(<%= domains.join(' || ') %>){
+    if(req.method == "GET"){
+      set req.backend_hint = balanced_search_slaves.backend();
+    }else{
+      set req.backend_hint = balanced_search_masters.backend();
+    }
+  }
 
-	# Prevent caching of large files (>10MB)
-	if (req.http.x-pipe && req.restarts > 0) {
-		unset req.http.x-pipe;
-		return (pipe);
-	} 
+  # Prevent caching of large files (>10MB)
+  if (req.http.x-pipe && req.restarts > 0) {
+    unset req.http.x-pipe;
+    return (pipe);
+  } 
 
-	if (req.restarts == 0) {
-		if (req.http.x-forwarded-for) {
-			set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
-		} else {
-			set req.http.X-Forwarded-For = client.ip;
-		}
-	}
+  if (req.restarts == 0) {
+    if (req.http.x-forwarded-for) {
+      set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
+    } else {
+      set req.http.X-Forwarded-For = client.ip;
+    }
+  }
 
-	# Allow the backend to serve up stale content if it is responding slowly.
-#	if (!req.backend.healthy) {
-#		# Use anonymous, cached pages if all backends are down.
-#		unset req.http.Cookie;
-#		if (req.http.X-Forwarded-Proto == "https") {
-#			set req.http.X-Forwarded-Proto = "http";
-#		}
-#		set req.grace = 30m;
-#	} else {
-#		set req.grace = 15s;
-#	}
+  # Allow the backend to serve up stale content if it is responding slowly.
+#  if (!req.backend.healthy) {
+#    # Use anonymous, cached pages if all backends are down.
+#    unset req.http.Cookie;
+#    if (req.http.X-Forwarded-Proto == "https") {
+#      set req.http.X-Forwarded-Proto = "http";
+#    }
+#    set req.grace = 30m;
+#  } else {
+#    set req.grace = 15s;
+#  }
 
 
-	# Allow PURGE from the acl purge (defined at the top of this file)
-	if (req.method == "PURGE") {
-		if (!client.ip ~ nhm_network) {
-			return (synth(405, "Not allowed."));
-		}
-		return (hash);
-	}
+  # Allow PURGE from the acl purge (defined at the top of this file)
+  if (req.method == "PURGE") {
+    if (!client.ip ~ trusted_network) {
+      return (synth(405, "Not allowed."));
+    }
+    return (hash);
+  }
 
-	# Get rid of progress.js query params
-	if (req.url ~ "^/misc/progress\.js\?[0-9]+$") {
-		set req.url = "/misc/progress.js";
-	}
+  # Get rid of progress.js query params
+  if (req.url ~ "^/misc/progress\.js\?[0-9]+$") {
+    set req.url = "/misc/progress.js";
+  }
 
-	# We only deal with GET and HEAD
-	if (req.method != "GET" && req.method != "HEAD") {
-			return (pass);
-	}
+  # We only deal with GET and HEAD
+  if (req.method != "GET" && req.method != "HEAD") {
+      return (pass);
+  }
 
-	# Do not cache these paths.
-	if (req.url ~ "^/status\.php$" ||
-			req.url ~ "^/modules/statistics/statistics\.php$" ||
-			req.url ~ "^/admin" ||
-			req.url ~ "^/uwho" ||
-			req.url ~ "^/admin/.*$" ||
-			req.url ~ "^/user" ||
-			req.url ~ "^/user/.*$" ||
-			req.url ~ "^/users/.*$" ||
-			req.url ~ "^/info/.*$" ||
-			req.url ~ "^/flag/.*$" ||
-			req.url ~ "^.*/ajax/.*$" ||
-			req.url ~ "^.*/ahah/.*$") {
-		return (pass);
-	}
+  # Do not cache these paths.
+<%
+  paths = []
+  node['scratchpads']['varnish']['no_cache_paths'].each_with_index do|path, n|
+    paths[n] = 'req.url ~ "'+path+'"'
+  end
+%>
+  if (<%= paths.join(' || ') %>) {
+    return (pass);
+  }
 
-	# Handle compression correctly. Different browsers send different
-	# "Accept-Encoding" headers, even though they mostly all support the same
-	# compression mechanisms. By consolidating these compression headers into
-	# a consistent format, we can reduce the size of the cache and get more hits.=
-	# @see: http:// varnish.projects.linpro.no/wiki/FAQ/Compression
-	if (req.http.Accept-Encoding) {
-		if (req.http.Accept-Encoding ~ "gzip") {
-			# If the browser supports it, we will use gzip.
-			set req.http.Accept-Encoding = "gzip";
-		}
-		else if (req.http.Accept-Encoding ~ "deflate") {
-			# Next, try deflate if it is supported.
-			set req.http.Accept-Encoding = "deflate";
-		}
-		else {
-			# Unknown algorithm. Remove it and send unencoded.
-			unset req.http.Accept-Encoding;
-		}
-	}
+  # Handle compression correctly. Different browsers send different
+  # "Accept-Encoding" headers, even though they mostly all support the same
+  # compression mechanisms. By consolidating these compression headers into
+  # a consistent format, we can reduce the size of the cache and get more hits.=
+  # @see: http:// varnish.projects.linpro.no/wiki/FAQ/Compression
+  if (req.http.Accept-Encoding) {
+    if (req.http.Accept-Encoding ~ "gzip") {
+      # If the browser supports it, we will use gzip.
+      set req.http.Accept-Encoding = "gzip";
+    }
+    else if (req.http.Accept-Encoding ~ "deflate") {
+      # Next, try deflate if it is supported.
+      set req.http.Accept-Encoding = "deflate";
+    }
+    else {
+      # Unknown algorithm. Remove it and send unencoded.
+      unset req.http.Accept-Encoding;
+    }
+  }
 
-	# Always cache the following file types for all users.
-	if (	req.url ~ "(?i)\.(png|gif|jpeg|jpg|ico|swf|css|js|html|htm)(\?[a-z0-9]+)?$" &&
-		req.url !~ "system" && 
-		req.url !~ "/journals/edit/[0-9]+.js") {
-		unset req.http.Cookie;
-	}
+  # Always cache the following file types for all users.
+  if (  req.url ~ "(?i)\.(png|gif|jpeg|jpg|ico|swf|css|js|html|htm)(\?[a-z0-9]+)?$" &&
+    req.url !~ "system" && 
+    req.url !~ "/journals/edit/[0-9]+.js") {
+    unset req.http.Cookie;
+  }
 
-	# Remove all cookies that Drupal/Redmine/Mediawiki does not need to know about.
-	# ANY remaining cookie will cause the request to pass-through to a backend.
-	# For the most part we always set the NO_CACHE cookie after any POST request,
-	# disabling the Varnish cache temporarily. The session cookie allows all authenticated
-	# users to pass through as long as they are logged in.
-	#
-	# 1. Append a semi-colon to the front of the cookie string.
-	# 2. Remove all spaces that appear after semi-colons.
-	# 3. Match the cookies we want to keep, adding the space we removed
-	#		previously, back. (\1) is first matching group in the regsuball.
-	# 4. Remove all other cookies, identifying them by the fact that they have
-	#		no space after the preceding semi-colon.
-	# 5. Remove all spaces and semi-colons from the beginning and end of the
-	#		cookie string.
-	if (req.http.Cookie) {
-		# Store the cookie, so that we can restore it later.
-		set req.http.X-OriginalCookie = req.http.Cookie;
-		set req.http.Cookie = ";" + req.http.Cookie;
-		set req.http.Cookie = regsuball(req.http.Cookie, "; +", ";");
-		set req.http.Cookie = regsuball(req.http.Cookie, ";(S{1,2}ESS[a-z0-9]+|NO_CACHE|[a-z0-9\-]+_session|_redmine_session)=", "; \1=");
-		set req.http.Cookie = regsuball(req.http.Cookie, ";[^ ][^;]*", "");
-		set req.http.Cookie = regsuball(req.http.Cookie, "^[; ]+|[; ]+$", "");
-		if (req.http.Cookie == "") {
-			# If there are no remaining cookies, remove the cookie header. If there
-			# are not any cookie headers, Varnish default behavior will be to cache
-			# the page.
-			unset req.http.Cookie;
-			unset req.http.X-OriginalCookie;
-		} else {
-			# If there is any cookies left (a session or NO_CACHE cookie), do not
-			# cache the page. Pass it on to Apache directly.
-			set req.http.Cookie = req.http.X-OriginalCookie;
-			unset req.http.X-OriginalCookie;
-			return (pass);
-		}
-	}
+  # Remove all cookies that Drupal/Redmine/Mediawiki does not need to know about.
+  # ANY remaining cookie will cause the request to pass-through to a backend.
+  # For the most part we always set the NO_CACHE cookie after any POST request,
+  # disabling the Varnish cache temporarily. The session cookie allows all authenticated
+  # users to pass through as long as they are logged in.
+  #
+  # 1. Append a semi-colon to the front of the cookie string.
+  # 2. Remove all spaces that appear after semi-colons.
+  # 3. Match the cookies we want to keep, adding the space we removed
+  #    previously, back. (\1) is first matching group in the regsuball.
+  # 4. Remove all other cookies, identifying them by the fact that they have
+  #    no space after the preceding semi-colon.
+  # 5. Remove all spaces and semi-colons from the beginning and end of the
+  #    cookie string.
+  if (req.http.Cookie) {
+    # Store the cookie, so that we can restore it later.
+    set req.http.X-OriginalCookie = req.http.Cookie;
+    set req.http.Cookie = ";" + req.http.Cookie;
+    set req.http.Cookie = regsuball(req.http.Cookie, "; +", ";");
+    set req.http.Cookie = regsuball(req.http.Cookie, ";(S{1,2}ESS[a-z0-9]+|NO_CACHE|[a-z0-9\-]+_session|_redmine_session)=", "; \1=");
+    set req.http.Cookie = regsuball(req.http.Cookie, ";[^ ][^;]*", "");
+    set req.http.Cookie = regsuball(req.http.Cookie, "^[; ]+|[; ]+$", "");
+    if (req.http.Cookie == "") {
+      # If there are no remaining cookies, remove the cookie header. If there
+      # are not any cookie headers, Varnish default behavior will be to cache
+      # the page.
+      unset req.http.Cookie;
+      unset req.http.X-OriginalCookie;
+    } else {
+      # If there is any cookies left (a session or NO_CACHE cookie), do not
+      # cache the page. Pass it on to Apache directly.
+      set req.http.Cookie = req.http.X-OriginalCookie;
+      unset req.http.X-OriginalCookie;
+      return (pass);
+    }
+  }
 
-	## Unset Authorization header if it has the correct details...
-	if (req.http.Authorization || req.http.Cookie) {
-			/* Not cacheable by default */
-			return (pass);
-	}
+  ## Unset Authorization header if it has the correct details...
+  if (req.http.Authorization || req.http.Cookie) {
+      /* Not cacheable by default */
+      return (pass);
+  }
 }
 
 sub vcl_backend_response {
-	# do not cache files larger than 10MB
-	if (beresp.http.Content-Length ~ "[0-9]{8,}" ) {
-		set beresp.http.x-pipe = "1";
-		return (retry);
-	}
-	# Prevent ports from appearing in the response.
-	if (beresp.status == 301 || beresp.status == 302){
-		set beresp.http.Location = regsub(beresp.http.Location,"^(\w+://[^/]+):\d+", "\1");
-	}
-	# Do not allow static files to set cookies.
-	if (bereq.url ~ "(?i)\.(png|gif|jpeg|jpg|ico|swf|css|js|html|htm)(\?[a-z0-9]+)?$") {
-		unset beresp.http.set-cookie;
-	}
-	# Allow items to be stale if needed.
-	set beresp.grace = 6h;
+  # do not cache files larger than 10MB
+  if (beresp.http.Content-Length ~ "[0-9]{8,}" ) {
+    set beresp.http.x-pipe = "1";
+    return (retry);
+  }
+  # Prevent ports from appearing in the response.
+  if (beresp.status == 301 || beresp.status == 302){
+    set beresp.http.Location = regsub(beresp.http.Location,"^(\w+://[^/]+):\d+", "\1");
+  }
+  # Do not allow static files to set cookies.
+  if (bereq.url ~ "(?i)\.(png|gif|jpeg|jpg|ico|swf|css|js|html|htm)(\?[a-z0-9]+)?$") {
+    unset beresp.http.set-cookie;
+  }
+  # Allow items to be stale if needed.
+  set beresp.grace = 6h;
 }
 
 # In the event of an error, show friendlier messages.
 sub vcl_backend_error {
-	# Hacky redirect 
-	if(beresp.status == 750){
-		set beresp.http.Location = beresp.reason;
-		set beresp.status = 302;
-		return (deliver);
-	}
-	# Friendly error!
-	set beresp.http.Content-Type = "text/html; charset=utf-8";
-	set beresp.http.Retry-After = "5";
-	synthetic({"<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
-	 <head>
-		 <title>"} + beresp.status + " " + beresp.reason + {"</title>
-	 </head>
-	 <body>
-	<h1 class="title">Page Unavailable</h1>
-	<p>The page you requested is temporarily unavailable.</p>
-	<p>Error "} + beresp.status + " " + beresp.reason + {"</p>
-	<p>"} + beresp.reason + {"</p>
-	 </body>
-</html>"});
-	return (deliver);
+  # Hacky redirect 
+  if(beresp.status == 750){
+    set beresp.http.Location = beresp.reason;
+    set beresp.status = 302;
+    return (deliver);
+  }
+  # Friendly error!
+  set beresp.http.Content-Type = "text/html; charset=utf-8";
+  set beresp.http.Retry-After = "5";
+  synthetic({"<%= node['scratchpads']['varnish']['error_message'] %>"});
+  return (deliver);
 }

@@ -20,7 +20,7 @@ end
 passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
 
 # Copy the percona-functions SQL file and execute it
-if(::File.not_exists?("/tmp/#{node['scratchpads']['percona']['percona-functions-file']}"))
+unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['percona-functions-file']}"))
   cookbook_file "/tmp/#{node['scratchpads']['percona']['percona-functions-file']}" do
     source node['scratchpads']['percona']['percona-functions-file']
     cookbook scratchpads
@@ -35,7 +35,7 @@ if(::File.not_exists?("/tmp/#{node['scratchpads']['percona']['percona-functions-
 end
 
 # Copy the secure-installation SQL file and execute it
-if(::File.not_exists?("/tmp/#{node['scratchpads']['percona']['secure-installation-file']}"))
+unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['secure-installation-file']}"))
   cookbook_file "/tmp/#{node['scratchpads']['percona']['secure-installation-file']}" do
     source node['scratchpads']['percona']['secure-installation-file']
     cookbook scratchpads
@@ -50,7 +50,7 @@ if(::File.not_exists?("/tmp/#{node['scratchpads']['percona']['secure-installatio
 end
 
 # Copy the gm3.sql.gz SQL file and load it
-if(::File.not_exists?("/tmp/#{node['scratchpads']['percona']['secure-installation-file']}"))
+unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['secure-installation-file']}"))
   cookbook_file "/tmp/#{node['scratchpads']['percona']['gm3_data_file']}" do
     source node['scratchpads']['percona']['gm3_data_file']
     cookbook scratchpads

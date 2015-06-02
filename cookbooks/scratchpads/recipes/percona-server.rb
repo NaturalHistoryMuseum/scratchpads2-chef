@@ -16,39 +16,77 @@ mysql2_chef_gem 'default' do
   action :install
 end
 
-# Copy the percona-functions SQL file.
-cookbook_file node['scratchpads']['percona']['percona-functions-file'] do
-  source 'percona-functions.sql'
-  owner 'root'
-  group 'root'
-  mode '0600'
-end
-
-# Execute the MySQL using the password set in the Percona passwords bag.
+# Load the passwords only once
 passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
-execute 'percona functions' do
-  root_pw = passwords.root_password
-  command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < #{node['scratchpads']['percona']['percona-functions-file']}"
+
+# Copy the percona-functions SQL file and execute it
+if(::File.not_exists?("/tmp/#{node['scratchpads']['percona']['percona-functions-file']}"))
+  cookbook_file "/tmp/#{node['scratchpads']['percona']['percona-functions-file']}" do
+    source node['scratchpads']['percona']['percona-functions-file']
+    cookbook scratchpads
+    owner 'root'
+    group 'root'
+    mode '0400'
+  end
+  execute 'percona functions' do
+    root_pw = passwords.root_password
+    command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < #{node['scratchpads']['percona']['percona-functions-file']}"
+  end
 end
 
-# Copy the secure-installation SQL file.
-cookbook_file node['scratchpads']['percona']['secure-installation-file'] do
-  source 'secure-installation.sql'
-  owner 'root'
-  group 'root'
-  mode '0600'
+# Copy the secure-installation SQL file and execute it
+if(::File.not_exists?("/tmp/#{node['scratchpads']['percona']['secure-installation-file']}"))
+  cookbook_file "/tmp/#{node['scratchpads']['percona']['secure-installation-file']}" do
+    source node['scratchpads']['percona']['secure-installation-file']
+    cookbook scratchpads
+    owner 'root'
+    group 'root'
+    mode '0400'
+  end
+  execute 'secure installation' do
+    root_pw = passwords.root_password
+    command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < #{node['scratchpads']['percona']['secure-installation-file']}"
+  end
 end
 
-# Execute the SQL using the password set in the Percona passwords bag.
-passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
-execute 'secure installation' do
-  root_pw = passwords.root_password
-  command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < #{node['scratchpads']['percona']['secure-installation-file']}"
+# Copy the gm3.sql.gz SQL file and load it
+if(::File.not_exists?("/tmp/#{node['scratchpads']['percona']['secure-installation-file']}"))
+  cookbook_file "/tmp/#{node['scratchpads']['percona']['gm3_data_file']}" do
+    source node['scratchpads']['percona']['gm3_data_file']
+    cookbook scratchpads
+    owner 'root'
+    group 'root'
+    mode '0400'
+  end
+  # Create the GM3 user
+  gm3_pw = passwords.find_password 'mysql', 'gm3'
+  mysql_database 'gm3' do
+    connection(
+      :host => node['scratchpads']['control']['dbserver'],
+      :username => node['scratchpads']['control']['dbuser'],
+      :password => root_pw
+    )
+    action :create
+  end
+  mysql_database_user 'gm3' do
+    connection(
+      :host => node['scratchpads']['control']['dbserver'],
+      :username => node['scratchpads']['control']['dbuser'],
+      :password => root_pw
+    )
+    password gm3_pw
+    database_name 'gm3'
+    host node['scratchpads']['control']['aegir']['dbuserhost']
+    action [:create, :grant]
+  end
+  execute 'load gm3 data' do
+    root_pw = passwords.root_password
+    command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < #{node['scratchpads']['percona']['secure-installation-file']}"
+  end
 end
 
 # Create the aegir user
 # Add a database user using the password in the passwords bag.
-passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
 root_pw = passwords.root_password
 aegir_pw = passwords.find_password 'mysql', 'aegir'
 mysql_database_user node['scratchpads']['control']['aegir']['dbuser'] do

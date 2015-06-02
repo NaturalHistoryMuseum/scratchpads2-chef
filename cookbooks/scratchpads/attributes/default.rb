@@ -22,8 +22,9 @@ default['scratchpads']['control']['dbuser'] = 'root'
 default['scratchpads']['control']['admin_email'] = 's.rycroft@nhm.ac.uk'
 
 # Extra SQL files
-default['scratchpads']['percona']['percona-functions-file'] = '/tmp/percona-functions.sql'
-default['scratchpads']['percona']['secure-installation-file'] = '/tmp/secure-installation.sql'
+default['scratchpads']['percona']['percona-functions-file'] = 'percona-functions.sql'
+default['scratchpads']['percona']['secure-installation-file'] = 'secure-installation.sql'
+default['scratchpads']['percona']['gm3_data_file'] = 'gm3.sql.gz'
 
 # Drush config folder
 default['scratchpads']['control']['drush_config_folder'] = '.drush'

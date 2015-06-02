@@ -23,7 +23,7 @@ passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypt
 unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['percona-functions-file']}"))
   cookbook_file "/tmp/#{node['scratchpads']['percona']['percona-functions-file']}" do
     source node['scratchpads']['percona']['percona-functions-file']
-    cookbook scratchpads
+    cookbook 'scratchpads'
     owner 'root'
     group 'root'
     mode '0400'
@@ -38,7 +38,7 @@ end
 unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['secure-installation-file']}"))
   cookbook_file "/tmp/#{node['scratchpads']['percona']['secure-installation-file']}" do
     source node['scratchpads']['percona']['secure-installation-file']
-    cookbook scratchpads
+    cookbook 'scratchpads'
     owner 'root'
     group 'root'
     mode '0400'
@@ -53,7 +53,7 @@ end
 unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['gm3_data_file']}"))
   cookbook_file "/tmp/#{node['scratchpads']['percona']['gm3_data_file']}" do
     source node['scratchpads']['percona']['gm3_data_file']
-    cookbook scratchpads
+    cookbook 'scratchpads'
     owner 'root'
     group 'root'
     mode '0400'

@@ -30,7 +30,7 @@ unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['percona-functions-
   end
   execute 'percona functions' do
     root_pw = passwords.root_password
-    command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < #{node['scratchpads']['percona']['percona-functions-file']}"
+    command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < /tmp/#{node['scratchpads']['percona']['percona-functions-file']}"
   end
 end
 
@@ -45,7 +45,7 @@ unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['secure-installatio
   end
   execute 'secure installation' do
     root_pw = passwords.root_password
-    command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < #{node['scratchpads']['percona']['secure-installation-file']}"
+    command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < /tmp/#{node['scratchpads']['percona']['secure-installation-file']}"
   end
 end
 
@@ -60,6 +60,7 @@ unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['gm3_data_file']}")
   end
   # Create the GM3 user
   gm3_pw = passwords.find_password 'mysql', 'gm3'
+  root_pw = passwords.root_password
   mysql_database 'gm3' do
     connection(
       :host => node['scratchpads']['control']['dbserver'],
@@ -81,7 +82,7 @@ unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['gm3_data_file']}")
   end
   execute 'load gm3 data' do
     root_pw = passwords.root_password
-    command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < #{node['scratchpads']['percona']['secure-installation-file']}"
+    command "zcat /tmp/#{node['scratchpads']['percona']['gm3_data_file']} | mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' gm3"
   end
 end
 

@@ -219,6 +219,14 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
       :sp_data_servers => data_hosts
     })
   end
+  # Create the solr.inc file
+  template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/solr.inc" do
+    source 'solr.inc.erb'
+    cookbook 'scratchpads'
+    owner node['scratchpads']['aegir']['user']
+    group node['scratchpads']['aegir']['group']
+    mode 0644
+  end
   # Create the varnish.inc file which contains the /etc/varnish/secret contents from an encrypted data bag
   # This allows us to know the secret on all servers, and therefore allows us to
   # control the Varnish server remotely (i.e. sp-app-xxx can clear varnish cache

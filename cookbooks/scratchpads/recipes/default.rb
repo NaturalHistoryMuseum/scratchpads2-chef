@@ -15,4 +15,5 @@ include_recipe 'apt'
 # Install Gkrellmd on all servers
 include_recipe 'gkrellmd'
 
+# Install rsync and unzip
 package ['rsync','unzip']

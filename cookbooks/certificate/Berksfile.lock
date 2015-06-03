@@ -1,0 +1,7 @@
+DEPENDENCIES
+  certificate
+    path: .
+    metadata: true
+
+GRAPH
+  certificate (0.6.3)

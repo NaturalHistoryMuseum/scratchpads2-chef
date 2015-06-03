@@ -25,6 +25,7 @@ node['scratchpads']['percona']['templates'].each do|name,tmplte|
     group tmplte['group']
     mode tmplte['mode']
     action :create
+    notifies :reload, 'service[mysql]', :delayed
   end
 end
 

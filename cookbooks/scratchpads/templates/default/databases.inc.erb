@@ -1,7 +1,6 @@
 <?php
 global $databases;
 $databases['default']['default']['charset'] = '<%= node['scratchpads']['percona']['charset'] %>';
-$databases['default']['default']['collation'] = '<%= node['scratchpads']['percona']['collation'] %>';
 $databases['default']['default']['row_format'] = '<%= node['scratchpads']['percona']['row_format'] %>';
 $databases['gm3']['default'] = array(
   'driver' => $databases['default']['default']['driver'],
@@ -11,6 +10,5 @@ $databases['gm3']['default'] = array(
   'host' => $databases['default']['default']['host'],
   'port' => $databases['default']['default']['port'],
   'charset' => '<%= node['scratchpads']['percona']['charset'] %>',
-  'collation' => '<%= node['scratchpads']['percona']['collation'] %>',
   'row_format' => '<%= node['scratchpads']['percona']['row_format'] %>'
 );

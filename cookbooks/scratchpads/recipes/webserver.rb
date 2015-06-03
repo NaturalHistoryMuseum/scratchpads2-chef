@@ -21,3 +21,7 @@ php_pear 'drush' do
   channel dc.channel_name
   action :install
 end
+# Install the uploadprogress pecl extension
+php_pear 'uploadprogress' do
+  action :install
+end

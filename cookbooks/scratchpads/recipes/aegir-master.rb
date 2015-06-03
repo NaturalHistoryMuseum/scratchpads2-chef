@@ -110,7 +110,6 @@ execute 'enable additional modules' do
   environment node['scratchpads']['aegir']['environment']
 end
 # Set the admin password to one contained in an encrypted data bag.
-passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
 admin_pw = passwords.find_password 'aegir', 'admin'
 execute 'set the admin user password' do
   command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} upwd admin --password=#{admin_pw} -y"
@@ -194,7 +193,6 @@ end
 # This allows us to know the secret on all servers, and therefore allows us to
 # control the Varnish server remotely (i.e. sp-app-xxx can clear varnish cache
 # for a specific site)
-passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
 varnish_secret = passwords.find_password 'varnish', 'secret'
 template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/varnish.inc" do
   source 'varnish.inc.erb'
@@ -206,7 +204,6 @@ template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/varnish
     :varnish_secret => varnish_secret
   })
 end
-passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
 gm3_password = passwords.find_password 'mysql', 'gm3'
 template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/databases.inc" do
   source 'databases.inc.erb'
@@ -220,12 +217,18 @@ template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/databas
 end
 # Create the global.inc file which has general settings, and also includes the memcache.inc, 
 # varnish.inc and databases.inc files.
+twitter_consumer_secret = passwords.find_password 'twitter', 'secret'
+twitter_consumer_key = passwords.find_password 'twitter', 'key'
 template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/global.inc" do
   source 'global.inc.erb'
   cookbook 'scratchpads'
   owner node['scratchpads']['aegir']['user']
   group node['scratchpads']['aegir']['group']
   mode 0644
+  variables({
+    :twitter_consumer_key => twitter_consumer_key,
+    :twitter_consumer_secret => twitter_consumer_secret
+  })
 end
 
 # Add remote hosts (data and app servers)

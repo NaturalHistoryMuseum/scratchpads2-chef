@@ -1,14 +1,18 @@
 <?php
-global $databases;
-$databases['default']['default']['charset'] = '<%= node['scratchpads']['percona']['charset'] %>';
-$databases['default']['default']['row_format'] = '<%= node['scratchpads']['percona']['row_format'] %>';
-$databases['gm3']['default'] = array(
-  'driver' => $databases['default']['default']['driver'],
-  'database' => 'gm3',
-  'username' => 'gm3',
-  'password' => '<%= @gm3_password %>',
-  'host' => $databases['default']['default']['host'],
-  'port' => $databases['default']['default']['port'],
-  'charset' => '<%= node['scratchpads']['percona']['charset'] %>',
-  'row_format' => '<%= node['scratchpads']['percona']['row_format'] %>'
-);
+if($_SERVER['HTTP_HOST'] != '<%= node['scratchpads']['control']['fqdn'] %>'){
+  global $databases;
+  $databases['default']['default']['charset'] = '<%= node['scratchpads']['percona']['charset'] %>';
+  $databases['default']['default']['collation'] = '<%= node['scratchpads']['percona']['collation'] %>';
+  $databases['default']['default']['row_format'] = '<%= node['scratchpads']['percona']['row_format'] %>';
+  $databases['gm3']['default'] = array(
+    'driver' => $databases['default']['default']['driver'],
+    'database' => 'gm3',
+    'username' => 'gm3',
+    'password' => '<%= @gm3_password %>',
+    'host' => $databases['default']['default']['host'],
+    'port' => $databases['default']['default']['port'],
+    'charset' => '<%= node['scratchpads']['percona']['charset'] %>',
+    'collation' => '<%= node['scratchpads']['percona']['collation'] %>',
+    'row_format' => '<%= node['scratchpads']['percona']['row_format'] %>'
+  );
+}

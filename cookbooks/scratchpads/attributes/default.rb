@@ -26,6 +26,16 @@ default['scratchpads']['percona']['percona-functions-file'] = 'percona-functions
 default['scratchpads']['percona']['secure-installation-file'] = 'secure-installation.sql'
 default['scratchpads']['percona']['gm3_data_file'] = 'gm3.sql.gz'
 
+default['scratchpads']['percona']['templates']['scratchpads-mysql.cnf']['path'] = '/etc/mysql/conf.d/scratchpads-mysql.cnf'
+default['scratchpads']['percona']['templates']['scratchpads-mysql.cnf']['cookbook'] = 'scratchpads'
+default['scratchpads']['percona']['templates']['scratchpads-mysql.cnf']['source'] = 'scratchpads-mysql.cnf.erb'
+default['scratchpads']['percona']['templates']['scratchpads-mysql.cnf']['owner'] = 'root'
+default['scratchpads']['percona']['templates']['scratchpads-mysql.cnf']['group'] = 'root'
+default['scratchpads']['percona']['templates']['scratchpads-mysql.cnf']['mode'] = '0644'
+
+default['scratchpads']['percona']['innodb_large_prefix'] = 1
+default['scratchpads']['percona']['max_user_connections'] = 20
+
 # Drush config folder
 default['scratchpads']['control']['drush_config_folder'] = '.drush'
 default['scratchpads']['control']['drush_command'] = '/usr/bin/drush'

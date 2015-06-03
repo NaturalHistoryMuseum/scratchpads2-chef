@@ -16,6 +16,18 @@ mysql2_chef_gem 'default' do
   action :install
 end
 
+node['scratchpads']['percona']['templates'].each do|name,tmplte|
+  template tmplte['path'] do
+    path tmplte['path']
+    source tmplte['source']
+    cookbook tmplte['cookbook']
+    owner tmplte['owner']
+    group tmplte['group']
+    mode tmplte['mode']
+    action :create
+  end
+end
+
 # Load the passwords only once
 passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
 

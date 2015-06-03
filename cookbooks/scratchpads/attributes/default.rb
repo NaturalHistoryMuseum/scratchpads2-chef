@@ -26,6 +26,10 @@ default['scratchpads']['percona']['percona-functions-file'] = 'percona-functions
 default['scratchpads']['percona']['secure-installation-file'] = 'secure-installation.sql'
 default['scratchpads']['percona']['gm3_data_file'] = 'gm3.sql.gz'
 
+default['scratchpads']['percona']['row_format'] = 'COMPRESSED'
+default['scratchpads']['percona']['collation'] = 'utf8mb4_unicode_ci'
+default['scratchpads']['percona']['charset'] = 'utf8mb4'
+
 default['scratchpads']['percona']['templates']['scratchpads-mysql.cnf']['path'] = '/etc/mysql/conf.d/scratchpads-mysql.cnf'
 default['scratchpads']['percona']['templates']['scratchpads-mysql.cnf']['cookbook'] = 'scratchpads'
 default['scratchpads']['percona']['templates']['scratchpads-mysql.cnf']['source'] = 'scratchpads-mysql.cnf.erb'

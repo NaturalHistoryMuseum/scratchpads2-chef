@@ -35,6 +35,13 @@ directory node['scratchpads']['aegir']['home_folder'] do
   mode 0755
   action :create
 end
+# Create the .ssh directory
+directory "#{node['scratchpads']['aegir']['home_folder']}/.ssh" do
+  owner node['scratchpads']['aegir']['user']
+  group node['scratchpads']['aegir']['group']
+  mode 0700
+  action :create
+end
 # Check to see if we are running the 'control' role. If so we install Aegir, and if not
 # we just ensure that the aegir user on control can ssh to this box.
 if node['roles'].index(node['scratchpads']['control']['role']) then

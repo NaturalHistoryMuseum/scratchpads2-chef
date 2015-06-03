@@ -30,16 +30,6 @@ default['scratchpads']['percona']['row_format'] = 'COMPRESSED'
 default['scratchpads']['percona']['collation'] = 'utf8mb4_unicode_ci'
 default['scratchpads']['percona']['charset'] = 'utf8mb4'
 
-default['scratchpads']['percona']['templates']['scratchpads-mysql.cnf']['path'] = '/etc/mysql/conf.d/scratchpads-mysql.cnf'
-default['scratchpads']['percona']['templates']['scratchpads-mysql.cnf']['cookbook'] = 'scratchpads'
-default['scratchpads']['percona']['templates']['scratchpads-mysql.cnf']['source'] = 'scratchpads-mysql.cnf.erb'
-default['scratchpads']['percona']['templates']['scratchpads-mysql.cnf']['owner'] = 'root'
-default['scratchpads']['percona']['templates']['scratchpads-mysql.cnf']['group'] = 'root'
-default['scratchpads']['percona']['templates']['scratchpads-mysql.cnf']['mode'] = '0644'
-
-default['scratchpads']['percona']['innodb_large_prefix'] = 1
-default['scratchpads']['percona']['max_user_connections'] = 20
-
 # Drush config folder
 default['scratchpads']['control']['drush_config_folder'] = '.drush'
 default['scratchpads']['control']['drush_command'] = '/usr/bin/drush'

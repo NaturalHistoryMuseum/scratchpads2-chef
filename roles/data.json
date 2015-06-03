@@ -23,6 +23,12 @@
         "group_concat_max_len": "4294967295",
         "innodb_file_format": "Barracuda",
         "max_connections": "101"
+      },
+      "conf": {
+        "mysqld": {
+          "innodb_large_prefix": 1,
+          "max_user_connections": 20
+        }
       }
     }
   },

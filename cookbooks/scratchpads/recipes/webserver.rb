@@ -4,6 +4,9 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
+# Add a couple of modules to the list to enable
+node.default['apache']['default_modules'] << 'expires'
+
 # Install Apache2 and set it to use prefork and mod_php5
 include_recipe 'apache2'
 include_recipe 'apache2::mpm_prefork'

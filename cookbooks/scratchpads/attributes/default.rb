@@ -36,7 +36,7 @@ default['scratchpads']['control']['drush_command'] = '/usr/bin/drush'
 
 # PHP settings
 default['scratchpads']['php']['php5enmod_command'] = '/usr/sbin/php5enmod'
-default['scratchpads']['php']['pecl_or_pear_modules'] = ['uploadprogress','mailparse','pecl_http']
+default['scratchpads']['php']['pecl_or_pear_modules'] = ['uploadprogress','mailparse','propro','raphf','pecl_http']
 
 # Aegir settings
 default['scratchpads']['aegir']['home_folder'] = '/var/aegir'

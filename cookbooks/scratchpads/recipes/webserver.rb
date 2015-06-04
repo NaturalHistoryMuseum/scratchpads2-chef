@@ -21,12 +21,15 @@ php_pear 'drush' do
   channel dc.channel_name
   action :install
 end
-# Install the uploadprogress pecl extension
-php_pear 'uploadprogress' do
-  action :install
-end
-execute 'enable uploadprogress module' do
-  command "#{node['scratchpads']['php']['php5enmod_command']} -s apache2 uploadprogress"
-  group 'root'
-  user 'root'
+node['scratchpads']['php']['pecl_or_pear_modules'].each do|module_name|
+  # Install pecl extensions
+  php_pear module_name do
+    action :install
+  end
+  # Could do the following in one big command, but it doesn't really make a difference.
+  execute "enable #{module_name} module" do
+    command "#{node['scratchpads']['php']['php5enmod_command']} #{module_name}"
+    group 'root'
+    user 'root'
+  end
 end

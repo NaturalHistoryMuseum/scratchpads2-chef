@@ -22,6 +22,12 @@ if node['roles'].index('control') then
     sync true
     options ['root_squash','no_subtree_check']
   end
+  nfs_export '/var/www' do
+    network app_hosts
+    writeable true
+    sync true
+    options ['root_squash','no_subtree_check']
+  end
   # Restart nfs-server components
   execute 'restart the NFS server' do
     command '/bin/systemctl restart nfs-kernel-server'
@@ -49,6 +55,18 @@ else
   control_host = control_hosts.first
   mount '/var/aegir/platforms' do
     device "#{control_host['fqdn']}:/var/aegir/platforms"
+    fstype 'nfs'
+    options 'rw,bg,ac,noatime'
+    action [:mount, :enable]
+  end
+  execute 'delete /var/www/html before mount /var/www' do
+    command 'rm -rf /var/www/html'
+    group 'root'
+    user 'root'
+    not_if {::File.exists?('/var/www/html')}
+  end
+  mount '/var/www' do
+    device "#{control_host['fqdn']}:/var/www"
     fstype 'nfs'
     options 'rw,bg,ac,noatime'
     action [:mount, :enable]

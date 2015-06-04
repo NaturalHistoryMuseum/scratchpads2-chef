@@ -73,6 +73,7 @@
     "recipe[scratchpads::postfix]",
     "recipe[scratchpads::aegir]",
     "recipe[scratchpads::nfs]",
-    "recipe[scratchpads::varnish]"
+    "recipe[scratchpads::varnish]",
+    "recipe[scratchpads::mediawiki]"
   ]
 }

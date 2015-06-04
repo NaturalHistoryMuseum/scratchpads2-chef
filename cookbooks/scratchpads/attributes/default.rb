@@ -34,6 +34,9 @@ default['scratchpads']['percona']['charset'] = 'utf8mb4'
 default['scratchpads']['control']['drush_config_folder'] = '.drush'
 default['scratchpads']['control']['drush_command'] = '/usr/bin/drush'
 
+# PHP settings
+default['scratchpads']['php']['php5enmod_command'] = '/usr/sbin/php5enmod'
+
 # Aegir settings
 default['scratchpads']['aegir']['home_folder'] = '/var/aegir'
 default['scratchpads']['aegir']['hostmaster_folder'] = 'platforms/hostmaster'

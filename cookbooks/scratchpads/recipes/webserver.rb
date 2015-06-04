@@ -25,3 +25,8 @@ end
 php_pear 'uploadprogress' do
   action :install
 end
+execute 'enable uploadprogress module' do
+  command "#{node['scratchpads']['php']['php5enmod_command']} -s apache2 uploadprogress"
+  group 'root'
+  user 'root'
+end

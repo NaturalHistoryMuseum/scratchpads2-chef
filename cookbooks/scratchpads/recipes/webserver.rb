@@ -5,7 +5,7 @@
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
 # Add modules to the list to enable
-node['scratchpads']['apache']['additional_modules'].each do|module_name|
+node['scratchpads']['webserver']['apache']['additional_modules'].each do|module_name|
   node.default['apache']['default_modules'] << module_name
 end
 
@@ -14,26 +14,46 @@ include_recipe 'apache2'
 include_recipe 'apache2::mpm_prefork'
 include_recipe 'apache2::mod_php5'
 
+# Add sites
+node['scratchpads']['webserver']['apache']['templates'].each do|name,tmplte|
+  template tmplte['path'] do
+    path tmplte['path']
+    source tmplte['source']
+    cookbook tmplte['cookbook']
+    owner tmplte['owner']
+    group tmplte['group']
+    mode tmplte['mode']
+    action :create
+  end
+end
+
 # PHP Package
 # PHP has probably already been dragged in by mod_php5, but we still need to add
 # other features/settings.
 include_recipe 'php'
-# Install drush from pear
-dc = php_pear_channel 'pear.drush.org' do
-  action :discover
+
+# Install pear/pecl modules from specific channels.
+node['scratchpads']['webserver']['php']['pear']['pecl_or_pear_modules_custom_channels'].each do|module_name,channel|
+  # Install drush from pear
+  dc = php_pear_channel channel do
+    action :discover
+  end
+  php_pear module_name do
+    channel dc.channel_name
+    action :install
+  end
 end
-php_pear 'drush' do
-  channel dc.channel_name
-  action :install
-end
-node['scratchpads']['php']['pecl_or_pear_modules'].each do|module_name|
+
+# Install pear/pecl modules from known channels (no need to discover the channel)
+node['scratchpads']['webserver']['php']['pear']['pecl_or_pear_modules'].each do|module_name|
   # Install pecl extensions
   php_pear module_name do
     action :install
   end
   # Could do the following in one big command, but it doesn't really make a difference.
+  # The following code should check whether we installed a pecl module, or a pear library, perhaps using a "if file exists"
   execute "enable #{module_name} module" do
-    command "#{node['scratchpads']['php']['php5enmod_command']} #{module_name}"
+    command "#{node['scratchpads']['webserver']['php']['php5enmod_command']} #{module_name}"
     group 'root'
     user 'root'
   end

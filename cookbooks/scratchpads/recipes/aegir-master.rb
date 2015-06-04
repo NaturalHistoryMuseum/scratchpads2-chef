@@ -7,7 +7,7 @@
 
 
 # Copy the secure-installation SQL file and execute it
-default['scratchpads']['aegir']['cookbook_files'].each do|name,cb_file|
+node['scratchpads']['aegir']['cookbook_files'].each do|name,cb_file|
   cookbook_file cb_file['path'] do
     source cb_file['source']
     cookbook cb_file['cookbook']

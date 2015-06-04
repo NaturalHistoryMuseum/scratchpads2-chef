@@ -6,7 +6,7 @@
 
 # Start by downloading the specific version of Mediawiki to the /var/chef folder.
 remote_file "#{node['scratchpads']['mediawiki']['download']['path']}/#{node['scratchpads']['mediawiki']['download']['filename']}" do
-  source "#{node['scratchpads']['mediawiki']['download']['download_url']}/#{node['scratchpads']['mediawiki']['download']['filename']}"
+  source node['scratchpads']['mediawiki']['download']['download_url']
   action :create_if_missing
 end
 

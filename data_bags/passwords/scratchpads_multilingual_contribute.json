@@ -1,0 +1,15 @@
+{
+  "id": "scratchpads_multilingual_contribute",
+  "key": {
+    "encrypted_data": "J2wnA8VTgEYfzM2oR0dTQtnMpGalbReiXO2KusREcPuTqnxLBAP+VnX5Tr+w\n2RfUT3hpYZ9aUe33oRKG2Tr73Q==\n",
+    "iv": "yKwR3PeAe2Gg/AEGnHuT4w==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  },
+  "uwho": {
+    "encrypted_data": "A2KBLPJLHhnu4TWHwAn3i7VmgGW8MrYb4k061320TIpMfsUxnqZamLqh5nLe\nYM9ATGwsIyiCBBcMkXH/Y5yS+A==\n",
+    "iv": "CIsnmHAktWakJqpC90HHbQ==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  }
+}

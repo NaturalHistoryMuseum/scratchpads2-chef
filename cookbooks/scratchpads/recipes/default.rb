@@ -9,7 +9,7 @@ hostsfile_entry '127.0.1.1' do
   action    :remove
 end
 node['scratchpads']['additional_hosts'].each do|hostname, ip|
-  hostfiles_entry ip do
+  hostsfile_entry ip do
     hostname hostname
     unique true
   end

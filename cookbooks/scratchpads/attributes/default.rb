@@ -4,6 +4,9 @@ default['scratchpads']['encrypted_data_secret_file_path'] = '/vagrant/.chef/encr
 # Passwords bag
 default['scratchpads']['encrypted_data_bag'] = 'passwords'
 
+# Registry IP address (currently running locally)
+default['scratchpads']['additional_hosts']['gbrds.gbif.org'] = '157.140.126.246'
+
 # FQDN of the control server (this probably shouldn't be set here)
 default['scratchpads']['control']['fqdn'] = 'sp-control-1.nhm.ac.uk'
 

@@ -4,9 +4,7 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
-
-
-# Copy the secure-installation SQL file and execute it
+# Copy any files we require.
 node['scratchpads']['aegir']['cookbook_files'].each do|name,cb_file|
   cookbook_file cb_file['path'] do
     source cb_file['source']
@@ -232,6 +230,8 @@ end
 # varnish.inc and databases.inc files.
 twitter_consumer_secret = passwords.find_password 'twitter', 'secret'
 twitter_consumer_key = passwords.find_password 'twitter', 'key'
+scratchpads_multilingual_contribute_key = passwords.find_password 'scratchpads_multilingual_contribute', 'key'
+scratchpads_multilingual_contribute_uwho = passwords.find_password 'scratchpads_multilingual_contribute', 'uwho'
 template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/global.inc" do
   source 'global.inc.erb'
   cookbook 'scratchpads'
@@ -240,7 +240,9 @@ template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/global.
   mode 0644
   variables({
     :twitter_consumer_key => twitter_consumer_key,
-    :twitter_consumer_secret => twitter_consumer_secret
+    :twitter_consumer_secret => twitter_consumer_secret,
+    :scratchpads_multilingual_contribute_key => scratchpads_multilingual_contribute_key,
+    :scratchpads_multilingual_contribute_uwho => scratchpads_multilingual_contribute_uwho
   })
 end
 

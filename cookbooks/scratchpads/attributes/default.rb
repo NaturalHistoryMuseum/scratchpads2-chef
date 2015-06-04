@@ -34,6 +34,9 @@ default['scratchpads']['percona']['charset'] = 'utf8mb4'
 default['scratchpads']['control']['drush_config_folder'] = '.drush'
 default['scratchpads']['control']['drush_command'] = '/usr/bin/drush'
 
+# Apache settings
+default['scratchpads']['apache']['additional_modules'] = ['expires']
+
 # PHP settings
 default['scratchpads']['php']['php5enmod_command'] = '/usr/sbin/php5enmod'
 default['scratchpads']['php']['pecl_or_pear_modules'] = ['uploadprogress','mailparse','propro','raphf','pecl_http']

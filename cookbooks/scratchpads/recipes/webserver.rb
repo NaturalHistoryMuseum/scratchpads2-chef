@@ -4,8 +4,10 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
-# Add a couple of modules to the list to enable
-node.default['apache']['default_modules'] << 'expires'
+# Add modules to the list to enable
+default['scratchpads']['apache']['additional_modules'].each do|module_name|
+  node.default['apache']['default_modules'] << module_name
+end
 
 # Install Apache2 and set it to use prefork and mod_php5
 include_recipe 'apache2'

@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Path to packages folder.
+PACKAGES_FOLDER="/var/aegir/platforms/scratchpads.eu*/sites/localize.scratchpads.eu/packages/"
+
+# Ensure they gave us a branch/tag.
+if [ $# -eq 0 ]; then
+	echo "usage: $0 {branch|tag}" 1>&2
+	exit 1
+fi
+
+# Firstly, we need to clone the repo, and then checkout the tag.
+cd /var/aegir/platforms
+git clone https://git.scratchpads.eu/git/scratchpads-2.0.git scratchpads-$1
+if cd scratchpads-$1
+then
+	# Checkout the branch or tag we want.
+	git checkout $1
+
+	# Delete the files we don't want (but would like to keep in the repo)
+	rm update.php install.php Scratchpads-Javascript.xml Scratchpads-PHP.xml web.config cron.php xmlrpc.php authorize.php scratchpads2.make
+
+	# Change the ownership
+	chown aegir:www-data -R .
+
+	if [ `echo $1 | grep "2\.[1-9]*\.[0-9].*"` ]
+	then
+		# Announce the version number.
+		sed "s/TAG/$1/" sites/all/modules/custom/scratchpads/scratchpads_tweaks/scratchpads_tweaks.module -i
+
+		echo "Creating packages for stable release"
+		cd sites/all/modules/contrib
+		for i in $(ls -1 | grep -v ^scratchpads$)
+		do
+			tar cfz "$i-7.x-$1.tar.gz" "$i"
+			mv "$i-7.x-$1.tar.gz" $PACKAGES_FOLDER
+		done
+		cd ../custom
+		for i in $(ls -1 | grep -v ^scratchpads$)
+		do
+			tar cfz "$i-7.x-$1.tar.gz" --exclude=gm3/gm3_region/region_data --exclude=websockets/web-socket-js "$i"
+			mv "$i-7.x-$1.tar.gz" $PACKAGES_FOLDER
+		done
+		cd scratchpads
+		for i in $(ls -1 | grep -v ^scratchpads$)
+		do
+			tar cfz "$i-7.x-$1.tar.gz" "$i"
+			mv "$i-7.x-$1.tar.gz" $PACKAGES_FOLDER
+		done
+	fi
+else
+	echo "Failed to clone repository"
+fi

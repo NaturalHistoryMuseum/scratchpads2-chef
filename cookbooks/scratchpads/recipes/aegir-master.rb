@@ -4,6 +4,19 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
+
+
+# Copy the secure-installation SQL file and execute it
+default['scratchpads']['aegir']['cookbook_files'].each do|name,cb_file|
+  cookbook_file cb_file['path'] do
+    source cb_file['source']
+    cookbook cb_file['cookbook']
+    owner cb_file['owner']
+    group cb_file['group']
+    mode cb_file['mode']
+  end
+end
+
 # Create the .drush folder
 directory "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}" do
   owner node['scratchpads']['aegir']['user']

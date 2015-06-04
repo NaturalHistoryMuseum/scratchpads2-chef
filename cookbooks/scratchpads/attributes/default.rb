@@ -73,6 +73,13 @@ default['scratchpads']['aegir']['hosting_auto_pack']['checkout_branch'] = 'maste
 default['scratchpads']['aegir']['scratchpads_master']['repository'] = 'https://git.scratchpads.eu/git/scratchpads-2.0.git'
 default['scratchpads']['aegir']['scratchpads_master']['checkout_branch'] = 'master'
 default['scratchpads']['aegir']['scratchpads_master']['timeout'] = 600
+# Files to create
+default['scratchpads']['aegir']['cookbook_files']['create-aegir-platform']['path'] = '/usr/local/sbin/create-aegir-platform'
+default['scratchpads']['aegir']['cookbook_files']['create-aegir-platform']['source'] = 'create-aegir-platform'
+default['scratchpads']['aegir']['cookbook_files']['create-aegir-platform']['cookbook'] = 'scratchpads'
+default['scratchpads']['aegir']['cookbook_files']['create-aegir-platform']['owner'] = 'root'
+default['scratchpads']['aegir']['cookbook_files']['create-aegir-platform']['group'] = 'root'
+default['scratchpads']['aegir']['cookbook_files']['create-aegir-platform']['mode'] = '0755'
 
 # Varnish
 default['scratchpads']['varnish']['first_byte_timeout'] = '600s'

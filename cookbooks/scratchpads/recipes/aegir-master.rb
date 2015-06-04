@@ -232,6 +232,8 @@ twitter_consumer_secret = passwords.find_password 'twitter', 'secret'
 twitter_consumer_key = passwords.find_password 'twitter', 'key'
 scratchpads_multilingual_contribute_key = passwords.find_password 'scratchpads_multilingual_contribute', 'key'
 scratchpads_multilingual_contribute_uwho = passwords.find_password 'scratchpads_multilingual_contribute', 'uwho'
+scratchpads_gbif_registry_username = passwords.find_password 'scratchpads_gbif_registry', 'username'
+scratchpads_gbif_registry_password = passwords.find_password 'scratchpads_gbif_registry', 'password'
 template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/global.inc" do
   source 'global.inc.erb'
   cookbook 'scratchpads'
@@ -242,7 +244,9 @@ template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/global.
     :twitter_consumer_key => twitter_consumer_key,
     :twitter_consumer_secret => twitter_consumer_secret,
     :scratchpads_multilingual_contribute_key => scratchpads_multilingual_contribute_key,
-    :scratchpads_multilingual_contribute_uwho => scratchpads_multilingual_contribute_uwho
+    :scratchpads_multilingual_contribute_uwho => scratchpads_multilingual_contribute_uwho,
+    :scratchpads_gbif_registry_username => scratchpads_gbif_registry_username,
+    :scratchpads_gbif_registry_password => scratchpads_gbif_registry_password
   })
 end
 

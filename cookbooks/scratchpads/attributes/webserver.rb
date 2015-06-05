@@ -1,5 +1,5 @@
 # Apache settings
-default['scratchpads']['webserver']['apache']['additional_modules'] = ['expires']
+default['scratchpads']['webserver']['apache']['additional_modules'] = ['expires','ssl','dbd','dav','dav_fs','authn_dbd']
 default['scratchpads']['webserver']['apache']['templates']['cc-mirror.scratchpads.eu'] = {
   'source' => 'cc-mirror.scratchpads.eu.erb',
   'cookbook' => 'scratchpads',
@@ -23,12 +23,7 @@ default['scratchpads']['webserver']['apache']['templates']['backup.scratchpads.e
   'documentroot' => '/var/aegir/backups'
 }
 passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
-if Chef::Config[:solo]
-  data_host = {'fqdn' => 'sp-data-1'}
-else
-  data_hosts = search(:node, 'flags:UP AND roles:data')
-  data_host = data_hosts.first
-end
+
 cite_scratchpads_eu_db_user = passwords.find_password 'cite.scratchpads.eu', 'user'
 cite_scratchpads_eu_db_password = passwords.find_password 'cite.scratchpads.eu', 'password'
 default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'] = {
@@ -50,7 +45,7 @@ default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'
   'database' => {
     'user' => cite_scratchpads_eu_db_user,
     'password' => cite_scratchpads_eu_db_password,
-    'host' => data_host['fqdn'],
+    'host' => '',
     'database' => 'citescratchpadseu'
   }
 }

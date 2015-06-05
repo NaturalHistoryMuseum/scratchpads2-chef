@@ -9,6 +9,9 @@ node['scratchpads']['webserver']['apache']['additional_modules'].each do|module_
   node.default['apache']['default_modules'] << module_name
 end
 
+# Install package required by Apache to connect to a MySQL database
+package ['libaprutil1-dbd-mysql']
+
 # Install Apache2 and set it to use prefork and mod_php5
 include_recipe 'apache2'
 include_recipe 'apache2::mpm_prefork'
@@ -43,6 +46,15 @@ end
 # We need to set some database settings before attempting to create the templates
 passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
 db_pw = passwords.find_password 'mysql', node['scratchpads']['control']['aegir']['dbuser']
+
+# Fill in the host
+if Chef::Config[:solo]
+  data_host = {'fqdn' => 'sp-data-1'}
+else
+  data_hosts = search(:node, 'flags:UP AND roles:data')
+  data_host = data_hosts.first
+end
+node.default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['host'] = data_host['fqdn']
 
 # Add sites
 node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte|
@@ -108,6 +120,7 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
           owner subtmplte['owner']
           group subtmplte['group']
           mode subtmplte['mode']
+          variables subtmplte['variables']
           action :create
         end
       end

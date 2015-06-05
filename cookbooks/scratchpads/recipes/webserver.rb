@@ -15,15 +15,36 @@ include_recipe 'apache2::mpm_prefork'
 include_recipe 'apache2::mod_php5'
 
 # Add sites
-node['scratchpads']['webserver']['apache']['templates'].each do|name,tmplte|
-  template tmplte['path'] do
-    path tmplte['path']
-    source tmplte['source']
+node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte|
+  web_app site_name do
     cookbook tmplte['cookbook']
-    owner tmplte['owner']
-    group tmplte['group']
-    mode tmplte['mode']
-    action :create
+    template tmplte['source']
+    enable true
+  end
+  if node['roles'].index('control') then
+    directory site_name do
+      path tmplte['documentroot']
+      owner node['apache']['user']
+      group node['apache']['group']
+      mode 0755
+      action :create
+      only_if {defined? tmplte['documentroot']}
+    end
+  end
+  if (defined? tmplte['files'])
+    cookbook_file "/var/chef/#{tmplte['files']['source']}" do
+      source tmplte['files']['source']
+      cookbook tmplte['files']['cookbook']
+      owner node['apache']['user']
+      group node['apache']['group']
+      mode '0400'
+    end
+    execute "extract #{tmplte['files']['source']}" do
+      cwd tmplte['documentroot']
+      command "tar xfz /var/chef/#{tmplte['files']['source']}"
+      user node['apache']['user']
+      group node['apache']['group']
+    end
   end
 end
 

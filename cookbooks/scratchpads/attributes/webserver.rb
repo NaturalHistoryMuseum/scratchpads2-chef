@@ -1,14 +1,14 @@
 # Apache settings
 default['scratchpads']['webserver']['apache']['additional_modules'] = ['expires']
 default['scratchpads']['webserver']['apache']['templates']['cc-mirror.scratchpads.eu'] = {
-    'path' => "#{node['apache']['dir']}/sites-available/cc-mirror.scratchpads.eu",
-    'source' => 'cc-mirror.scratchpads.eu.erb',
+  'source' => 'cc-mirror.scratchpads.eu.erb',
+  'cookbook' => 'scratchpads',
+  'servername' => 'cc-mirror.scratchpads.eu',
+  'documentroot' => '/var/www/cc-mirror.scratchpads.eu',
+  'files' => {
     'cookbook' => 'scratchpads',
-    'owner' => 'root',
-    'group' => 'root',
-    'mode' => '0644',
-    'servername' => 'cc-mirror.scratchpads.eu',
-    'documentroot' => '/var/www/cc-mirror.scratchpads.eu'
+    'source' => 'cc-mirror.scratchpads.eu.tar.gz'
+  }
 }
 
 # PHP settings

@@ -1,0 +1,6 @@
+<VirtualHost *:80>
+	DocumentRoot	<%= node['scratchpads']['webserver']['apache']['templates']['cc-mirror.scratchpads.eu']['documentroot'] %>
+	ServerName	<%= node['scratchpads']['webserver']['apache']['templates']['cc-mirror.scratchpads.eu']['servername'] %>
+	ExpiresActive	on
+	ExpiresDefault	"access plus 8 weeks"
+</VirtualHost>

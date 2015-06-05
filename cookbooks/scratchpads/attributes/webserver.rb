@@ -19,6 +19,7 @@ default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu'
 
 # PHP settings
 default['scratchpads']['webserver']['php']['php5enmod_command'] = '/usr/sbin/php5enmod'
+default['scratchpads']['webserver']['php']['session_save_path'] = '/var/www/php-sessions'
 
 # Pear settings
 default['scratchpads']['webserver']['php']['pear']['pecl_or_pear_modules_custom_channels'] = {'drush' => 'pear.drush.org'}

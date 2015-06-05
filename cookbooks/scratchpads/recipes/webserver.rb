@@ -14,6 +14,16 @@ include_recipe 'apache2'
 include_recipe 'apache2::mpm_prefork'
 include_recipe 'apache2::mod_php5'
 
+# Create the session save path
+directory node['scratchpads']['webserver']['php']['session_save_path'] do
+  owner node['apache']['user']
+  group node['apache']['group']
+  mode 0755
+  action :create
+  only_if {node['roles'].index('control')}
+  not_if {::File.exists?(node['scratchpads']['webserver']['php']['session_save_path'])}
+end
+
 # Add sites
 node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte|
   web_app site_name do

@@ -31,10 +31,6 @@ else
 end
 cite_scratchpads_eu_db_user = passwords.find_password 'cite.scratchpads.eu', 'user'
 cite_scratchpads_eu_db_password = passwords.find_password 'cite.scratchpads.eu', 'password'
-apache = ScratchpadsEncryptedPasswords.new(node, 'apache')
-git_scratchpads_eu_crt_lines = apache.find_password 'certificates', 'certificate'
-git_scratchpads_eu_key_lines = apache.find_password 'certificates', 'key'
-git_scratchpads_eu_chain_lines = apache.find_password 'certificates', 'chain'
 default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'] = {
   'source' => 'cite.scratchpads.eu.erb',
   'cookbook' => 'scratchpads',
@@ -50,6 +46,24 @@ default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'
       'group' => node['apache']['group'],
       'mode' => '0755'
     },
+  },
+  'database' => {
+    'user' => cite_scratchpads_eu_db_user,
+    'password' => cite_scratchpads_eu_db_password,
+    'host' => data_host['fqdn'],
+    'database' => 'citescratchpadseu'
+  }
+}
+apache = ScratchpadsEncryptedPasswords.new(node, 'apache')
+git_scratchpads_eu_crt_lines = apache.find_password 'certificates', 'certificate'
+git_scratchpads_eu_key_lines = apache.find_password 'certificates', 'key'
+git_scratchpads_eu_chain_lines = apache.find_password 'certificates', 'chain'
+default['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu'] = {
+  'source' => 'git.scratchpads.eu.erb',
+  'cookbook' => 'scratchpads',
+  'servername' => 'git.scratchpads.eu',
+  'documentroot' => '/var/www/git.scratchpads.eu',
+  'templates' => {
     'git.scratchpads.eu.crt' => {
       'source' => 'empty-file.erb',
       'cookbook' => 'scratchpads',
@@ -83,12 +97,6 @@ default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'
         :lines => git_scratchpads_eu_chain_lines
       })  
     }
-  },
-  'database' => {
-    'user' => cite_scratchpads_eu_db_user,
-    'password' => cite_scratchpads_eu_db_password,
-    'host' => data_host['fqdn'],
-    'database' => 'citescratchpadseu'
   }
 }
 

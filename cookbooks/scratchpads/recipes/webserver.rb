@@ -39,8 +39,9 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
       mode 0755
       action :create
       only_if {defined? tmplte['documentroot']}
+      not_if {::File.exists?(tmplte['documentroot'])}
     end
-    if (defined? tmplte['files'])
+    if (tmplte['files'])
       cookbook_file "/var/chef/#{tmplte['files']['source']}" do
         source tmplte['files']['source']
         cookbook tmplte['files']['cookbook']

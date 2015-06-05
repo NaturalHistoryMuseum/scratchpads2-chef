@@ -31,7 +31,7 @@ default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'
   'templates' => {
     'source' => 'conf.php.erb',
     'cookbook' => 'scratchpads',
-    'path' => "#{node['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['documentroot']}/conf.php",
+    'path' => '/var/www/cite.scratchpads.eu/conf.php',
     'owner' => node['apache']['user'],
     'group' => node['apache']['group'],
     'mode' => '0755'

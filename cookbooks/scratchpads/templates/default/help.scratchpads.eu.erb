@@ -1,0 +1,33 @@
+<VirtualHost *:80>
+	ServerName <%= node['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['servername'] %>
+	ServerAlias www.<%= node['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['servername'] %>
+
+	RewriteEngine On
+	RewriteCond	%{HTTP_HOST}	^www\.(.*)
+	RewriteRule	/(.*)		http://%1/$1 [L,R=301]
+
+	Alias /w <%= node['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['documentroot'] %>/index.php
+
+	<IfModule mod_expires.c>
+		ExpiresActive On
+		ExpiresDefault	"access plus 7 days"
+	</IfModule>
+
+	DocumentRoot <%= node['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['documentroot'] %>
+	<Directory <%= node['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['documentroot'] %>>
+		Options +FollowSymLinks
+		AllowOverride none
+		Require all granted
+	</Directory>
+	# some directories must be protected
+	<Directory <%= node['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['documentroot'] %>/config>
+		Options -FollowSymLinks
+		AllowOverride None
+		Require all denied
+	</Directory>
+	<Directory <%= node['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['documentroot'] %>/upload>
+		Options -FollowSymLinks
+		AllowOverride None
+		Require all denied
+	</Directory>
+</VirtualHost>

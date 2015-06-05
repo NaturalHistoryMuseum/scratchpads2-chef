@@ -10,6 +10,12 @@ default['scratchpads']['webserver']['apache']['templates']['cc-mirror.scratchpad
     'source' => 'cc-mirror.scratchpads.eu.tar.gz'
   }
 }
+default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu'] = {
+  'source' => 'help.scratchpads.eu.erb',
+  'cookbook' => 'scratchpads',
+  'servername' => 'help.scratchpads.eu',
+  'documentroot' => '/var/www/mediawiki'
+}
 
 # PHP settings
 default['scratchpads']['webserver']['php']['php5enmod_command'] = '/usr/sbin/php5enmod'

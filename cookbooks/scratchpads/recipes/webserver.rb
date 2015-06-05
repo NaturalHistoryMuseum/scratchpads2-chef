@@ -24,13 +24,14 @@ execute 'delete /var/www/html' do
 end
 
 # Create the session save path
-directory node['scratchpads']['webserver']['php']['session_save_path'] do
-  owner node['apache']['user']
-  group node['apache']['group']
-  mode 0755
-  action :create
-  only_if {node['roles'].index('control')}
-  not_if {::File.exists?(node['scratchpads']['webserver']['php']['session_save_path'])}
+if node['roles'].index('control') then
+  directory node['scratchpads']['webserver']['php']['session_save_path'] do
+    owner node['apache']['user']
+    group node['apache']['group']
+    mode 0755
+    action :create
+    not_if {::File.exists?(node['scratchpads']['webserver']['php']['session_save_path'])}
+  end
 end
 
 # Add sites
@@ -63,6 +64,19 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
         command "tar xfz /var/chef/#{tmplte['files']['source']}"
         user node['apache']['user']
         group node['apache']['group']
+      end
+    end
+    if (tmplte['templates'])
+      tmplte['templates'].each do|index,subtmplte|
+        template subtmplte['path'] do
+          path subtmplte['path']
+          source subtmplte['source']
+          cookbook subtmplte['cookbook']
+          owner subtmplte['owner']
+          group subtmplte['group']
+          mode subtmplte['mode']
+          action :create
+        end
       end
     end
     git site_name do

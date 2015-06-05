@@ -27,7 +27,15 @@ default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'
   'cookbook' => 'scratchpads',
   'servername' => 'cite.scratchpads.eu',
   'documentroot' => '/var/www/cite.scratchpads.eu',
-  'git' => 'https://git.scratchpads.eu/git/cite.scratchpads.eu.git'
+  'git' => 'https://git.scratchpads.eu/git/cite.scratchpads.eu.git',
+  'templates' => {
+    'source' => 'conf.php.erb',
+    'cookbook' => 'scratchpads',
+    'path' => "#{node['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['documentroot']}/conf.php",
+    'owner' => node['apache']['user'],
+    'group' => node['apache']['group'],
+    'mode' => '0755'
+  }
 }
 
 # PHP settings

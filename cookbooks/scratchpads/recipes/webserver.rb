@@ -30,20 +30,20 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
       action :create
       only_if {defined? tmplte['documentroot']}
     end
-  end
-  if (defined? tmplte['files'])
-    cookbook_file "/var/chef/#{tmplte['files']['source']}" do
-      source tmplte['files']['source']
-      cookbook tmplte['files']['cookbook']
-      owner node['apache']['user']
-      group node['apache']['group']
-      mode '0400'
-    end
-    execute "extract #{tmplte['files']['source']}" do
-      cwd tmplte['documentroot']
-      command "tar xfz /var/chef/#{tmplte['files']['source']}"
-      user node['apache']['user']
-      group node['apache']['group']
+    if (defined? tmplte['files'])
+      cookbook_file "/var/chef/#{tmplte['files']['source']}" do
+        source tmplte['files']['source']
+        cookbook tmplte['files']['cookbook']
+        owner node['apache']['user']
+        group node['apache']['group']
+        mode '0400'
+      end
+      execute "extract #{tmplte['files']['source']}" do
+        cwd tmplte['documentroot']
+        command "tar xfz /var/chef/#{tmplte['files']['source']}"
+        user node['apache']['user']
+        group node['apache']['group']
+      end
     end
   end
 end

@@ -16,6 +16,12 @@ default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu'
   'servername' => 'help.scratchpads.eu',
   'documentroot' => '/var/www/mediawiki'
 }
+default['scratchpads']['webserver']['apache']['templates']['backup.scratchpads.eu'] = {
+  'source' => 'backup.scratchpads.eu.erb',
+  'cookbook' => 'scratchpads',
+  'servername' => 'backup.scratchpads.eu',
+  'documentroot' => '/var/aegir/backups'
+}
 
 # PHP settings
 default['scratchpads']['webserver']['php']['php5enmod_command'] = '/usr/sbin/php5enmod'

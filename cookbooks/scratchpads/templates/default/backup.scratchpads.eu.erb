@@ -1,0 +1,9 @@
+<VirtualHost *:80>
+  DocumentRoot <%= node['scratchpads']['webserver']['apache']['templates']['backup.scratchpads.eu']['documentroot'] %>
+  ServerName <%= node['scratchpads']['webserver']['apache']['templates']['backup.scratchpads.eu']['servername'] %>
+  <Directory <%= node['scratchpads']['webserver']['apache']['templates']['backup.scratchpads.eu']['documentroot'] %>>
+    AllowOverride none
+    Options none
+    Require all granted
+  </Directory>
+</VirtualHost>

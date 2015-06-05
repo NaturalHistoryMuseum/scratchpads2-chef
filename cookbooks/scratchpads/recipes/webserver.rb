@@ -34,6 +34,12 @@ if node['roles'].index('control') then
   end
 end
 
+# Install the mysql2_chef_gem as required by database
+mysql2_chef_gem 'default' do
+  provider Chef::Provider::Mysql2ChefGem::Percona
+  action :install
+end
+
 # We need to set some database settings before attempting to create the templates
 passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
 if Chef::Config[:solo]

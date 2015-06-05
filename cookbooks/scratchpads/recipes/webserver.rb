@@ -34,6 +34,18 @@ if node['roles'].index('control') then
   end
 end
 
+# We need to set some database settings before attempting to create the templates
+passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
+if Chef::Config[:solo]
+  data_host = {'fqdn' => 'sp-data-1'}
+else
+  data_hosts = search(:node, 'flags:UP AND roles:data')
+  data_host = data_hosts.first
+end
+node.default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['host'] = data_host['fqdn']
+node.default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['user'] = passwords.find_password 'cite.scratchpads.eu', 'user'
+node.default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['password'] = passwords.find_password 'cite.scratchpads.eu', 'password'
+
 # Add sites
 node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte|
   web_app site_name do

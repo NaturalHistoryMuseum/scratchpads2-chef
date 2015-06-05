@@ -33,8 +33,8 @@ $conf['exiftool'] = '/usr/bin/exiftool';
 
 # Database
 $conf['database'] = array(
-  'host' => 'msq-scratchpads-02.nhm.ac.uk',
-  'user' => 'citespadeu',
-  'password' => 'enoh6Ai',
-  'database' => 'citescratchpadseu'
+  'host' => '<%= node['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['host'] %>',
+  'user' => '<%= node['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['user'] %>',
+  'password' => '<%= node['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['password'] %>',
+  'database' => '<%= node['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['database'] %>'
 );

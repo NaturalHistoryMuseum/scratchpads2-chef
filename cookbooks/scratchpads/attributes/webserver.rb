@@ -35,6 +35,12 @@ default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'
     'owner' => node['apache']['user'],
     'group' => node['apache']['group'],
     'mode' => '0755'
+  },
+  'database' => {
+    'user' => '',
+    'password' => '',
+    'host' => '',
+    'database' => 'citescratchpadseu'
   }
 }
 

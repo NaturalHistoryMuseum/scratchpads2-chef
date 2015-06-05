@@ -42,15 +42,6 @@ end
 
 # We need to set some database settings before attempting to create the templates
 passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
-if Chef::Config[:solo]
-  data_host = {'fqdn' => 'sp-data-1'}
-else
-  data_hosts = search(:node, 'flags:UP AND roles:data')
-  data_host = data_hosts.first
-end
-node.default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['host'] = data_host['fqdn']
-node.default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['user'] = passwords.find_password 'cite.scratchpads.eu', 'user'
-node.default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['password'] = passwords.find_password 'cite.scratchpads.eu', 'password'
 db_pw = passwords.find_password 'mysql', node['scratchpads']['control']['aegir']['dbuser']
 # Create the MySQL database
 mysql_database node['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['database'] do

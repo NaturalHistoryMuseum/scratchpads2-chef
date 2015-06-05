@@ -22,6 +22,19 @@ default['scratchpads']['webserver']['apache']['templates']['backup.scratchpads.e
   'servername' => 'backup.scratchpads.eu',
   'documentroot' => '/var/aegir/backups'
 }
+passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
+if Chef::Config[:solo]
+  data_host = {'fqdn' => 'sp-data-1'}
+else
+  data_hosts = search(:node, 'flags:UP AND roles:data')
+  data_host = data_hosts.first
+end
+cite_scratchpads_eu_db_user = passwords.find_password 'cite.scratchpads.eu', 'user'
+cite_scratchpads_eu_db_password = passwords.find_password 'cite.scratchpads.eu', 'password'
+apache = ScratchpadsEncryptedPasswords.new(node, 'apache')
+git_scratchpads_eu_crt_lines = apache.find_password 'certificates', 'certificate'
+git_scratchpads_eu_key_lines = apache.find_password 'certificates', 'key'
+git_scratchpads_eu_chain_lines = apache.find_password 'certificates', 'chain'
 default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'] = {
   'source' => 'cite.scratchpads.eu.erb',
   'cookbook' => 'scratchpads',
@@ -36,12 +49,45 @@ default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'
       'owner' => node['apache']['user'],
       'group' => node['apache']['group'],
       'mode' => '0755'
+    },
+    'git.scratchpads.eu.crt' => {
+      'source' => 'empty-file.erb',
+      'cookbook' => 'scratchpads',
+      'path' => '/etc/ssl/certs/git.scratchpads.eu.crt',
+      'owner' => 'root',
+      'group' => 'root',
+      'mode' => '0644',
+      'variables' => ({
+        :lines => git_scratchpads_eu_crt_lines
+      })  
+    },
+    'git.scratchpads.eu.key' => {
+      'source' => 'empty-file.erb',
+      'cookbook' => 'scratchpads',
+      'path' => '/etc/ssl/private/git.scratchpads.eu.key',
+      'owner' => 'root',
+      'group' => 'root',
+      'mode' => '0644',
+      'variables' => ({
+        :lines => git_scratchpads_eu_key_lines
+      })  
+    },
+    'git.scratchpads.eu.ca-bundle' => {
+      'source' => 'empty-file.erb',
+      'cookbook' => 'scratchpads',
+      'path' => '/etc/ssl/certs/git.scratchpads.eu.ca-bundle',
+      'owner' => 'root',
+      'group' => 'root',
+      'mode' => '0644',
+      'variables' => ({
+        :lines => git_scratchpads_eu_chain_lines
+      })  
     }
   },
   'database' => {
-    'user' => '',
-    'password' => '',
-    'host' => '',
+    'user' => cite_scratchpads_eu_db_user,
+    'password' => cite_scratchpads_eu_db_password,
+    'host' => data_host['fqdn'],
     'database' => 'citescratchpadseu'
   }
 }

@@ -1,14 +1,14 @@
 {
   "id": "cite.scratchpads.eu",
   "user": {
-    "encrypted_data": "3/H4QCzNxqOtPowZKknDA68mVC1FutzizgEHFxXzomK83Cem3nYQv1kwJpm+\nFkNs\n",
-    "iv": "mepG8zY+vrcKVYPwrdodEA==\n",
+    "encrypted_data": "mBJUXNNj5GD2gYnJk1xUMKcqk6nJRUWCE1ur4ScXiLNlEx4fkLIBg7an33mS\n1wYn\n",
+    "iv": "qwFbzGED+uDGM00HX2Px6g==\n",
     "version": 1,
     "cipher": "aes-256-cbc"
   },
   "password": {
-    "encrypted_data": "h2rWCsn/ypLGiKsKOVZVO47Bs7Gb2kH/pwBPt6OIAXE7c+B9UEeo955TVeEL\nz6tAtbhBegUXWwc80YWrrGAnlOuBQ6PVtQkWw2YF1qrO12s=\n",
-    "iv": "cjDL95dOLY4zktJgX3jNyA==\n",
+    "encrypted_data": "TrxYVGf13DGWNZiSUwHQY+V5FMwcBj+4uRBTkt4wyS0NhA26438UXCq6XCbV\nbosWGgOE4Zs46+M8H5QjhDWkPgYN1UJFj3xtfVwVaRUrXUk=\n",
+    "iv": "oIaJWfP3d20xskqfcw2P9w==\n",
     "version": 1,
     "cipher": "aes-256-cbc"
   }

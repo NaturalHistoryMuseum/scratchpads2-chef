@@ -47,7 +47,7 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
       group node['apache']['group']
       mode 0755
       action :create
-      only_if {defined? tmplte['documentroot']}
+      only_if {tmplte['documentroot']}
       not_if {::File.exists?(tmplte['documentroot'])}
     end
     if (tmplte['files'])
@@ -70,7 +70,7 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
       repository tmplte['git']
       user node['apache']['user']
       group node['apache']['group']
-      only_if {defined? tmplte['git']}
+      only_if {tmplte['git']}
     end
   end
 end

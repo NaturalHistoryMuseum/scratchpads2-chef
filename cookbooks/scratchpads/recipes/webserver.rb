@@ -64,8 +64,8 @@ end
 # other features/settings.
 include_recipe 'php'
 
-# Install pear/pecl modules from specific channels.
-node['scratchpads']['webserver']['php']['pear']['pecl_or_pear_modules_custom_channels'].each do|module_name,channel|
+# Install pear modules from specific channels.
+node['scratchpads']['webserver']['php']['pear']['pear_modules_custom_channels'].each do|module_name,channel|
   # Install drush from pear
   dc = php_pear_channel channel do
     action :discover
@@ -76,8 +76,8 @@ node['scratchpads']['webserver']['php']['pear']['pecl_or_pear_modules_custom_cha
   end
 end
 
-# Install pear/pecl modules from known channels (no need to discover the channel)
-node['scratchpads']['webserver']['php']['pear']['pecl_or_pear_modules'].each do|module_name|
+# Install pecl modules from known channels (no need to discover the channel)
+node['scratchpads']['webserver']['php']['pear']['pecl_modules'].each do|module_name|
   # Install pecl extensions
   php_pear module_name do
     action :install

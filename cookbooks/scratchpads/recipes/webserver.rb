@@ -14,6 +14,15 @@ include_recipe 'apache2'
 include_recipe 'apache2::mpm_prefork'
 include_recipe 'apache2::mod_php5'
 
+# Delete the /var/www/html folder - we do not need it, and it'll cause issues with
+# the mounting of NFS folders.
+execute 'delete /var/www/html' do
+  command 'rm -rf /var/www/html'
+  group 'root'
+  user 'root'
+  only_if {::File.exists?('/var/www/html')}
+end
+
 # Create the session save path
 directory node['scratchpads']['webserver']['php']['session_save_path'] do
   owner node['apache']['user']

@@ -27,7 +27,7 @@ default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'
   'cookbook' => 'scratchpads',
   'servername' => 'cite.scratchpads.eu',
   'documentroot' => '/var/www/cite.scratchpads.eu',
-  'git' => 'https://git.scratchpads.eu/cite.scratchpads.eu.git'
+  'git' => 'https://git.scratchpads.eu/git/cite.scratchpads.eu.git'
 }
 
 # PHP settings

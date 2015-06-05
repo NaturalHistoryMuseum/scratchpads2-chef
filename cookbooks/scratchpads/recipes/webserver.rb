@@ -43,27 +43,6 @@ end
 # We need to set some database settings before attempting to create the templates
 passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
 db_pw = passwords.find_password 'mysql', node['scratchpads']['control']['aegir']['dbuser']
-# Create the MySQL database
-mysql_database node['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['database'] do
-  connection(
-    :host => data_host['fqdn'],
-    :username => node['scratchpads']['control']['aegir']['dbuser'],
-    :password => db_pw
-  )
-  action :create
-end
-# Create the MySQL user
-mysql_database_user node['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['user'] do
-  connection(
-    :host => data_host['fqdn'],
-    :username => node['scratchpads']['control']['aegir']['dbuser'],
-    :password => db_pw
-  )
-  password node['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['password']
-  database_name node['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['database']
-  host '%'
-  action [:create, :grant]
-end
 
 # Add sites
 node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte|
@@ -95,6 +74,29 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
         command "tar xfz /var/chef/#{tmplte['files']['source']}"
         user node['apache']['user']
         group node['apache']['group']
+      end
+    end
+    if (tmplte['database'])
+      # Create the MySQL database
+      mysql_database tmplte['database']['database'] do
+        connection(
+          :host => data_host['fqdn'],
+          :username => node['scratchpads']['control']['aegir']['dbuser'],
+          :password => db_pw
+        )
+        action :create
+      end
+      # Create the MySQL user
+      mysql_database_user tmplte['database']['user'] do
+        connection(
+          :host => data_host['fqdn'],
+          :username => node['scratchpads']['control']['aegir']['dbuser'],
+          :password => db_pw
+        )
+        password tmplte['database']['password']
+        database_name tmplte['database']['database']
+        host '%'
+        action [:create, :grant]
       end
     end
     if (tmplte['templates'])

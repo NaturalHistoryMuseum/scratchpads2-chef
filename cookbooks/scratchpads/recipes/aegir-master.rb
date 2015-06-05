@@ -94,23 +94,14 @@ git "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir
 end
 
 node['scratchpads']['aegir']['modules_to_download'].each do|module_name|
-  # Only commence if we do not already have a copy of the module.
-  unless (::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib/#{module_name}"))
-    # Download the additional module.
-    execute "download #{module_name} module" do
-      command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} dl #{module_name}"
-      environment node['scratchpads']['aegir']['environment']
-      cwd node['scratchpads']['aegir']['home_folder']
-      group node['scratchpads']['aegir']['group']
-      user node['scratchpads']['aegir']['user']
-    end
-    # Move the additional module into the contrib folder (which is where it is in the scratchpads code base)
-    execute "move #{module_name} module" do
-      command "mv #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/#{module_name} #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib"
-      cwd node['scratchpads']['aegir']['home_folder']
-      group node['scratchpads']['aegir']['group']
-      user node['scratchpads']['aegir']['user']
-    end
+  # Download the additional module(s).
+  execute "download #{module_name} module" do
+    command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} dl #{module_name}"
+    environment node['scratchpads']['aegir']['environment']
+    cwd node['scratchpads']['aegir']['home_folder']
+    group node['scratchpads']['aegir']['group']
+    user node['scratchpads']['aegir']['user']
+    not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib/#{module_name}")}
   end
 end
 # Enable any additional modules as configured.

@@ -80,7 +80,7 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
     end
     if (tmplte['templates'])
       tmplte['templates'].each do|index,subtmplte|
-        template subtmplte['path'] do
+        template index do
           path subtmplte['path']
           source subtmplte['source']
           cookbook subtmplte['cookbook']

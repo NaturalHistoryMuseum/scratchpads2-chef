@@ -65,6 +65,13 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
         group node['apache']['group']
       end
     end
+    git site_name do
+      destination tmplte['documentroot']
+      repository tmplte['git']
+      user node['apache']['user']
+      group node['apache']['group']
+      only_if {defined? tmplte['git']}
+    end
   end
 end
 

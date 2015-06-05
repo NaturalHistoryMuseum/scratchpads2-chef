@@ -22,6 +22,13 @@ default['scratchpads']['webserver']['apache']['templates']['backup.scratchpads.e
   'servername' => 'backup.scratchpads.eu',
   'documentroot' => '/var/aegir/backups'
 }
+default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'] = {
+  'source' => 'cite.scratchpads.eu.erb',
+  'cookbook' => 'scratchpads',
+  'servername' => 'cite.scratchpads.eu',
+  'documentroot' => '/var/www/cite.scratchpads.eu',
+  'git' => 'https://git.scratchpads.eu/cite.scratchpads.eu.git'
+}
 
 # PHP settings
 default['scratchpads']['webserver']['php']['php5enmod_command'] = '/usr/sbin/php5enmod'

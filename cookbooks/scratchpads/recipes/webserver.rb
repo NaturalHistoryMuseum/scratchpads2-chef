@@ -66,74 +66,76 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
     enable true
   end
   if node['roles'].index('control') then
-    directory site_name do
-      path tmplte['documentroot']
-      owner node['apache']['user']
-      group node['apache']['group']
-      mode 0755
-      action :create
-      only_if {tmplte['documentroot']}
-      not_if {::File.exists?(tmplte['documentroot'])}
-      recursive true
-    end
-    if (tmplte['files'])
-      cookbook_file "/var/chef/#{tmplte['files']['source']}" do
-        source tmplte['files']['source']
-        cookbook tmplte['files']['cookbook']
+    # Check to see if the parent folder exists before we try to create it. If it doesn't, we go no further
+    if(::File.exists?(::File.dirname(tmplte['documentroot'])))
+      directory site_name do
+        path tmplte['documentroot']
         owner node['apache']['user']
         group node['apache']['group']
-        mode '0400'
-      end
-      execute "extract #{tmplte['files']['source']}" do
-        cwd tmplte['documentroot']
-        command "tar xfz /var/chef/#{tmplte['files']['source']}"
-        user node['apache']['user']
-        group node['apache']['group']
-      end
-    end
-    if (tmplte['database'] && data_host)
-      # Create the MySQL database
-      mysql_database tmplte['database']['database'] do
-        connection(
-          :host => data_host['fqdn'],
-          :username => node['scratchpads']['control']['aegir']['dbuser'],
-          :password => db_pw
-        )
+        mode 0755
         action :create
+        only_if {tmplte['documentroot']}
+        not_if {::File.exists?(tmplte['documentroot'])}
       end
-      # Create the MySQL user
-      mysql_database_user tmplte['database']['user'] do
-        connection(
-          :host => data_host['fqdn'],
-          :username => node['scratchpads']['control']['aegir']['dbuser'],
-          :password => db_pw
-        )
-        password tmplte['database']['password']
-        database_name tmplte['database']['database']
-        host '%'
-        action [:create, :grant]
-      end
-    end
-    if (tmplte['templates'])
-      tmplte['templates'].each do|index,subtmplte|
-        template index do
-          path subtmplte['path']
-          source subtmplte['source']
-          cookbook subtmplte['cookbook']
-          owner subtmplte['owner']
-          group subtmplte['group']
-          mode subtmplte['mode']
-          variables subtmplte['variables']
-          action :create
+      if (tmplte['files'])
+        cookbook_file "/var/chef/#{tmplte['files']['source']}" do
+          source tmplte['files']['source']
+          cookbook tmplte['files']['cookbook']
+          owner node['apache']['user']
+          group node['apache']['group']
+          mode '0400'
+        end
+        execute "extract #{tmplte['files']['source']}" do
+          cwd tmplte['documentroot']
+          command "tar xfz /var/chef/#{tmplte['files']['source']}"
+          user node['apache']['user']
+          group node['apache']['group']
         end
       end
-    end
-    git site_name do
-      destination tmplte['documentroot']
-      repository tmplte['git']
-      user node['apache']['user']
-      group node['apache']['group']
-      only_if {tmplte['git']}
+      if (tmplte['database'] && data_host)
+        # Create the MySQL database
+        mysql_database tmplte['database']['database'] do
+          connection(
+            :host => data_host['fqdn'],
+            :username => node['scratchpads']['control']['aegir']['dbuser'],
+            :password => db_pw
+          )
+          action :create
+        end
+        # Create the MySQL user
+        mysql_database_user tmplte['database']['user'] do
+          connection(
+            :host => data_host['fqdn'],
+            :username => node['scratchpads']['control']['aegir']['dbuser'],
+            :password => db_pw
+          )
+          password tmplte['database']['password']
+          database_name tmplte['database']['database']
+          host '%'
+          action [:create, :grant]
+        end
+      end
+      if (tmplte['templates'])
+        tmplte['templates'].each do|index,subtmplte|
+          template index do
+            path subtmplte['path']
+            source subtmplte['source']
+            cookbook subtmplte['cookbook']
+            owner subtmplte['owner']
+            group subtmplte['group']
+            mode subtmplte['mode']
+            variables subtmplte['variables']
+            action :create
+          end
+        end
+      end
+      git site_name do
+        destination tmplte['documentroot']
+        repository tmplte['git']
+        user node['apache']['user']
+        group node['apache']['group']
+        only_if {tmplte['git']}
+      end
     end
   end
 end

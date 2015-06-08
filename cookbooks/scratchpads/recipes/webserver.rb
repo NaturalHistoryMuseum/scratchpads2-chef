@@ -54,7 +54,9 @@ else
   data_hosts = search(:node, 'flags:UP AND roles:data')
   data_host = data_hosts.first
 end
-node.default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['host'] = data_host['fqdn']
+if(data_host)
+  node.default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['host'] = data_host['fqdn']
+end
 
 # Add sites
 node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte|
@@ -89,7 +91,7 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
         group node['apache']['group']
       end
     end
-    if (tmplte['database'])
+    if (tmplte['database'] && data_host)
       # Create the MySQL database
       mysql_database tmplte['database']['database'] do
         connection(

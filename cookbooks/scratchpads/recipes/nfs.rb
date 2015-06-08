@@ -8,10 +8,9 @@
 if node['roles'].index('control') then
   # Install NFS server and set it to allow access to certain servers.
   include_recipe 'nfs::server4'
-  app_hosts = ['sp-app-1']
+  app_hosts = []
   unless Chef::Config[:solo]
     app_hosts_search = search(:node, 'roles:app')
-    app_hosts = []
     app_hosts_search.each do|app_host|
       app_hosts << app_host['fqdn']
     end
@@ -36,11 +35,11 @@ else
   # Mount the folder from the control server
   include_recipe 'nfs::client4'
   if Chef::Config[:solo]
-    control_hosts = {'sp-control-1' => {'fqdn' => 'sp-control-1'}}
+    control_host = {'fqdn' => 'sp-control-1'}
   else
     control_hosts = search(:node, 'flags:UP AND roles:control')
+    control_host = control_hosts.first
   end
-  control_host = control_hosts.first
   node['scratchpads']['nfs']['exports'].each do|mount_dir|
     # Create the mount directory
     directory mount_dir do

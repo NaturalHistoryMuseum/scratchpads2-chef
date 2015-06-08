@@ -6,10 +6,9 @@
 
 # Create Application servers for each application server we know about and that
 # has not already been created.
-app_hosts = ['sp-app-1']
+app_hosts = []
 unless Chef::Config[:solo]
   app_hosts_search = search(:node, 'flags:UP AND roles:app')
-  app_hosts = []
   app_hosts_search.each do|app_host|
     app_hosts << app_host['fqdn']
   end
@@ -46,10 +45,9 @@ end
 
 # Create database servers for each database server we know about and that
 # has not already been created.
-data_hosts = ['sp-data-1']
+data_hosts = []
 unless Chef::Config[:solo]
   data_hosts_search = search(:node, 'flags:UP AND roles:data')
-  data_hosts = []
   data_hosts_search.each do|data_host|
     data_hosts << data_host['fqdn']
   end

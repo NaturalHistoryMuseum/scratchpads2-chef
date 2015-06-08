@@ -166,10 +166,9 @@ service 'hosting-queued' do
 end
 # Create the memcache.inc file which will configure sites
 # to use the memcache servers on the roles:data servers.
-data_hosts = ['sp-data-1']
+data_hosts = []
 unless Chef::Config[:solo]
   data_hosts_search = search(:node, 'flags:UP AND roles:data')
-  data_hosts = []
   data_hosts_search.each do|data_host|
     data_hosts << data_host['fqdn']
   end

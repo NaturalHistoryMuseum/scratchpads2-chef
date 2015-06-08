@@ -17,15 +17,6 @@ include_recipe 'apache2'
 include_recipe 'apache2::mpm_prefork'
 include_recipe 'apache2::mod_php5'
 
-# Create an empty folder which is used by certain sites
-directory '/var/www/empty' do
-  path '/var/www/empty'
-  owner node['apache']['user']
-  group node['apache']['group']
-  mode 0755
-  action :create
-end 
-
 # Delete the /var/www/html folder - we do not need it, and it'll cause issues with
 # the mounting of NFS folders.
 execute 'delete /var/www/html' do
@@ -44,6 +35,14 @@ if node['roles'].index('control') then
     action :create
     not_if {::File.exists?(node['scratchpads']['webserver']['php']['session_save_path'])}
   end
+  # Create an empty folder which is used by certain sites
+  directory '/var/www/empty' do
+    path '/var/www/empty'
+    owner node['apache']['user']
+    group node['apache']['group']
+    mode 0755
+    action :create
+  end 
 end
 
 # Install the mysql2_chef_gem as required by database

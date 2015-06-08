@@ -24,7 +24,7 @@ default['scratchpads']['aegir']['hosting_reinstall']['repository'] = 'http://git
 default['scratchpads']['aegir']['hosting_reinstall']['revision'] = '7.x-3.x'
 default['scratchpads']['aegir']['hosting_reinstall']['checkout_branch'] = '7.x-3.x'
 # Hosting Auto Pack module settings for aegir
-default['scratchpads']['aegir']['hosting_auto_pack']['repository'] = 'https://git.scratchpads.eu/git/hosting_auto_pack.git'
+default['scratchpads']['aegir']['hosting_auto_pack']['repository'] = 'https://github.com/NaturalHistoryMuseum/hosting_auto_pack.git'
 default['scratchpads']['aegir']['hosting_auto_pack']['checkout_branch'] = 'master'
 # Scratchpads repository
 default['scratchpads']['aegir']['scratchpads_master']['repository'] = 'https://git.scratchpads.eu/git/scratchpads-2.0.git'

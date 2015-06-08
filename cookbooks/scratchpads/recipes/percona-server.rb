@@ -20,8 +20,8 @@ end
 passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
 
 # Copy the percona-functions SQL file and execute it
-unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['percona-functions-file']}"))
-  cookbook_file "/tmp/#{node['scratchpads']['percona']['percona-functions-file']}" do
+unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['percona-functions-file']}"))
+  cookbook_file "/var/chef/#{node['scratchpads']['percona']['percona-functions-file']}" do
     source node['scratchpads']['percona']['percona-functions-file']
     cookbook 'scratchpads'
     owner 'root'
@@ -30,13 +30,13 @@ unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['percona-functions-
   end
   execute 'percona functions' do
     root_pw = passwords.root_password
-    command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < /tmp/#{node['scratchpads']['percona']['percona-functions-file']}"
+    command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < /var/chef/#{node['scratchpads']['percona']['percona-functions-file']}"
   end
 end
 
 # Copy the secure-installation SQL file and execute it
-unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['secure-installation-file']}"))
-  cookbook_file "/tmp/#{node['scratchpads']['percona']['secure-installation-file']}" do
+unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['secure-installation-file']}"))
+  cookbook_file "/var/chef/#{node['scratchpads']['percona']['secure-installation-file']}" do
     source node['scratchpads']['percona']['secure-installation-file']
     cookbook 'scratchpads'
     owner 'root'
@@ -45,13 +45,13 @@ unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['secure-installatio
   end
   execute 'secure installation' do
     root_pw = passwords.root_password
-    command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < /tmp/#{node['scratchpads']['percona']['secure-installation-file']}"
+    command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < /var/chef/#{node['scratchpads']['percona']['secure-installation-file']}"
   end
 end
 
 # Copy the gm3.sql.gz SQL file and load it
-unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['gm3_data_file']}"))
-  cookbook_file "/tmp/#{node['scratchpads']['percona']['gm3_data_file']}" do
+unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['gm3_data_file']}"))
+  cookbook_file "/var/chef/#{node['scratchpads']['percona']['gm3_data_file']}" do
     source node['scratchpads']['percona']['gm3_data_file']
     cookbook 'scratchpads'
     owner 'root'
@@ -82,7 +82,7 @@ unless(::File.exists?("/tmp/#{node['scratchpads']['percona']['gm3_data_file']}")
   end
   execute 'load gm3 data' do
     root_pw = passwords.root_password
-    command "zcat /tmp/#{node['scratchpads']['percona']['gm3_data_file']} | mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' gm3"
+    command "zcat /var/chef/#{node['scratchpads']['percona']['gm3_data_file']} | mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' gm3"
   end
 end
 

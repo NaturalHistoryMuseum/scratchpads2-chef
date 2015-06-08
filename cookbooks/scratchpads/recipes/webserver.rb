@@ -17,6 +17,15 @@ include_recipe 'apache2'
 include_recipe 'apache2::mpm_prefork'
 include_recipe 'apache2::mod_php5'
 
+# Create an empty folder which is used by certain sites
+directory '/var/www/empty' do
+  path '/var/www/empty'
+  owner node['apache']['user']
+  group node['apache']['group']
+  mode 0755
+  action :create
+end 
+
 # Delete the /var/www/html folder - we do not need it, and it'll cause issues with
 # the mounting of NFS folders.
 execute 'delete /var/www/html' do

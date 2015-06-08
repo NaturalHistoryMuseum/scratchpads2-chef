@@ -1,8 +1,8 @@
 name             'scratchpads'
-maintainer       'The Authors'
-maintainer_email 'you@example.com'
-license          'all_rights'
-description      'Installs/Configures scratchpads'
+maintainer       'Simon Rycroft'
+maintainer_email 's.rycroft@nhm.ac.uk'
+license          'CC BY 4.0'
+description      'Installs and configures all services required to run a Scratchpads instance'
 long_description 'Installs/Configures scratchpads'
 version          '0.1.0'
 

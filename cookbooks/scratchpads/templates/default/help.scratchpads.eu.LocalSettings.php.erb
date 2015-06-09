@@ -72,7 +72,7 @@ $wgDBmysql5 = false;
 $wgMainCacheType = CACHE_MEMCACHED;
 $wgMemCachedServers = array( 
 <% @sp_data_servers.each do |data_server| -%>
-  '<%= data_server %>:11211',
+  '<%= data_server['fqdn'] %>:11211',
 <% end -%>
 );
 

@@ -33,13 +33,6 @@ default['scratchpads']['webserver']['apache']['templates']['dungbeetle.co.uk'] =
 }
 help_scratchpads_eu_db_user = passwords.find_password 'help.scratchpads.eu', 'user'
 help_scratchpads_eu_db_password = passwords.find_password 'help.scratchpads.eu', 'password'
-data_hosts = []
-unless Chef::Config[:solo]
-  data_hosts_search = search(:node, 'flags:UP AND roles:data')
-  data_hosts_search.each do|data_host|
-    data_hosts << data_host['fqdn']
-  end
-end
 default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu'] = {
   'source' => 'help.scratchpads.eu.erb',
   'cookbook' => 'scratchpads',
@@ -50,7 +43,7 @@ default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu'
     'user' => help_scratchpads_eu_db_user,
     'password' => help_scratchpads_eu_db_password,
     'database' => 'helpscratchpadseu',
-    'host' => data_hosts.first
+    'host' => ''
   },
   'templates' =>  {
     'help.scratchpads.eu.LocalSettings.php' => {
@@ -61,7 +54,7 @@ default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu'
       'group' => 'root',
       'mode' => '0644',
       'variables' => ({
-        :sp_data_servers => data_hosts
+        :sp_data_servers => nil
       })  
     }
   }

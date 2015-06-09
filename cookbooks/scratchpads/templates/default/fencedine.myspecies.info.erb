@@ -1,0 +1,15 @@
+<VirtualHost *:80>
+  DocumentRoot <%= node['scratchpads']['webserver']['apache']['templates']['fencedine.myspecies.info']['documentroot'] %>
+  ServerName <%= node['scratchpads']['webserver']['apache']['templates']['fencedine.myspecies.info']['servername'] %>
+  <IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault  "access plus 7 days"
+  </IfModule>
+  <Directory <%= node['scratchpads']['webserver']['apache']['templates']['fencedine.myspecies.info']['documentroot'] %>>
+    Order Deny,Allow
+    Allow from all
+  </Directory>
+  <Directory <%= node['scratchpads']['webserver']['apache']['templates']['fencedine.myspecies.info']['documentroot'] %>/files>
+    RemoveHandler .php
+  </Directory>
+</VirtualHost>

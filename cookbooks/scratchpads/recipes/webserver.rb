@@ -73,6 +73,26 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
     template tmplte['source']
     enable true
   end
+  # We process templates on all servers, as some files may be outside of the
+  # /var/www/ folder.
+  if (tmplte['templates'])
+    tmplte['templates'].each do|index,subtmplte|
+      template index do
+        path subtmplte['path']
+        source subtmplte['source']
+        cookbook subtmplte['cookbook']
+        owner subtmplte['owner']
+        group subtmplte['group']
+        mode subtmplte['mode']
+        variables subtmplte['variables']
+        action :create
+        only_if {node['roles'].index('control') || subtmplte['all_servers']}
+      end
+    end
+  end
+  # We only add certain files and try to create databases from the control server. This 
+  # is because we are sharing the /var/www/ directory to all hosts, and we only need
+  # to create a database once.
   if node['roles'].index('control') then
     # Check to see if the parent folder exists before we try to create it. If it doesn't, we go no further
     if(::File.exists?(::File.dirname(tmplte['documentroot'])))
@@ -121,20 +141,6 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
           database_name tmplte['database']['database']
           host '%'
           action [:create, :grant]
-        end
-      end
-      if (tmplte['templates'])
-        tmplte['templates'].each do|index,subtmplte|
-          template index do
-            path subtmplte['path']
-            source subtmplte['source']
-            cookbook subtmplte['cookbook']
-            owner subtmplte['owner']
-            group subtmplte['group']
-            mode subtmplte['mode']
-            variables subtmplte['variables']
-            action :create
-          end
         end
       end
       git site_name do

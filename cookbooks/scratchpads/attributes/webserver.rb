@@ -33,6 +33,14 @@ default['scratchpads']['webserver']['apache']['templates']['sandbox.scratchpads.
     'cookbook' => 'scratchpads'
   }
 }
+default['scratchpads']['webserver']['apache']['templates']['fencedine.myspecies.info'] = {
+  'source' => 'fencedine.myspecies.info.erb',
+  'cookbook' => 'scratchpads',
+  'servername' => 'fencedine.myspecies.info',
+  'documentroot' => '/var/www/fencedine.myspecies.info',
+  'git' => 'https://github.com/NaturalHistoryMuseum/fencedine.git',
+}
+
 passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
 
 cite_scratchpads_eu_db_user = passwords.find_password 'cite.scratchpads.eu', 'user'
@@ -77,6 +85,7 @@ default['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu']
       'owner' => 'root',
       'group' => 'root',
       'mode' => '0644',
+      'all_servers' => true,
       'variables' => ({
         :lines => git_scratchpads_eu_crt_lines
       })  
@@ -88,6 +97,7 @@ default['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu']
       'owner' => 'root',
       'group' => 'root',
       'mode' => '0644',
+      'all_servers' => true,
       'variables' => ({
         :lines => git_scratchpads_eu_key_lines
       })  
@@ -99,6 +109,7 @@ default['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu']
       'owner' => 'root',
       'group' => 'root',
       'mode' => '0644',
+      'all_servers' => true,
       'variables' => ({
         :lines => git_scratchpads_eu_chain_lines
       })  

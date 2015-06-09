@@ -1,88 +1,22 @@
 <IfModule mod_ssl.c>
-  Listen 443
 <VirtualHost _default_:443>
-  TimeOut 600
-
-  ReadmeName /README.html
-  HeaderName /HEADER.html
-
-  <IfModule mod_expires.c>
-    ExpiresActive On
-    ExpiresDefault  "access plus 7 days"
-  </IfModule>
-
   SSLEngine on
   SSLCertificateFile    /etc/ssl/certs/git.scratchpads.eu.crt
   SSLCertificateKeyFile /etc/ssl/private/git.scratchpads.eu.key
   SSLCertificateChainFile /etc/ssl/certs/git.scratchpads.eu.ca-bundle
-  BrowserMatch ".*MSIE.*" \
-    nokeepalive ssl-unclean-shutdown \
-    downgrade-1.0 force-response-1.0
-
-  DBDriver mysql
-  DBDParams "host=msq-scratchpads-02.nhm.ac.uk,port=3306,dbname=vbranteu_0,user=vbranteu_0,pass=NwihiVeWEd"
-  DBDPersist Off
-
+  BrowserMatch ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
   ServerName  git.scratchpads.eu
-  DocumentRoot  /var/www/git.scratchpads.eu
-  CustomLog /var/log/apache2/git-access.log combined
-  ErrorLog  /var/log/apache2/git-error.log
-  <Directory /var/www/git.scratchpads.eu>
-    Options MultiViews Indexes IncludesNoExec FollowSymLinks
-    IndexOptions FancyIndexing XHTML SuppressHTMLPreamble FoldersFirst SuppressDescription HTMLTable IconsAreLinks IgnoreCase VersionSort
+  DocumentRoot  /var/www/git.scratchpads
+  <Directory /var/www/git.scratchpads>
     Order Deny,Allow
     Allow from ALL
-  </Directory>
-  <Location />
-    DAV On
-    Order Deny,Allow
-    Allow from ALL
-    Options +ExecCGI
-    <LimitExcept GET PROPFIND OPTIONS REPORT POST>
-      AuthType Basic
-      AuthName Git
-      AuthBasicProvider dbd
-      AuthDBDUserPWQuery "SELECT hb.pass AS password FROM htdigest_basic hb, htdigest_alias ha, users u WHERE u.uid = ha.uid AND hb.uid = u.uid AND COALESCE(alias, name) = %s LIMIT 1"
-      Require valid-user
-    </LimitExcept>
-  </Location>
-  <LocationMatch "^/git/.*/git-receive-pack$">
-    AuthType Basic
-    AuthName Git
-    AuthBasicProvider dbd
-    AuthDBDUserPWQuery "SELECT hb.pass AS password FROM htdigest_basic hb, htdigest_alias ha, users u WHERE u.uid = ha.uid AND hb.uid = u.uid AND COALESCE(alias, name) = %s LIMIT 1"
-    Require valid-user
-  </LocationMatch>
-  ScriptAlias /v /usr/lib/cgi-bin/gitweb.cgi
-  RewriteEngine On
-  RewriteCond %{REQUEST_URI}  viewgit
-  RewriteRule /viewgit(.*)  https://git.scratchpads.eu/v$1 [L]
-
-  SetEnv GIT_PROJECT_ROOT /var/www/git.scratchpads.eu
-  SetEnv GIT_HTTP_EXPORT_ALL
-  ScriptAlias /git/ /usr/lib/git-core/git-http-backend/
-
-  <Directory /var/www/git.scratchpads.eu>
-    RewriteEngine On
-    RewriteBase /
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI}  !^/v
-    RewriteCond %{REQUEST_URI}  !^/icons
-    RewriteCond %{REQUEST_URI}  !^/downloads
-    RewriteCond %{REQUEST_URI}  !^/scratchpads.git
-    RewriteCond %{REQUEST_URI}  !^/.*\.git
-    RewriteRule (.*)    https://git.scratchpads.eu/v [L]
-    RewriteCond %{REQUEST_URI}  ^/downloads$
-    RewriteRule (.*)    https://git.scratchpads.eu/downloads/ [L]
   </Directory>
 </VirtualHost>
 </IfModule>
-
 <VirtualHost *:80>
   ServerName git.scratchpads.eu
   ServerAlias svn.scratchpads.eu
   DocumentRoot  /var/www/empty
   RewriteEngine   On
-  RewriteRule   (.*)    https://git.scratchpads.eu/v [L]
+  RewriteRule   (.*)    https://git.scratchpads.eu/ [L]
 </VirtualHost>

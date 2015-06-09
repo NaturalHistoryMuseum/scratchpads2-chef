@@ -20,7 +20,7 @@ default['scratchpads']['webserver']['apache']['templates']['archived-sites'] = {
   'documentroot' => '/var/www/archived',
   'files' => {
     'cookbook' => 'scratchpads',
-    'source' => 'archives-sites.tar.gz'
+    'source' => 'archived-sites.tar.gz'
   }
 }
 default['scratchpads']['webserver']['apache']['templates']['dungbeetle.co.uk'] = {

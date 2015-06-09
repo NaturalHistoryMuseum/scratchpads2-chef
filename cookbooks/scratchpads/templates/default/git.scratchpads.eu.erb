@@ -1,22 +1,22 @@
 <IfModule mod_ssl.c>
 <VirtualHost _default_:443>
   SSLEngine on
-  SSLCertificateFile    /etc/ssl/certs/git.scratchpads.eu.crt
-  SSLCertificateKeyFile /etc/ssl/private/git.scratchpads.eu.key
-  SSLCertificateChainFile /etc/ssl/certs/git.scratchpads.eu.ca-bundle
+  SSLCertificateFile <%= node['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu']['templates']['git.scratchpads.eu.crt']['path'] %>
+  SSLCertificateKeyFile <%= node['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu']['templates']['git.scratchpads.eu.key']['path'] %>
+  SSLCertificateChainFile <%= node['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu']['templates']['git.scratchpads.eu.ca-bundle']['path'] %>
   BrowserMatch ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
-  ServerName  git.scratchpads.eu
-  DocumentRoot  /var/www/git.scratchpads
-  <Directory /var/www/git.scratchpads>
+  ServerName <%= node['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu']['servername'] %>
+  DocumentRoot <%= node['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu']['documentroot'] %>
+  <Directory <%= node['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu']['documentroot'] %>>
     Order Deny,Allow
     Allow from ALL
   </Directory>
 </VirtualHost>
 </IfModule>
 <VirtualHost *:80>
-  ServerName git.scratchpads.eu
+  ServerName <%= node['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu']['servername'] %>
   ServerAlias svn.scratchpads.eu
-  DocumentRoot  /var/www/empty
-  RewriteEngine   On
-  RewriteRule   (.*)    https://git.scratchpads.eu/ [L]
+  DocumentRoot /var/www/empty
+  RewriteEngine On
+  RewriteRule (.*) https://<%= node['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu']['servername'] %>/ [L]
 </VirtualHost>

@@ -23,6 +23,16 @@ default['scratchpads']['webserver']['apache']['templates']['backup.scratchpads.e
   'servername' => 'backup.scratchpads.eu',
   'documentroot' => '/var/aegir/backups'
 }
+default['scratchpads']['webserver']['apache']['templates']['sandbox.scratchpads.eu'] = {
+  'source' => 'sandbox.scratchpads.eu.erb',
+  'cookbook' => 'scratchpads',
+  'servername' => 'sandbox.scratchpads.eu',
+  'documentroot' => '/var/www/sandbox.scratchpads.eu',
+  'files' => {
+    'source' => 'sandbox-files.tar.gz',
+    'cookbook' => 'scratchpads'
+  }
+}
 passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
 
 cite_scratchpads_eu_db_user = passwords.find_password 'cite.scratchpads.eu', 'user'
@@ -32,7 +42,7 @@ default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'
   'cookbook' => 'scratchpads',
   'servername' => 'cite.scratchpads.eu',
   'documentroot' => '/var/www/cite.scratchpads.eu',
-  'git' => 'https://github.com/sdrycroft/scratchpads-cite.git',
+  'git' => 'https://github.com/NaturalHistoryMuseum/scratchpads-cite.git',
   'templates' => {
     'conf.php' => {
       'source' => 'conf.php.erb',

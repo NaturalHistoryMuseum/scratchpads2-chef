@@ -36,6 +36,22 @@ Most of the code within the Scratchpads cookbook expects you to be using
 chef-server, rather than chef-solo. The code will automatically configure 
 services based on the role of the node, and will search for other nodes for 
 additional configuration (e.g. the NFS configuration looks for the NFS server 
-(control role), and configures the NFS client accordingly. I hope to fix the 
+(control role), and configures the NFS client accordingly). I hope to fix the 
 code so that it does not break completely if using chef-solo, but for now, 
 please use chef-server (you can use a hosted version at http://manage.chef.io/).
+
+Up and provision
+----------------
+Note, because of circular dependencies (e.g. the NFS server allows access to 
+specific clients, but the clients are created after the server), it is 
+necessary to run
+
+    vagrant provision
+    vagrant provision
+
+after bringing up each of the boxes (i.e. run "vagrant provision" twice). Once 
+that has completed, you should be left with a full Aegir installation which 
+will have been automatically configured with each of the database and 
+application servers, and will also have a "pack" server configured, which in 
+turn will contain a scratchpads-master platform. New Scratchpads can easily be 
+created on the scratchpads-master platform.

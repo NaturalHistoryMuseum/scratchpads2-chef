@@ -1,0 +1,26 @@
+<VirtualHost *:80>
+  ServerName <%= node['scratchpads']['webserver']['apache']['templates']['wiki.scratchpads.eu']['servername'] %>
+  DocumentRoot <%= node['scratchpads']['webserver']['apache']['templates']['wiki.scratchpads.eu']['documentroot'] %>
+
+  Alias /w <%= node['scratchpads']['webserver']['apache']['templates']['wiki.scratchpads.eu']['documentroot'] %>/index.php
+
+  <IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault  "access plus 7 days"
+  </IfModule>
+
+  <Directory <%= node['scratchpads']['webserver']['apache']['templates']['wiki.scratchpads.eu']['documentroot'] %>>
+    Options +FollowSymLinks
+    AllowOverride None
+    Require all granted
+  </Directory>
+  # some directories must be protected
+  <Directory <%= node['scratchpads']['webserver']['apache']['templates']['wiki.scratchpads.eu']['documentroot'] %>/config>
+    Options -FollowSymLinks
+    AllowOverride None
+  </Directory>
+  <Directory <%= node['scratchpads']['webserver']['apache']['templates']['wiki.scratchpads.eu']['documentroot'] %>/upload>
+    Options -FollowSymLinks
+    AllowOverride None
+  </Directory>
+</VirtualHost>

@@ -11,12 +11,17 @@ default['scratchpads']['webserver']['apache']['templates']['cc-mirror.scratchpad
     'source' => 'cc-mirror.scratchpads.eu.tar.gz'
   }
 }
+# Note, additional files (cache and sites folders) need to be copied to this directory. These
+# are handled outside of chef due to the size of the archive (GBs).
 default['scratchpads']['webserver']['apache']['templates']['archived-sites'] = {
   'source' => 'archived-sites.erb',
   'cookbook' => 'scratchpads',
   'serveraliaseses' => ['able.myspecies.info','about.e-monocot.org','blackflies.info','nannotax.org','sasarcs.myspecies.info','scicoll.myspecies.info','gpi.myspecies.info'],
-  'documentroot' => '/var/www/archived'
-  # FILES - Due to the size of the files required, this will be handled outside of Chef.
+  'documentroot' => '/var/www/archived',
+  'files' => {
+    'cookbook' => 'scratchpads',
+    'source' => 'archives-sites.tar.gz'
+  }
 }
 default['scratchpads']['webserver']['apache']['templates']['dungbeetle.co.uk'] = {
   'source' => 'dungbeetle.co.uk.erb',
@@ -29,6 +34,12 @@ default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu'
   'source' => 'help.scratchpads.eu.erb',
   'cookbook' => 'scratchpads',
   'servername' => 'help.scratchpads.eu',
+  'documentroot' => '/var/www/mediawiki'
+}
+default['scratchpads']['webserver']['apache']['templates']['wiki.scratchpads.eu'] = {
+  'source' => 'wiki.scratchpads.eu.erb',
+  'cookbook' => 'scratchpads',
+  'servername' => 'wiki.scratchpads.eu',
   'documentroot' => '/var/www/mediawiki'
 }
 default['scratchpads']['webserver']['apache']['templates']['backup.scratchpads.eu'] = {

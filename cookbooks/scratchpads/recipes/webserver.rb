@@ -67,7 +67,7 @@ if(data_host)
   node.default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['database']['host'] = data_host['fqdn']
 end
 if(data_hosts)
-  node.default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['templates']['help.scratchpads.eu.LocalSettings.php']['variables'] = data_hosts
+  node.default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['templates']['help.scratchpads.eu.LocalSettings.php']['variables']['sp_data_servers'] = data_hosts
 end
 
 # Add sites

@@ -1,5 +1,6 @@
 # Apache settings
-default['scratchpads']['webserver']['apache']['additional_modules'] = ['expires','ssl','dbd','dav','dav_fs','authn_dbd']
+#default['scratchpads']['webserver']['apache']['additional_modules'] = ['expires','ssl','dbd','dav','dav_fs','authn_dbd']
+default['scratchpads']['webserver']['apache']['additional_modules'] = ['expires','ssl']
 default['scratchpads']['webserver']['apache']['templates']['cc-mirror.scratchpads.eu'] = {
   'source' => 'cc-mirror.scratchpads.eu.erb',
   'cookbook' => 'scratchpads',

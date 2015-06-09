@@ -10,7 +10,7 @@ node['scratchpads']['webserver']['apache']['additional_modules'].each do|module_
 end
 
 # Install package required by Apache to connect to a MySQL database
-package ['libaprutil1-dbd-mysql']
+# package ['libaprutil1-dbd-mysql']
 
 # Install Apache2 and set it to use prefork and mod_php5
 include_recipe 'apache2'

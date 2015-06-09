@@ -33,11 +33,12 @@ default['scratchpads']['webserver']['apache']['templates']['dungbeetle.co.uk'] =
 }
 help_scratchpads_eu_db_user = passwords.find_password 'help.scratchpads.eu', 'user'
 help_scratchpads_eu_db_password = passwords.find_password 'help.scratchpads.eu', 'password'
+help_scratchpads_eu_secretkey = passwords.find_password 'help.scratchpads.eu', 'secretkey'
+help_scratchpads_eu_upgradekey = passwords.find_password 'help.scratchpads.eu', 'upgradekey'
 default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu'] = {
   'source' => 'help.scratchpads.eu.erb',
   'cookbook' => 'scratchpads',
   'servername' => 'help.scratchpads.eu',
-  'email' => 'scratchpads@nhm.ac.uk',
   'documentroot' => '/var/www/mediawiki',
   'database' => {
     'user' => help_scratchpads_eu_db_user,
@@ -47,14 +48,24 @@ default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu'
   },
   'templates' =>  {
     'help.scratchpads.eu.LocalSettings.php' => {
-      'source' => 'help.scratchpads.eu.LocalSettings.php.erb',
+      'source' => 'site.LocalSettings.php.erb',
       'cookbook' => 'scratchpads',
       'path' => '/var/www/mediawiki/help.scratchpads.eu.LocalSettings.php',
       'owner' => 'root',
       'group' => 'root',
       'mode' => '0644',
       'variables' => ({
-        :sp_data_servers => nil
+        'sp_data_servers' => [],
+        'sitename' => 'Scratchpads Help',
+        'sitenamespace' => 'Scratchpads_Help',
+        'servername' => 'help.scratchpads.eu',
+        'email' => 'scratchpads@nhm.ac.uk',
+        'user' => help_scratchpads_eu_db_user,
+        'password' => help_scratchpads_eu_db_password,
+        'database' => 'helpscratchpadseu',
+        'host' => '',
+        'secretkey' => help_scratchpads_eu_secretkey,
+        'upgradekey' => help_scratchpads_eu_upgradekey
       })  
     }
   }

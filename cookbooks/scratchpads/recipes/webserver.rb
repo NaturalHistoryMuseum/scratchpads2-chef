@@ -65,6 +65,7 @@ end
 if(data_host)
   node.default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['database']['host'] = data_host['fqdn']
   node.default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['database']['host'] = data_host['fqdn']
+  node.default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['templates']['help.scratchpads.eu.LocalSettings.php']['variables']['host'] = data_host['fqdn']
 end
 if(data_hosts)
   node.default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['templates']['help.scratchpads.eu.LocalSettings.php']['variables']['sp_data_servers'] = data_hosts

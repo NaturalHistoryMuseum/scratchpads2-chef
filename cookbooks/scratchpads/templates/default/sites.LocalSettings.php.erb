@@ -18,8 +18,8 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 ## Uncomment this to disable output compression
 # $wgDisableOutputCompression = true;
 
-$wgSitename = "Scratchpads Help";
-$wgMetaNamespace = "Scratchpads_Help";
+$wgSitename = "<%= @sitename %>";
+$wgMetaNamespace = "<%= @sitenamespace %>";
 
 ## The URL base path to the directory containing the wiki;
 ## defaults for all runtime URL paths are based off of this.
@@ -30,7 +30,7 @@ $wgScriptPath = "";
 $wgScriptExtension = ".php";
 
 ## The protocol and server name to use in fully-qualified URLs
-$wgServer = "http://<%= node['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['servername'] %>";
+$wgServer = "http://<%= @servername %>";
 
 ## The relative URL path to the skins directory
 $wgStylePath = "$wgScriptPath/skins";
@@ -45,8 +45,8 @@ $wgLogo = "$wgResourceBasePath/resources/assets/wiki.png";
 $wgEnableEmail = true;
 $wgEnableUserEmail = false; # UPO
 
-$wgEmergencyContact = "<%= node['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['email'] %>";
-$wgPasswordSender = "<%= node['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['email'] %>";
+$wgEmergencyContact = "<%= @email %>";
+$wgPasswordSender = "<%= @email %>";
 
 $wgEnotifUserTalk = false; # UPO
 $wgEnotifWatchlist = false; # UPO
@@ -54,10 +54,10 @@ $wgEmailAuthentication = false;
 
 ## Database settings
 $wgDBtype = "mysql";
-$wgDBserver = "<%= @sp_data_servers.first %>";
-$wgDBname = "<%= node['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['database']['database'] %>";
-$wgDBuser = "<%= node['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['database']['user'] %>";
-$wgDBpassword = "<%= node['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['database']['password'] %>";
+$wgDBserver = "<%= @host %>";
+$wgDBname = "<%= @database %>";
+$wgDBuser = "<%= @user %>";
+$wgDBpassword = "<%= @password %>";
 
 # MySQL specific settings
 $wgDBprefix = "";
@@ -104,11 +104,11 @@ $wgShellLocale = "C.UTF-8";
 # Site language code, should be one of the list in ./languages/Names.php
 $wgLanguageCode = "en-gb";
 
-$wgSecretKey = "2cab8d9f676dcb367728c0a9194573ae8ff438d4487e9c0786e16a22ed795034";
+$wgSecretKey = "<%= @secretkey %>";
 
 # Site upgrade key. Must be set to a string (default provided) to turn on the
 # web installer while LocalSettings.php is in place
-$wgUpgradeKey = "6dbb0c777621e96c";
+$wgUpgradeKey = "<%= @upgradekey %>";
 
 ## For attaching licensing metadata to pages, and displaying an
 ## appropriate copyright notice / icon. GNU Free Documentation
@@ -139,4 +139,3 @@ wfLoadSkin( 'Vector' );
 
 # End of automatically generated settings.
 # Add more configuration options below.
-

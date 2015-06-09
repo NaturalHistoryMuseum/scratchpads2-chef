@@ -8,8 +8,9 @@
   ServerName <%= node['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu']['servername'] %>
   DocumentRoot <%= node['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu']['documentroot'] %>
   <Directory <%= node['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu']['documentroot'] %>>
-    Order Deny,Allow
-    Allow from ALL
+    AllowOverride none
+    Options none
+    Require all granted
   </Directory>
 </VirtualHost>
 </IfModule>

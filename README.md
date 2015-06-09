@@ -12,7 +12,9 @@ Vagrant
 -------
 The repository contains a Vagrant script for testing the Chef setup. Simply 
 running
+
     vagrant up
+
 from within the chef repository should be enough to create four servers 
 (control, app1, data1 and search1), which will allow you to test the 
 Scratchpads installation.

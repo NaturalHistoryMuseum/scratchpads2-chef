@@ -1,3 +1,4 @@
+passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
 # Apache settings
 #default['scratchpads']['webserver']['apache']['additional_modules'] = ['expires','ssl','dbd','dav','dav_fs','authn_dbd']
 default['scratchpads']['webserver']['apache']['additional_modules'] = ['expires','ssl']
@@ -30,11 +31,18 @@ default['scratchpads']['webserver']['apache']['templates']['dungbeetle.co.uk'] =
   'servername' => 'dungbeetle.co.uk'
   # FILES - Due to the size of the files required, this will be handled outside of Chef.
 }
+help_scratchpads_eu_db_user = passwords.find_password 'help.scratchpads.eu', 'user'
+help_scratchpads_eu_db_password = passwords.find_password 'help.scratchpads.eu', 'password'
 default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu'] = {
   'source' => 'help.scratchpads.eu.erb',
   'cookbook' => 'scratchpads',
   'servername' => 'help.scratchpads.eu',
-  'documentroot' => '/var/www/mediawiki'
+  'documentroot' => '/var/www/mediawiki',
+  'database' => {
+    'user' => help_scratchpads_eu_db_user,
+    'password' => help_scratchpads_eu_db_password,
+    'database' => 'helpscratchpadseu'
+  }
 }
 default['scratchpads']['webserver']['apache']['templates']['wiki.scratchpads.eu'] = {
   'source' => 'wiki.scratchpads.eu.erb',
@@ -65,9 +73,6 @@ default['scratchpads']['webserver']['apache']['templates']['fencedine.myspecies.
   'documentroot' => '/var/www/fencedine.myspecies.info',
   'git' => 'https://github.com/NaturalHistoryMuseum/fencedine.git',
 }
-
-passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
-
 cite_scratchpads_eu_db_user = passwords.find_password 'cite.scratchpads.eu', 'user'
 cite_scratchpads_eu_db_password = passwords.find_password 'cite.scratchpads.eu', 'password'
 default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'] = {

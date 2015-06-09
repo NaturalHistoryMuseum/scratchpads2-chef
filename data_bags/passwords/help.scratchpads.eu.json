@@ -1,0 +1,15 @@
+{
+  "id": "help.scratchpads.eu",
+  "user": {
+    "encrypted_data": "EORjOrcTWZ6dr7Hsxj/Rr7ix2rAENSohp3txiT50AYYJOv8pEwFwp3mwTJet\n/31E\n",
+    "iv": "5GvnkQDLRWQjBhLZ2jITVQ==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  },
+  "password": {
+    "encrypted_data": "ytpDN/yCNb5b417nRNa0H3wD4nqyDjjKsUB5K7mCXuxRIDqMoCrF89XiIFO8\nEt6i6TRk3auZmrpqNpccNXd36W1LI1y1r9PJlQ0vIQcnQAM=\n",
+    "iv": "YB7mBDPBG2cuctl/9gBxow==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  }
+}

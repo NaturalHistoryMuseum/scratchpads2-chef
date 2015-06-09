@@ -1,0 +1,91 @@
+<VirtualHost *:80>
+  DocumentRoot  /var/www/archived
+<% node['scratchpads']['webserver']['apache']['templates']['archived-sites']['serveraliaseses'].each do |server_alias| -%>
+  ServerAlias <%= server_alias %>
+<% end -%>
+  # We don't care about errors.
+  ErrorLog  /dev/null
+  <Directory /var/www/archived/cache>
+    AddDefaultCharset utf-8
+    <IfModule mod_mime.c>
+      AddCharset utf-8 .html
+      AddCharset utf-8 .xml
+      AddCharset utf-8 .css
+      AddCharset utf-8 .js
+      AddCharset utf-8 .json
+      AddEncoding gzip .gz
+    </IfModule>
+    <FilesMatch "\.(html|html\.gz)$">
+      ForceType text/html
+    </FilesMatch>
+    <FilesMatch "\.(xml|xml\.gz)$">
+      ForceType text/xml
+    </FilesMatch>
+    <FilesMatch "\.(json|json\.gz|js|js\.gz)$">
+      ForceType text/javascript
+    </FilesMatch>
+    <FilesMatch "\.(css|css\.gz)$">
+      ForceType text/css
+    </FilesMatch>
+    Options None
+    Options +FollowSymLinks
+  </Directory>
+  <Directory /var/www/archived>
+    AllowOverride None
+
+    # Don't show directory listings for URLs which map to a directory.
+    Options -Indexes
+
+    # Follow symbolic links in this directory.
+    Options +FollowSymLinks
+
+    # Make Drupal handle any 404 errors.
+    ErrorDocument 404 /index.php
+
+    # Set the default handler.
+    DirectoryIndex index.php
+
+    # Various rewrite rules.
+    <IfModule mod_rewrite.c>
+      RewriteEngine on
+
+      RewriteCond %{REQUEST_URI} ^/files/
+      RewriteRule (.*) http://%{HTTP_HOST}/sites/%{HTTP_HOST}/$1 [L]
+    
+      ### BOOST START ###
+      # GZIP - Cached css & js files
+      RewriteCond %{HTTP:Accept-encoding} !gzip
+      RewriteRule .* - [S=2]
+      RewriteCond %{DOCUMENT_ROOT}/cache/perm/%{HTTP_HOST}%{REQUEST_URI}_\.css\.gz -s
+      RewriteRule .* cache/perm/%{HTTP_HOST}%{REQUEST_URI}_\.css\.gz [L,QSA,T=text/css,E=no-gzip:1]
+      RewriteCond %{DOCUMENT_ROOT}/cache/perm/%{HTTP_HOST}%{REQUEST_URI}_\.js\.gz -s
+      RewriteRule .* cache/perm/%{HTTP_HOST}%{REQUEST_URI}_\.js\.gz [L,QSA,T=text/javascript,E=no-gzip:1]
+    
+      # NORMAL - Cached css & js files
+      RewriteCond %{DOCUMENT_ROOT}/cache/perm/%{HTTP_HOST}%{REQUEST_URI}_\.css -s
+      RewriteRule .* cache/perm/%{HTTP_HOST}%{REQUEST_URI}_\.css [L,QSA,T=text/css]
+      RewriteCond %{DOCUMENT_ROOT}/cache/perm/%{HTTP_HOST}%{REQUEST_URI}_\.js -s
+      RewriteRule .* cache/perm/%{HTTP_HOST}%{REQUEST_URI}_\.js [L,QSA,T=text/javascript]
+    
+      # GZIP
+      RewriteCond %{HTTP_COOKIE} !(boost-gzip)
+      RewriteCond %{HTTP:Accept-encoding} !gzip
+      RewriteRule .* - [S=3]
+      RewriteCond %{DOCUMENT_ROOT}/cache/normal/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.html\.gz -s
+      RewriteRule .* cache/normal/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.html\.gz [L,T=text/html,E=no-gzip:1]
+      RewriteCond %{DOCUMENT_ROOT}/cache/normal/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.xml\.gz -s
+      RewriteRule .* cache/normal/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.xml\.gz [L,T=text/xml,E=no-gzip:1]
+      RewriteCond %{DOCUMENT_ROOT}/cache/normal/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.json\.gz -s
+      RewriteRule .* cache/normal/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.json\.gz [L,T=text/javascript,E=no-gzip:1]
+    
+      # NORMAL
+      RewriteCond %{DOCUMENT_ROOT}/cache/normal/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.html -s
+      RewriteRule .* cache/normal/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.html [L,T=text/html]
+      RewriteCond %{DOCUMENT_ROOT}/cache/normal/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.xml -s
+      RewriteRule .* cache/normal/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.xml [L,T=text/xml]
+      RewriteCond %{DOCUMENT_ROOT}/cache/normal/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.json -s
+      RewriteRule .* cache/normal/%{HTTP_HOST}%{REQUEST_URI}_%{QUERY_STRING}\.json [L,T=text/javascript]
+      ### BOOST END ###
+    </IfModule>
+  </Directory>
+</VirtualHost>

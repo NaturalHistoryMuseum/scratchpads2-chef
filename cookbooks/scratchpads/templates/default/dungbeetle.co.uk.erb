@@ -1,0 +1,9 @@
+<VirtualHost *:80>
+  DocumentRoot <%= node['scratchpads']['webserver']['apache']['templates']['dungbeetle.co.uk']['documentroot'] %>
+  ServerName <%= node['scratchpads']['webserver']['apache']['templates']['dungbeetle.co.uk']['servername'] %>
+  <Directory <%= node['scratchpads']['webserver']['apache']['templates']['dungbeetle.co.uk']['documentroot'] %>>
+    Options -Indexes
+  </Directory>
+  # We don't care about errors.
+  ErrorLog  /dev/null
+</VirtualHost>

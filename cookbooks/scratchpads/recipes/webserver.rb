@@ -69,7 +69,7 @@ if(data_host)
 end
 if(data_hosts)
   data_hosts.each do|index,data_host_x|
-    node.default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['templates']['help.scratchpads.eu.LocalSettings.php']['variables']['sp_data_servers'] << data_hsot_x['fqdn']
+    node.default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu']['templates']['help.scratchpads.eu.LocalSettings.php']['variables']['sp_data_servers'] << data_host_x['fqdn']
   end
 end
 

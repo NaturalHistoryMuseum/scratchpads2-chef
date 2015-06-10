@@ -37,7 +37,7 @@
       "encrypted_scratchpads-role-data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret"
     },
     "postfix": {
-      "relayhost_role": "control"
+      "relayhost_role": "scratchpads-role-control"
     }
   },
   "run_list": [

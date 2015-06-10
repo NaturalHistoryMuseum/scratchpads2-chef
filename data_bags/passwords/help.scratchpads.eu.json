@@ -1,14 +1,38 @@
 {
   "id": "help.scratchpads.eu",
   "user": {
-    "encrypted_data": "lHlWpcjWswB5vMSdOYp35U0ca2svYy4FIdDWUu9LtkdMtHUdCYfMoe8gyNRY\nxfBA\n",
-    "iv": "EXkohCRpKS20UbB3n1CpWw==\n",
+    "encrypted_data": "zUfth45+m6z847KbztPSPIyRB/uXGt+Jb9jd7ZcEHMKrvI892F9AWSNUS1Gc\nA+rO\n",
+    "iv": "hZHlyYsDlpJ3tu7rPpHqNg==\n",
     "version": 1,
     "cipher": "aes-256-cbc"
   },
   "password": {
-    "encrypted_data": "0Dx8T7WP3NJZ/WZO91lcDLhYVKBJDE1Wi/+xafE+FZSf2Ytq5ZVCMhwd62Uf\n3xOKkkWVxVZjT3zuePTIYzkWzoJJ7aTmEW+r2k8pZ/+aS+Y=\n",
-    "iv": "Y1ysl63+UgqtXffxvh0CVQ==\n",
+    "encrypted_data": "OjtAaAb4RiPmTjU33qG2iMfVhpO7wkKcTk4B50Y9KSLkNeaF0ednmw3qomj6\nAGdkcVpOUOawCeam7ZewiQLsgtJp9z8eiji/sTs6wJnY/wQ=\n",
+    "iv": "waJxRzaLpddt5D+3snAvsw==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  },
+  "site_user": {
+    "encrypted_data": "y8vvQ/D1BAX+3Cdz4PRrHLeQYr6SZfgEM4p+3YjJoEU=\n",
+    "iv": "BBLsqzDCvl4eP09toDbCJQ==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  },
+  "site_password": {
+    "encrypted_data": "81C1qcM4UV6eZm4FYalLSxMhYj+lHDYaJd71pbZ99XUea9/83r73gANqrLVP\nopLigFprar1LeHzL0wNdoMjZ9rxd19+n2TFCjS+uU92cV8s=\n",
+    "iv": "lQEpUcrJRuBhnMmTV3r4lQ==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  },
+  "secret_key": {
+    "encrypted_data": "lmuIPlaGmFsSHUoYiyXWJz0fQYsyvvRom7ETsh6mf4tOMUiVtaKQ4OeF54ht\nhmvpB4lYHPCBN39Cs+tjZU9aFsHDKucxs2CN3JdfuJ+9g6WPQ3OwERV2BVsA\n5kUOn8LK\n",
+    "iv": "HPnUp1o6m4+JUdrM0gNaCA==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  },
+  "upgrade_key": {
+    "encrypted_data": "+OCbqNDHCgokgkT8KsefpF8/CtvRaz4UfT+fnUaC+h3IuIQeFabqraHCNG8U\nAk2q\n",
+    "iv": "4E0wFPKe+7RBSx5fDgMllg==\n",
     "version": 1,
     "cipher": "aes-256-cbc"
   }

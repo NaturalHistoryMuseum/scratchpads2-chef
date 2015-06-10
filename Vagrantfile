@@ -9,9 +9,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     control.vm.network "forwarded_port", guest: 80, host: 8888
     control.vm.provision "chef_client" do |chef|
       chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
-      chef.validation_key_path = ".chef/user.pem"
+      chef.validation_key_path = ".chef/simor.pem"
       chef.validation_client_name = "simor"
-      chef.add_role "control"
+      chef.add_role "scratchpads-role-control"
     end
   end
   # App VM - Apache
@@ -24,9 +24,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     app1.vm.network "public_network"
     app1.vm.provision "chef_client" do |chef|
       chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
-      chef.validation_key_path = ".chef/user.pem"
+      chef.validation_key_path = ".chef/simor.pem"
       chef.validation_client_name = "simor"
-      chef.add_role "app"
+      chef.add_role "scratchpads-role-app"
     end
   end
   config.vm.define "app2", autostart: false do |app2|
@@ -38,9 +38,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     app2.vm.network "public_network"
     app2.vm.provision "chef_client" do |chef|
       chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
-      chef.validation_key_path = ".chef/user.pem"
+      chef.validation_key_path = ".chef/simor.pem"
       chef.validation_client_name = "simor"
-      chef.add_role "app"
+      chef.add_role "scratchpads-role-app"
     end
   end
   # Data VM - Percona/MySQL, Memcached
@@ -53,9 +53,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     data1.vm.network "public_network"
     data1.vm.provision "chef_client" do |chef|
       chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
-      chef.validation_key_path = ".chef/user.pem"
+      chef.validation_key_path = ".chef/simor.pem"
       chef.validation_client_name = "simor"
-      chef.add_role "data"
+      chef.add_role "scratchpads-role-data"
     end
   end
   config.vm.define "data2", autostart: false do |data2|
@@ -67,9 +67,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     data2.vm.network "public_network"
     data2.vm.provision "chef_client" do |chef|
       chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
-      chef.validation_key_path = ".chef/user.pem"
+      chef.validation_key_path = ".chef/simor.pem"
       chef.validation_client_name = "simor"
-      chef.add_role "data"
+      chef.add_role "scratchpads-role-data"
     end
   end
   config.vm.define "search1" do |search1|
@@ -81,9 +81,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     search1.vm.network "public_network"
     search1.vm.provision "chef_client" do |chef|
       chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
-      chef.validation_key_path = ".chef/user.pem"
+      chef.validation_key_path = ".chef/simor.pem"
       chef.validation_client_name = "simor"
-      chef.add_role "search"
+      chef.add_role "scratchpads-role-search"
     end
   end
 end

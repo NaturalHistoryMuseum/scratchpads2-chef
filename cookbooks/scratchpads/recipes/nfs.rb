@@ -5,12 +5,12 @@
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
 # Check if we are the Control server, which has the NFS server installed.
-if node['roles'].index('control') then
+if node['roles'].index(node['scratchpads']['control']['role']) then
   # Install NFS server and set it to allow access to certain servers.
   include_recipe 'nfs::server4'
   app_hosts = []
   unless Chef::Config[:solo]
-    app_hosts_search = search(:node, 'roles:app')
+    app_hosts_search = search(:node, "roles:#{node['scratchpads']['app']['role']}")
     app_hosts_search.each do|app_host|
       app_hosts << app_host['fqdn']
     end
@@ -37,7 +37,7 @@ else
   if Chef::Config[:solo]
     control_host = {'fqdn' => 'sp-control-1'}
   else
-    control_hosts = search(:node, 'flags:UP AND roles:control')
+    control_hosts = search(:node, "roles:#{node['scratchpads']['control']['role']}")
     control_host = control_hosts.first
   end
   node['scratchpads']['nfs']['exports'].each do|mount_dir|

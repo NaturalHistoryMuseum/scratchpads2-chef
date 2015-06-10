@@ -1,0 +1,37 @@
+{
+  "name": "scratchpads-role-search",
+  "default_attributes": {
+    "chef_client": {
+      "init_style": "systemd"
+    },
+    "gkrellmd": {
+      "allowed_hosts": [
+        "157.140.126.246",
+        "monkey.nhm.ac.uk"
+      ]
+    },
+    "java": {
+      "install_flavor": "oracle",
+      "jdk_version": "8",
+      "oracle": {
+        "accept_oracle_download_terms": true
+      }
+    },
+    "scratchpads": {
+      "solr-undertow": {
+        "options": ""
+      }
+    }
+  },
+  "override_attributes": {
+    "postfix": {
+      "relayhost_role": "control"
+    }
+  },
+  "run_list": [
+    "recipe[java]",
+    "recipe[scratchpads]",
+    "recipe[scratchpads::solr-undertow]",
+    "recipe[scratchpads::postfix]"
+  ]
+}

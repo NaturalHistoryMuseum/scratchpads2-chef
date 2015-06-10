@@ -8,7 +8,7 @@
 # has not already been created.
 app_hosts = []
 unless Chef::Config[:solo]
-  app_hosts_search = search(:node, 'flags:UP AND roles:app')
+  app_hosts_search = search(:node, "roles:#{node['scratchpads']['app']['role']}")
   app_hosts_search.each do|app_host|
     app_hosts << app_host['fqdn']
   end
@@ -47,7 +47,7 @@ end
 # has not already been created.
 data_hosts = []
 unless Chef::Config[:solo]
-  data_hosts_search = search(:node, 'flags:UP AND roles:data')
+  data_hosts_search = search(:node, "roles:#{node['scratchpads']['search']['role']}")
   data_hosts_search.each do|data_host|
     data_hosts << data_host['fqdn']
   end

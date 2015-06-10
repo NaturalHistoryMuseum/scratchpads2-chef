@@ -10,8 +10,12 @@ default['scratchpads']['additional_hosts']['gbrds.gbif.org'] = '157.140.126.246'
 # FQDN of the control server (this probably shouldn't be set here)
 default['scratchpads']['control']['fqdn'] = 'sp-control-1.nhm.ac.uk'
 
-# Role of the control server
-default['scratchpads']['control']['role'] = 'control'
+# Roles 
+default['scratchpads']['control']['role'] = 'scratchpads-role-control'
+default['scratchpads']['app']['role'] = 'scratchpads-role-app'
+default['scratchpads']['data']['role'] = 'scratchpads-role-data'
+default['scratchpads']['search']['role'] = 'scratchpads-role-search'
+default['scratchpads']['search-slave']['role'] = 'scratchpads-role-search-slave'
 
 # Aegir database user
 default['scratchpads']['control']['aegir']['dbuser'] = 'aegir'

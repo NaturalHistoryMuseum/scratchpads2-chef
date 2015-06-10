@@ -168,7 +168,7 @@ end
 # to use the memcache servers on the roles:data servers.
 data_hosts = []
 unless Chef::Config[:solo]
-  data_hosts_search = search(:node, 'flags:UP AND roles:data')
+  data_hosts_search = search(:node, "roles:#{node['scratchpads']['data']['role']}")
   data_hosts_search.each do|data_host|
     data_hosts << data_host['fqdn']
   end

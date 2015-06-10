@@ -27,7 +27,7 @@ execute 'delete /var/www/html' do
 end
 
 # Create the session save path
-if node['roles'].index('control') then
+if node['roles'].index(node['scratchpads']['control']['role']) then
   directory node['scratchpads']['webserver']['php']['session_save_path'] do
     owner node['apache']['user']
     group node['apache']['group']
@@ -59,7 +59,7 @@ db_pw = passwords.find_password 'mysql', node['scratchpads']['control']['aegir']
 if Chef::Config[:solo]
   data_host = {'fqdn' => 'sp-data-1'}
 else
-  data_hosts = search(:node, 'flags:UP AND roles:data')
+  data_hosts = search(:node, "roles:#{node['scratchpads']['data']['role']}")
   data_host = data_hosts.first
 end
 if(data_host)
@@ -92,14 +92,14 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
         variables subtmplte['variables']
         action :create
         only_if {::File.exists?(::File.dirname(subtmplte['path']))}
-        only_if {node['roles'].index('control') || subtmplte['all_servers']}
+        only_if {node['roles'].index(node['scratchpads']['control']['role']) || subtmplte['all_servers']}
       end
     end
   end
   # We only add certain files and try to create databases from the control server. This 
   # is because we are sharing the /var/www/ directory to all hosts, and we only need
   # to create a database once.
-  if node['roles'].index('control') then
+  if node['roles'].index(node['scratchpads']['control']['role']) then
     # Check to see if the parent folder exists before we try to create it. If it doesn't, we go no further
     if(::File.exists?(::File.dirname(tmplte['documentroot'])))
       directory site_name do

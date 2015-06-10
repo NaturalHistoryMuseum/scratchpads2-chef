@@ -13,9 +13,9 @@ include_recipe 'varnish'
 if Chef::Config[:solo]
   app_hosts = {'sp-app-1' => {'fqdn' => 'sp-app-1'}}
 else
-  app_hosts = search(:node, 'flags:UP AND roles:app')
-  search_master_hosts = search(:node, 'flags:UP AND roles:search')
-  search_slave_hosts = search(:node, 'flags:UP AND roles:search-slave')
+  app_hosts = search(:node, "roles:#{node['scratchpads']['app']['role']}")
+  search_master_hosts = search(:node, "roles:#{node['scratchpads']['search']['role']}")
+  search_slave_hosts = search(:node, "roles:#{node['scratchpads']['search-slave']['role']}")
 end
 template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
   source node['varnish']['vcl_source']

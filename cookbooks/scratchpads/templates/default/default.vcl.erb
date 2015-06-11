@@ -90,7 +90,7 @@ sub set_monit_domains{
 <%
   domains = []
   node['scratchpads']['varnish']['monit']['domains'].each do|domain|
-    domains[] = 'req.http.host ~ "^'+domain+'$"'
+    domains << 'req.http.host ~ "^'+domain+'$"'
   end
 %>
   if(<%= domains.join(' || ') %>){
@@ -113,7 +113,7 @@ sub set_no_cache_domains{
 <%
   domains = []
   node['scratchpads']['varnish']['no_cache_domains'].each do|domain|
-    domains[] = 'req.http.host ~ "^'+domain+'$"'
+    domains << 'req.http.host ~ "^'+domain+'$"'
   end
 %>
   if(<%= domains.join(' || ') %>){

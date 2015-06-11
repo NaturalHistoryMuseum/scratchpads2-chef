@@ -29,6 +29,12 @@ node['scratchpads']['additional_hosts'].each do|hostname, ip|
     unique true
   end
 end
+# Finally we add entries for the FQDN to ensure that it works properly with the chef server
+Resolv::DNS.new.each_address(node['fqdn']) do|addr|
+  hostsfile_entry addr do
+    hostname node['fqdn']
+  end
+end
 
 # Update apt repository and update
 include_recipe 'apt'

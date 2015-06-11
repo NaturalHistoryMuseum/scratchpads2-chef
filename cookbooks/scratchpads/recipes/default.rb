@@ -19,6 +19,7 @@ control_hosts.each do|control_host|
   Resolv::DNS.new.each_address(control_host['fqdn']) do|addr|
     hostsfile_entry addr do
       hostname 'search.scratchpads.eu'
+      aliases ['test.scratchpad', 'sp-control-1']
     end
   end
 end

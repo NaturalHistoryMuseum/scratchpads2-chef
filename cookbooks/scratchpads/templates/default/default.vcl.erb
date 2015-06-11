@@ -226,7 +226,7 @@ sub vcl_recv {
 <%
   paths = []
   node['scratchpads']['varnish']['no_cache_paths'].each do|path|
-    paths[] << 'req.url ~ "'+path+'"'
+    paths << 'req.url ~ "'+path+'"'
   end
 %>
   if (<%= paths.join(' || ') %>) {

@@ -36,13 +36,13 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     not_if {::File.exists?(node['scratchpads']['webserver']['php']['session_save_path'])}
   end
   # Create an empty folder which is used by certain sites
-  directory '/var/www/empty' do
-    path '/var/www/empty'
-    owner node['apache']['user']
-    group node['apache']['group']
-    mode 0755
-    action :create
-  end 
+  # directory '/var/www/empty' do
+  #   path '/var/www/empty'
+  #   owner node['apache']['user']
+  #   group node['apache']['group']
+  #   mode 0755
+  #   action :create
+  # end
 end
 
 # Install the mysql2_chef_gem as required by database

@@ -2,6 +2,16 @@ passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypt
 # Apache settings
 #default['scratchpads']['webserver']['apache']['additional_modules'] = ['expires','ssl','dbd','dav','dav_fs','authn_dbd']
 default['scratchpads']['webserver']['apache']['additional_modules'] = ['expires','ssl']
+default['scratchpads']['webserver']['apache']['templates']['fqdn'] = {
+  'source' => 'empty.erb',
+  'cookbook' => 'scratchpads',
+  'documentroot' => '/var/www/empty',
+  'servername' => node['fqdn'],
+  'files' => {
+    'cookbook' => 'scratchpads',
+    'source' => 'empty.tar.gz'
+  }
+}
 default['scratchpads']['webserver']['apache']['templates']['cc-mirror.scratchpads.eu'] = {
   'source' => 'cc-mirror.scratchpads.eu.erb',
   'cookbook' => 'scratchpads',

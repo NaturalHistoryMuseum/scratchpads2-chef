@@ -1,5 +1,6 @@
 <VirtualHost *:80>
   DocumentRoot  /var/www/archived
+  ServerName archive.sites
 <% node['scratchpads']['webserver']['apache']['templates']['archived-sites']['serveraliaseses'].each do |server_alias| -%>
   ServerAlias <%= server_alias %>
 <% end -%>

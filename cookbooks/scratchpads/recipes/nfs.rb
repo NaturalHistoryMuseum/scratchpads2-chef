@@ -53,7 +53,7 @@ else
     mount mount_dir do
       device "#{control_host['fqdn']}:#{mount_dir}"
       fstype 'nfs'
-      options 'rw,bg,ac,noatime'
+      options 'rw,noacl,nocto,bg,ac,noatime,nodiratime'
       action [:mount, :enable]
     end
   end

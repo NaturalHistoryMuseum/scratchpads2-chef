@@ -1,0 +1,34 @@
+{
+  "name": "scratchpads-role-percona",
+  "default_attributes": {
+    "chef_client": {
+      "init_style": "systemd"
+    },
+    "percona": {
+      "use_percona_repos": false,
+      "apt_keyserver": "keyserver.ubuntu.com",
+      "server": {
+        "bind_address": "",
+        "innodb_log_file_size": "100M",
+        "group_concat_max_len": 4294967295,
+        "innodb_file_format": "Barracuda",
+        "max_connections": 101,
+        "log_bin": ""
+      },
+      "conf": {
+        "mysqld": {
+          "innodb_large_prefix": 1,
+          "max_user_connections": 20
+        }
+      }
+    }
+  },
+  "override_attributes": {
+    "percona": {
+      "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret"
+    }
+  },
+  "run_list": [
+    "recipe[scratchpads::percona-server]"
+  ]
+}

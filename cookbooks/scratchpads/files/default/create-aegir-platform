@@ -11,7 +11,7 @@ fi
 
 # Firstly, we need to clone the repo, and then checkout the tag.
 cd /var/aegir/platforms
-git clone https://git.scratchpads.eu/git/scratchpads-2.0.git scratchpads-$1
+git clone https://github.com/NaturalHistoryMuseum/scratchpads2.git scratchpads-$1
 if cd scratchpads-$1
 then
 	# Checkout the branch or tag we want.

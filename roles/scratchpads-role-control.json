@@ -40,7 +40,7 @@
     "recipe[imagemagick]",
     "recipe[scratchpads]",
     "role[scratchpads-role-percona]",
-    "role[scratchpads-role-webserver]",
+    "role[scratchpads-role-apache]",
     "recipe[scratchpads::postfix]",
     "recipe[scratchpads::aegir]",
     "recipe[scratchpads::nfs]",

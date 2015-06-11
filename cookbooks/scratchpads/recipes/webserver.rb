@@ -180,10 +180,11 @@ node['scratchpads']['webserver']['php']['pear']['pear_modules_custom_channels'].
 end
 
 # Install pecl modules from known channels (no need to discover the channel)
-node['scratchpads']['webserver']['php']['pear']['pecl_modules'].each do|module_name|
+node['scratchpads']['webserver']['php']['pear']['pecl_modules'].each do|module_name,details|
   # Install pecl extensions
   php_pear module_name do
     action :install
+    preferred_state details['preferred_state']
   end
   # Could do the following in one big command, but it doesn't really make a difference.
   # The following code should check whether we installed a pecl module, or a pear library, perhaps using a "if file exists"

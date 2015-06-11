@@ -1,0 +1,4 @@
+<VirtualHost *:80>
+  DocumentRoot <%= node['scratchpads']['webserver']['apache']['templates']['xhprof']['documentroot'] %>
+  ServerName <%= node['scratchpads']['webserver']['apache']['templates']['xhprof']['servername'] %>
+</VirtualHost>

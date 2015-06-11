@@ -70,6 +70,12 @@ default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu'
     }
   }
 }
+default['scratchpads']['webserver']['apache']['templates']['xhprof'] = {
+  'source' => 'xhprof.erb',
+  'cookbook' => 'scratchpads',
+  'documentroot' => '/usr/share/php/xhprof_html',
+  'servername' => "xhprof.#{node['fqdn']}"
+}
 default['scratchpads']['webserver']['apache']['templates']['wiki.scratchpads.eu'] = {
   'source' => 'wiki.scratchpads.eu.erb',
   'cookbook' => 'scratchpads',
@@ -179,4 +185,8 @@ default['scratchpads']['webserver']['php']['session_save_path'] = '/var/www/php-
 
 # Pear settings
 default['scratchpads']['webserver']['php']['pear']['pear_modules_custom_channels'] = {'drush' => 'pear.drush.org'}
-default['scratchpads']['webserver']['php']['pear']['pecl_modules'] = ['uploadprogress','mailparse']
+default['scratchpads']['webserver']['php']['pear']['pecl_modules'] = {
+  'uploadprogress' => {'preferred_state' => 'stable'},
+  'mailparse' => {'preferred_state' => 'stable'},
+  'xhprof' => {'preferred_state' => 'beta'}
+}

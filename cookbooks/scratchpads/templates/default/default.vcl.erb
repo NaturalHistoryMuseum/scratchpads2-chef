@@ -66,7 +66,7 @@ sub set_control_domains{
 <%
   domains = []
   node['scratchpads']['varnish']['control']['domains'].each do|domain|
-    domains[] << 'req.http.host ~ "^'+domain+'$"'
+    domains << 'req.http.host ~ "^'+domain+'$"'
   end
 %>
   if(<%= domains.join(' || ') %>){
@@ -77,7 +77,7 @@ sub set_selenium_domains{
 <%
   domains = []
   node['scratchpads']['varnish']['selenium']['domains'].each do|domain|
-    domains[] << 'req.http.host ~ "^'+domain+'$"'
+    domains << 'req.http.host ~ "^'+domain+'$"'
   end
 %>
   if(<%= domains.join(' || ') %>){
@@ -102,7 +102,7 @@ sub set_redmine_domains{
 <%
   domains = []
   node['scratchpads']['varnish']['redmine']['domains'].each do|domain|
-    domains[] << 'req.http.host ~ "^'+domain+'$"'
+    domains << 'req.http.host ~ "^'+domain+'$"'
   end
 %>
   if(<%= domains.join(' || ') %>){
@@ -166,7 +166,7 @@ sub vcl_recv {
 <%
   domains = []
   node['scratchpads']['varnish']['search']['domains'].each do|domain|
-    domains[] << 'req.http.host ~ "^'+domain+'$"'
+    domains << 'req.http.host ~ "^'+domain+'$"'
   end
 %>
   if(<%= domains.join(' || ') %>){

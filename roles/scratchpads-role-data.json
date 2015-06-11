@@ -20,9 +20,10 @@
       "server": {
         "bind_address": "",
         "innodb_log_file_size": "100M",
-        "group_concat_max_len": "4294967295",
+        "group_concat_max_len": 4294967295,
         "innodb_file_format": "Barracuda",
-        "max_connections": "101"
+        "max_connections": 101,
+        "log_bin": ""
       },
       "conf": {
         "mysqld": {

@@ -8,6 +8,20 @@
 hostsfile_entry '127.0.1.1' do
   action    :remove
 end
+# Add the search site
+if Chef::Config[:solo]
+  control_hosts = []
+else
+  control_hosts = search(:node, "roles:#{node['scratchpads']['control']['role']}")
+end
+require 'resolv'
+control_hosts.each do|control_host|
+  Resolv::DNS.new.each_address(control_host['fqdn']) do|addr|
+    hostsfile_entry addr do
+      hostname 'search.scratchpads.eu'
+    end
+  end
+end
 node['scratchpads']['additional_hosts'].each do|hostname, ip|
   hostsfile_entry ip do
     hostname hostname

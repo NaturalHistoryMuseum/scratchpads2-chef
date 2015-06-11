@@ -15,7 +15,7 @@ if Chef::Config[:solo]
 else
   app_hosts = search(:node, "roles:#{node['scratchpads']['app']['role']}")
   search_master_hosts = search(:node, "roles:#{node['scratchpads']['search']['role']}")
-  search_slave_hosts = search(:node, "roles:#{node['scratchpads']['search-slave']['role']}")
+  search_slave_hosts = search(:node, "roles:#{node['scratchpads']['search-slave']['role']} OR roles:#{node['scratchpads']['search']['role']}")
 end
 template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
   source node['varnish']['vcl_source']

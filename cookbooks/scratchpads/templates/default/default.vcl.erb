@@ -65,8 +65,8 @@ backend monit {
 sub set_control_domains{
 <%
   domains = []
-  node['scratchpads']['varnish']['control']['domains'].each_with_index do|domain, n|
-    domains[n] = 'req.http.host ~ "^'+domain+'$"'
+  node['scratchpads']['varnish']['control']['domains'].each do|domain|
+    domains[] << 'req.http.host ~ "^'+domain+'$"'
   end
 %>
   if(<%= domains.join(' || ') %>){
@@ -76,8 +76,8 @@ sub set_control_domains{
 sub set_selenium_domains{
 <%
   domains = []
-  node['scratchpads']['varnish']['selenium']['domains'].each_with_index do|domain, n|
-    domains[n] = 'req.http.host ~ "^'+domain+'$"'
+  node['scratchpads']['varnish']['selenium']['domains'].each do|domain|
+    domains[] << 'req.http.host ~ "^'+domain+'$"'
   end
 %>
   if(<%= domains.join(' || ') %>){
@@ -89,8 +89,8 @@ sub set_selenium_domains{
 sub set_monit_domains{
 <%
   domains = []
-  node['scratchpads']['varnish']['monit']['domains'].each_with_index do|domain, n|
-    domains[n] = 'req.http.host ~ "^'+domain+'$"'
+  node['scratchpads']['varnish']['monit']['domains'].each do|domain|
+    domains[] = 'req.http.host ~ "^'+domain+'$"'
   end
 %>
   if(<%= domains.join(' || ') %>){
@@ -101,8 +101,8 @@ sub set_monit_domains{
 sub set_redmine_domains{
 <%
   domains = []
-  node['scratchpads']['varnish']['redmine']['domains'].each_with_index do|domain, n|
-    domains[n] = 'req.http.host ~ "^'+domain+'$"'
+  node['scratchpads']['varnish']['redmine']['domains'].each do|domain|
+    domains[] << 'req.http.host ~ "^'+domain+'$"'
   end
 %>
   if(<%= domains.join(' || ') %>){
@@ -112,8 +112,8 @@ sub set_redmine_domains{
 sub set_no_cache_domains{
 <%
   domains = []
-  node['scratchpads']['varnish']['no_cache_domains'].each_with_index do|domain, n|
-    domains[n] = 'req.http.host ~ "^'+domain+'$"'
+  node['scratchpads']['varnish']['no_cache_domains'].each do|domain|
+    domains[] = 'req.http.host ~ "^'+domain+'$"'
   end
 %>
   if(<%= domains.join(' || ') %>){
@@ -142,8 +142,11 @@ sub vcl_init {
 sub vcl_recv {
 <%
   domains = []
-  node['scratchpads']['varnish']['trusted_network_only_domain_paterns'].each_with_index do|domain, n|
-    domains[n] = 'req.http.host ~ "'+domain+'"'
+  node['scratchpads']['varnish']['trusted_network_only_domain_paterns'].each do|domain|
+    domains << 'req.http.host ~ "'+domain+'"'
+  end
+  node['scratchpads']['varnish']['search']['domains'].each do|domain|
+    domains << 'req.http.host ~ "^'+domain+'$"'
   end
 %>
   # Redirect dev. and dev- domains if outside the museum
@@ -162,8 +165,8 @@ sub vcl_recv {
   # Set the search domains
 <%
   domains = []
-  node['scratchpads']['varnish']['search']['domains'].each_with_index do|domain, n|
-    domains[n] = 'req.http.host ~ "^'+domain+'$"'
+  node['scratchpads']['varnish']['search']['domains'].each do|domain|
+    domains[] << 'req.http.host ~ "^'+domain+'$"'
   end
 %>
   if(<%= domains.join(' || ') %>){
@@ -222,8 +225,8 @@ sub vcl_recv {
   # Do not cache these paths.
 <%
   paths = []
-  node['scratchpads']['varnish']['no_cache_paths'].each_with_index do|path, n|
-    paths[n] = 'req.url ~ "'+path+'"'
+  node['scratchpads']['varnish']['no_cache_paths'].each do|path|
+    paths[] << 'req.url ~ "'+path+'"'
   end
 %>
   if (<%= paths.join(' || ') %>) {

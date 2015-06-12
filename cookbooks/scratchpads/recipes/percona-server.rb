@@ -10,6 +10,12 @@
 include_recipe 'scratchpads::percona'
 include_recipe 'percona::server'
 
+# Install the mysql2_chef_gem as required by database
+mysql2_chef_gem 'default' do
+  provider Chef::Provider::Mysql2ChefGem::Percona
+  action :install
+end
+
 # Load the passwords only once
 passwords = ScratchpadsEncryptedData.new(node)
 

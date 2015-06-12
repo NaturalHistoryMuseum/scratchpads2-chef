@@ -1,7 +1,7 @@
 passwords = ScratchpadsEncryptedData.new(node)
 # Apache settings
-#default['scratchpads']['webserver']['apache']['additional_modules'] = ['expires','ssl','dbd','dav','dav_fs','authn_dbd']
-default['scratchpads']['webserver']['apache']['additional_modules'] = ['expires','ssl']
+default['scratchpads']['webserver']['apache']['modules_to_enable'] = ['expires','ssl']
+default['scratchpads']['webserver']['apache']['modules_to_disable'] = ['status','socache_shmcb']
 default['scratchpads']['webserver']['apache']['templates']['fqdn'] = {
   'source' => 'empty.erb',
   'cookbook' => 'scratchpads',

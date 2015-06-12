@@ -17,6 +17,11 @@ include_recipe 'apache2'
 include_recipe 'apache2::mpm_prefork'
 include_recipe 'apache2::mod_php5'
 
+# Disable the other-vhosts-access-log configuration
+apache_config 'other-vhosts-access-log' do
+  enable false
+end
+
 # Delete the /var/www/html folder - we do not need it, and it'll cause issues with
 # the mounting of NFS folders.
 execute 'delete /var/www/html' do

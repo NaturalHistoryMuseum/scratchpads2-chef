@@ -5,8 +5,8 @@
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
 # Save SSH keys
-enc_data_bag = ScratchpadsEncryptedPasswords.new(node, 'ssh')
-lines = enc_data_bag.find_password 'aegir', 'public'
+enc_data_bag = ScratchpadsEncryptedData.new(node, 'ssh')
+lines = enc_data_bag.get_encrypted_data 'aegir', 'public'
 template "#{node['scratchpads']['aegir']['home_folder']}/.ssh/authorized_keys" do
   path "#{node['scratchpads']['aegir']['home_folder']}/.ssh/authorized_keys"
   source 'empty-file.erb'

@@ -1,5 +1,5 @@
 # Encrypted data file path
-default['scratchpads']['encrypted_data_secret_file_path'] = '/vagrant/.chef/encrypted_data_bag_secret'
+default['scratchpads']['encrypted_data_bag_secret_file'] = '/vagrant/.chef/encrypted_data_bag_secret'
 
 # Passwords bag
 default['scratchpads']['encrypted_data_bag'] = 'passwords'

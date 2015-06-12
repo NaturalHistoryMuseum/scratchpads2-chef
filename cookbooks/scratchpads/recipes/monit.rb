@@ -9,8 +9,8 @@ include_recipe 'monit-ng::source'
 include_recipe 'monit-ng::config'
 # Install Mmonit on the control server
 if node['roles'].index(node['scratchpads']['control']['role']) then
-  mmonit = ScratchpadsEncryptedPasswords.new(node, 'mmonit')
-  node.default['mmonit']['license_owner'] = mmonit.find_password 'mmonit', 'license_owner'
-  node.default['mmonit']['license'] = mmonit.find_password 'mmonit', 'license'
+  mmonit = ScratchpadsEncryptedData.new(node, 'mmonit')
+  node.default['mmonit']['license_owner'] = mmonit.get_encrypted_data 'mmonit', 'license_owner'
+  node.default['mmonit']['license'] = mmonit.get_encrypted_data 'mmonit', 'license'
   include_recipe 'mmonit'
 end

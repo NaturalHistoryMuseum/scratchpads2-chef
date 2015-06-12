@@ -46,8 +46,8 @@ execute 'clear drush cache' do
 end
 # Install the hostmaster site on this server using the database also on this
 # server.
-passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
-aegir_pw = passwords.find_password 'mysql', 'aegir'
+passwords = ScratchpadsEncryptedData.new(node)
+aegir_pw = passwords.get_encrypted_data 'mysql', 'aegir'
 # FIXME: The --aegir_db_user=... below is "odd"!
 execute 'install hostmaster' do
   command "#{node['scratchpads']['control']['drush_command']} hostmaster-install \
@@ -113,7 +113,7 @@ execute 'enable additional modules' do
   environment node['scratchpads']['aegir']['environment']
 end
 # Set the admin password to one contained in an encrypted data bag.
-admin_pw = passwords.find_password 'aegir', 'admin'
+admin_pw = passwords.get_encrypted_data 'aegir', 'admin'
 execute 'set the admin user password' do
   command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} upwd admin --password=#{admin_pw} -y"
   cwd node['scratchpads']['aegir']['home_folder']
@@ -125,8 +125,8 @@ end
 # FIX CRON FOR AEGIR USER.
 #
 # Save SSH keys
-enc_data_bag = ScratchpadsEncryptedPasswords.new(node, 'ssh')
-lines = enc_data_bag.find_password 'aegir', 'private'
+enc_data_bag = ScratchpadsEncryptedData.new(node, 'ssh')
+lines = enc_data_bag.get_encrypted_data 'aegir', 'private'
 template "#{node['scratchpads']['aegir']['home_folder']}/.ssh/id_rsa" do
   path "#{node['scratchpads']['aegir']['home_folder']}/.ssh/id_rsa"
   source 'empty-file.erb'
@@ -195,7 +195,7 @@ end
 # This allows us to know the secret on all servers, and therefore allows us to
 # control the Varnish server remotely (i.e. sp-app-xxx can clear varnish cache
 # for a specific site)
-varnish_secret = passwords.find_password 'varnish', 'secret'
+varnish_secret = passwords.get_encrypted_data 'varnish', 'secret'
 template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/varnish.inc" do
   source 'varnish.inc.erb'
   cookbook 'scratchpads'
@@ -206,7 +206,7 @@ template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/varnish
     :varnish_secret => varnish_secret
   })
 end
-gm3_password = passwords.find_password 'mysql', 'gm3'
+gm3_password = passwords.get_encrypted_data 'mysql', 'gm3'
 template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/databases.inc" do
   source 'databases.inc.erb'
   cookbook 'scratchpads'
@@ -219,13 +219,13 @@ template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/databas
 end
 # Create the global.inc file which has general settings, and also includes the memcache.inc, 
 # varnish.inc and databases.inc files.
-twitter_consumer_secret = passwords.find_password 'twitter', 'secret'
-twitter_consumer_key = passwords.find_password 'twitter', 'key'
-scratchpads_multilingual_contribute_key = passwords.find_password 'scratchpads_multilingual_contribute', 'key'
-scratchpads_multilingual_contribute_uwho = passwords.find_password 'scratchpads_multilingual_contribute', 'uwho'
-scratchpads_gbif_registry_username = passwords.find_password 'scratchpads_gbif_registry', 'username'
-scratchpads_gbif_registry_password = passwords.find_password 'scratchpads_gbif_registry', 'password'
-scratchpads_taverna_auth_token = passwords.find_password 'taverna', 'auth_token'
+twitter_consumer_secret = passwords.get_encrypted_data 'twitter', 'secret'
+twitter_consumer_key = passwords.get_encrypted_data 'twitter', 'key'
+scratchpads_multilingual_contribute_key = passwords.get_encrypted_data 'scratchpads_multilingual_contribute', 'key'
+scratchpads_multilingual_contribute_uwho = passwords.get_encrypted_data 'scratchpads_multilingual_contribute', 'uwho'
+scratchpads_gbif_registry_username = passwords.get_encrypted_data 'scratchpads_gbif_registry', 'username'
+scratchpads_gbif_registry_password = passwords.get_encrypted_data 'scratchpads_gbif_registry', 'password'
+scratchpads_taverna_auth_token = passwords.get_encrypted_data 'taverna', 'auth_token'
 template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/global.inc" do
   source 'global.inc.erb'
   cookbook 'scratchpads'

@@ -55,8 +55,8 @@ end
 data_hosts.each do|data_host|
   sanitised_server_name = data_host.gsub(/[^a-z0-9]/, '')
   # Create the server
-  passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
-  aegir_pw = passwords.find_password 'mysql', 'aegir'
+  passwords = ScratchpadsEncryptedData.new(node)
+  aegir_pw = passwords.get_encrypted_data 'mysql', 'aegir'
   execute 'create the database server node' do
     command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{data_host} --db_service_type='mysql' --master_db='mysql://aegir:#{aegir_pw}@#{data_host}'"
     cwd node['scratchpads']['aegir']['home_folder']

@@ -52,8 +52,8 @@ mysql2_chef_gem 'default' do
 end
 
 # We need to set some database settings before attempting to create the templates
-passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
-db_pw = passwords.find_password 'mysql', node['scratchpads']['control']['aegir']['dbuser']
+passwords = ScratchpadsEncryptedData.new(node)
+db_pw = passwords.get_encrypted_data 'mysql', node['scratchpads']['control']['aegir']['dbuser']
 
 # Fill in the host
 if Chef::Config[:solo]

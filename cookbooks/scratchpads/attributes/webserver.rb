@@ -1,4 +1,4 @@
-passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
+passwords = ScratchpadsEncryptedData.new(node)
 # Apache settings
 #default['scratchpads']['webserver']['apache']['additional_modules'] = ['expires','ssl','dbd','dav','dav_fs','authn_dbd']
 default['scratchpads']['webserver']['apache']['additional_modules'] = ['expires','ssl']
@@ -41,10 +41,10 @@ default['scratchpads']['webserver']['apache']['templates']['dungbeetle.co.uk'] =
   'servername' => 'dungbeetle.co.uk'
   # FILES - Due to the size of the files required, this will be handled outside of Chef.
 }
-help_scratchpads_eu_db_user = passwords.find_password 'help.scratchpads.eu', 'user'
-help_scratchpads_eu_db_password = passwords.find_password 'help.scratchpads.eu', 'password'
-help_scratchpads_eu_secretkey = passwords.find_password 'help.scratchpads.eu', 'secretkey'
-help_scratchpads_eu_upgradekey = passwords.find_password 'help.scratchpads.eu', 'upgradekey'
+help_scratchpads_eu_db_user = passwords.get_encrypted_data 'help.scratchpads.eu', 'user'
+help_scratchpads_eu_db_password = passwords.get_encrypted_data 'help.scratchpads.eu', 'password'
+help_scratchpads_eu_secretkey = passwords.get_encrypted_data 'help.scratchpads.eu', 'secretkey'
+help_scratchpads_eu_upgradekey = passwords.get_encrypted_data 'help.scratchpads.eu', 'upgradekey'
 default['scratchpads']['webserver']['apache']['templates']['help.scratchpads.eu'] = {
   'source' => 'help.scratchpads.eu.erb',
   'cookbook' => 'scratchpads',
@@ -115,8 +115,8 @@ default['scratchpads']['webserver']['apache']['templates']['fencedine.myspecies.
   'documentroot' => '/var/www/fencedine.myspecies.info',
   'git' => 'https://github.com/NaturalHistoryMuseum/fencedine.git',
 }
-cite_scratchpads_eu_db_user = passwords.find_password 'cite.scratchpads.eu', 'user'
-cite_scratchpads_eu_db_password = passwords.find_password 'cite.scratchpads.eu', 'password'
+cite_scratchpads_eu_db_user = passwords.get_encrypted_data 'cite.scratchpads.eu', 'user'
+cite_scratchpads_eu_db_password = passwords.get_encrypted_data 'cite.scratchpads.eu', 'password'
 default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'] = {
   'source' => 'cite.scratchpads.eu.erb',
   'cookbook' => 'scratchpads',
@@ -140,10 +140,10 @@ default['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu'
     'database' => 'citescratchpadseu'
   }
 }
-apache = ScratchpadsEncryptedPasswords.new(node, 'apache')
-git_scratchpads_eu_crt_lines = apache.find_password 'certificates', 'certificate'
-git_scratchpads_eu_key_lines = apache.find_password 'certificates', 'key'
-git_scratchpads_eu_chain_lines = apache.find_password 'certificates', 'chain'
+apache = ScratchpadsEncryptedData.new(node, 'apache')
+git_scratchpads_eu_crt_lines = apache.get_encrypted_data 'certificates', 'certificate'
+git_scratchpads_eu_key_lines = apache.get_encrypted_data 'certificates', 'key'
+git_scratchpads_eu_chain_lines = apache.get_encrypted_data 'certificates', 'chain'
 default['scratchpads']['webserver']['apache']['templates']['git.scratchpads.eu'] = {
   'source' => 'git.scratchpads.eu.erb',
   'cookbook' => 'scratchpads',

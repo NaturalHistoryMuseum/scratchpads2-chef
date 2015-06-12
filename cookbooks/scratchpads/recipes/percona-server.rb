@@ -17,7 +17,7 @@ mysql2_chef_gem 'default' do
 end
 
 # Load the passwords only once
-passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
+passwords = ScratchpadsEncryptedData.new(node)
 
 # Copy the percona-functions SQL file and execute it
 unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['percona-functions-file']}"))
@@ -29,7 +29,7 @@ unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['percona-funct
     mode '0400'
   end
   execute 'percona functions' do
-    root_pw = passwords.root_password
+    root_pw = passwords.get_encrypted_data 'mysql', 'root'
     command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < /var/chef/#{node['scratchpads']['percona']['percona-functions-file']}"
   end
 end
@@ -44,7 +44,7 @@ unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['secure-instal
     mode '0400'
   end
   execute 'secure installation' do
-    root_pw = passwords.root_password
+    root_pw = passwords.get_encrypted_data 'mysql', 'root'
     command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < /var/chef/#{node['scratchpads']['percona']['secure-installation-file']}"
   end
 end
@@ -59,8 +59,8 @@ unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['gm3_data_file
     mode '0400'
   end
   # Create the GM3 user
-  gm3_pw = passwords.find_password 'mysql', 'gm3'
-  root_pw = passwords.root_password
+  gm3_pw = passwords.get_encrypted_data 'mysql', 'gm3'
+  root_pw = passwords.get_encrypted_data 'mysql', 'root'
   mysql_database 'gm3' do
     connection(
       :host => node['scratchpads']['control']['dbserver'],
@@ -81,15 +81,15 @@ unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['gm3_data_file
     action [:create, :grant]
   end
   execute 'load gm3 data' do
-    root_pw = passwords.root_password
+    root_pw = passwords.get_encrypted_data 'mysql', 'root'
     command "zcat /var/chef/#{node['scratchpads']['percona']['gm3_data_file']} | mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' gm3"
   end
 end
 
 # Create the aegir user
 # Add a database user using the password in the passwords bag.
-root_pw = passwords.root_password
-aegir_pw = passwords.find_password 'mysql', 'aegir'
+root_pw = passwords.get_encrypted_data 'mysql', 'root'
+aegir_pw = passwords.get_encrypted_data 'mysql', 'aegir'
 mysql_database_user node['scratchpads']['control']['aegir']['dbuser'] do
   connection(
     :host => node['scratchpads']['control']['dbserver'],

@@ -45,8 +45,8 @@ template '/etc/systemd/system/varnish.service' do
   notifies :run, 'execute[restart_systemctl_daemon]', :immediately
   notifies :restart, 'service[varnish]', :delayed
 end
-passwords = ScratchpadsEncryptedPasswords.new(node, node['scratchpads']['encrypted_data_bag'])
-varnish_secret = passwords.find_password 'varnish', 'secret'
+passwords = ScratchpadsEncryptedData.new(node)
+varnish_secret = passwords.get_encrypted_data 'varnish', 'secret'
 execute 'update varnish secret file' do
   command "echo \"#{varnish_secret}\" > #{node['varnish']['secret_file']}"
   group 'root'

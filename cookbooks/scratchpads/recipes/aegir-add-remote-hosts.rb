@@ -17,7 +17,7 @@ app_hosts.each do|app_host|
   sanitised_server_name = app_host.gsub(/[^a-z0-9]/, '')
   # Create the server
   execute 'create the application server node' do
-    command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{app_host} --http_service_type='apache' --http_port=80"
+    command "#{node['scratchpads']['control']['drush_command']} @hm provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{app_host} --http_service_type='apache' --http_port=80"
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
@@ -35,7 +35,7 @@ app_hosts.each do|app_host|
   #drush @hm hosting-import @server_spapp1nhmacuk
   # Import the server into the front end
   execute 'import the application server into front end' do
-    command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} hosting-import @server_#{sanitised_server_name}"
+    command "#{node['scratchpads']['control']['drush_command']} @hm hosting-import @server_#{sanitised_server_name}"
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
@@ -58,7 +58,7 @@ data_hosts.each do|data_host|
   passwords = ScratchpadsEncryptedData.new(node)
   aegir_pw = passwords.get_encrypted_data 'mysql', 'aegir'
   execute 'create the database server node' do
-    command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{data_host} --db_service_type='mysql' --master_db='mysql://aegir:#{aegir_pw}@#{data_host}'"
+    command "#{node['scratchpads']['control']['drush_command']} @hm provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{data_host} --db_service_type='mysql' --master_db='mysql://aegir:#{aegir_pw}@#{data_host}'"
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
@@ -75,7 +75,7 @@ data_hosts.each do|data_host|
   end
   # Import the server into the front end
   execute 'import the database server into front end' do
-    command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} hosting-import @server_#{sanitised_server_name}"
+    command "#{node['scratchpads']['control']['drush_command']} @hm hosting-import @server_#{sanitised_server_name}"
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']

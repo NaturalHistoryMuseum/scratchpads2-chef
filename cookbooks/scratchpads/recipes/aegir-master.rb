@@ -96,7 +96,7 @@ end
 node['scratchpads']['aegir']['modules_to_download'].each do|module_name|
   # Download the additional module(s).
   execute "download #{module_name} module" do
-    command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} dl #{module_name}"
+    command "#{node['scratchpads']['control']['drush_command']} @hm dl #{module_name}"
     environment node['scratchpads']['aegir']['environment']
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
@@ -106,7 +106,7 @@ node['scratchpads']['aegir']['modules_to_download'].each do|module_name|
 end
 # Enable any additional modules as configured.
 execute 'enable additional modules' do
-  command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} en #{node['scratchpads']['aegir']['modules_to_install'].join(' ')} -y"
+  command "#{node['scratchpads']['control']['drush_command']} @hm en #{node['scratchpads']['aegir']['modules_to_install'].join(' ')} -y"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
@@ -115,7 +115,7 @@ end
 # Set the admin password to one contained in an encrypted data bag.
 admin_pw = passwords.get_encrypted_data 'aegir', 'admin'
 execute 'set the admin user password' do
-  command "#{node['scratchpads']['control']['drush_command']} -l http://#{node['scratchpads']['control']['fqdn']} -r #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']} upwd admin --password=#{admin_pw} -y"
+  command "#{node['scratchpads']['control']['drush_command']} @hm upwd admin --password=#{admin_pw} -y"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']

@@ -1,5 +1,5 @@
 <?php
-if($_SERVER['HTTP_HOST'] != '<%= node['scratchpads']['control']['fqdn'] %>'){
+if($_SERVER['HTTP_HOST'] != '<%= node['scratchpads']['control']['aegir_url'] %>'){
   global $databases;
   $databases['default']['default']['charset'] = '<%= node['scratchpads']['percona']['charset'] %>';
   $databases['default']['default']['collation'] = '<%= node['scratchpads']['percona']['collation'] %>';

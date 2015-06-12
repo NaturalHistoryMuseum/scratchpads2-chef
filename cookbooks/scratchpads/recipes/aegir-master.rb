@@ -56,7 +56,7 @@ execute 'install hostmaster' do
            --aegir_db_user=#{node['scratchpads']['control'][node['scratchpads']['aegir']['user']]['dbuser']} \
            --aegir_db_host=#{node['scratchpads']['control']['dbserver']} \
            --client_email=#{node['scratchpads']['control']['admin_email']} \
-           #{node['scratchpads']['control']['fqdn']} \
+           #{node['scratchpads']['control']['aegir_url']} \
            -y"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']

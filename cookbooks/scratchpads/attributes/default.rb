@@ -8,7 +8,7 @@ default['scratchpads']['encrypted_data_bag'] = 'passwords'
 default['scratchpads']['additional_hosts']['gbrds.gbif.org'] = '157.140.126.246'
 
 # FQDN of the control server (this probably shouldn't be set here)
-default['scratchpads']['control']['fqdn'] = 'sp-control-1.nhm.ac.uk'
+default['scratchpads']['control']['aegir_url'] = 'get.scratchpads.eu'
 
 # Roles 
 default['scratchpads']['control']['role'] = 'scratchpads-role-control'

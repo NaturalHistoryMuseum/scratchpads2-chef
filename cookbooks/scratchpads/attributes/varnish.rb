@@ -1,6 +1,7 @@
 # Varnish
 default['scratchpads']['varnish']['first_byte_timeout'] = '600s'
 default['scratchpads']['varnish']['between_bytes_timeout'] = '600s'
+default['scratchpads']['varnish']['connect_timeout'] = '600s'
 default['scratchpads']['varnish']['probe']['url'] = '/'
 default['scratchpads']['varnish']['probe']['timeout'] = '2s'
 default['scratchpads']['varnish']['probe']['interval'] = '6s'

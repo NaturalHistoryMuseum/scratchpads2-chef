@@ -18,9 +18,6 @@
         "127.0.0.1"
       ]
     },
-    "percona": {
-      "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret"
-    },
     "postfix": {
       "inet-interfaces": "all",
       "mail_type": "master",

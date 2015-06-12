@@ -13,10 +13,7 @@
     },
     "percona": {
       "use_percona_repos": false,
-      "apt_keyserver": "keyserver.ubuntu.com",
-      "server": {
-        "bind_address": ""
-      }
+      "apt_keyserver": "keyserver.ubuntu.com"
     }
   },
   "override_attributes": {
@@ -24,9 +21,6 @@
       "listen_addresses": [
         "0.0.0.0"
       ]
-    },
-    "percona": {
-      "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret"
     },
     "postfix": {
       "relayhost_role": "scratchpads-role-control"

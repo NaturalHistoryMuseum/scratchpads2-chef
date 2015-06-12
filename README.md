@@ -30,6 +30,20 @@ handled, you'll need to bring up the second data server.
 Note, there is currently no replication configured between any of the database 
 servers on the data hosts - they effectively act independently of each other.
 
+You will need to add entries to your hosts file for `get.scratchpads.eu`, and 
+an additional domain name(s) that you would like to create Scratchpads/Drupal 
+sites for. The entry should point to the control server.
+
+    192.168.0.78 get.scratchpads.eu test.scratchpad
+
+An easy way of finding the IP address of the server, is to SSH into it 
+
+    vagrant ssh control
+
+and then to execute the hostname command
+
+    hostname -I
+
 Chef server
 -----------
 Most of the code within the Scratchpads cookbook expects you to be using 

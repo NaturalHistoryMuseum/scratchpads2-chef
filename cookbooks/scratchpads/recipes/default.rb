@@ -44,3 +44,9 @@ include_recipe 'gkrellmd'
 
 # Install rsync and unzip
 package ['rsync','unzip']
+
+# Install the mysql2_chef_gem as required by database
+mysql2_chef_gem 'default' do
+  provider Chef::Provider::Mysql2ChefGem::Percona
+  action :install
+end

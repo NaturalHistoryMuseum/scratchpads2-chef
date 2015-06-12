@@ -1,4 +1,7 @@
 <VirtualHost *:80>
   DocumentRoot <%= node['scratchpads']['webserver']['apache']['templates']['fqdn']['documentroot'] %>
   ServerName <%= node['scratchpads']['webserver']['apache']['templates']['fqdn']['servername'] %>
+  <Location />
+    Require all granted
+  </Location>
 </VirtualHost>

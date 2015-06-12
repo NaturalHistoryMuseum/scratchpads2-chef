@@ -1,7 +1,11 @@
 # Varnish
 default['scratchpads']['varnish']['first_byte_timeout'] = '600s'
 default['scratchpads']['varnish']['between_bytes_timeout'] = '600s'
-default['scratchpads']['varnish']['connect_timeout'] = '600s'
+default['scratchpads']['varnish']['probe']['url'] = '/'
+default['scratchpads']['varnish']['probe']['timeout'] = '2s'
+default['scratchpads']['varnish']['probe']['interval'] = '6s'
+default['scratchpads']['varnish']['probe']['window'] = 10
+default['scratchpads']['varnish']['probe']['threshold'] = 7
 default['scratchpads']['varnish']['selenium']['host'] = 'selenium.nhm.ac.uk'
 default['scratchpads']['varnish']['selenium']['port'] = 80
 default['scratchpads']['varnish']['selenium']['max_connections'] = 50

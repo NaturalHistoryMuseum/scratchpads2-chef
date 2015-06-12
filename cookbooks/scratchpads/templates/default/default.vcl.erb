@@ -10,6 +10,13 @@ backend control {
   .between_bytes_timeout = <%= node['scratchpads']['varnish']['between_bytes_timeout'] %>;
   .connect_timeout = <%= node['scratchpads']['varnish']['connect_timeout'] %>;
   .max_connections = <%= node['scratchpads']['varnish']['control']['max_connections'] %>;
+  .probe = {
+    .url = "<%= node['scratchpads']['varnish']['probe']['url'] %>";
+    timeout = <%= node['scratchpads']['varnish']['probe']['timeout'] %>;
+    interval = <%= node['scratchpads']['varnish']['probe']['interval'] %>;
+    window = <%= node['scratchpads']['varnish']['probe']['window'] %>;
+    threshold = <%= node['scratchpads']['varnish']['probe']['threshold'] %>;
+  }
 }
 <% @sp_app_servers.each_with_index do |app_server, n| -%>
 backend sp_app_<%= n %> {
@@ -18,6 +25,13 @@ backend sp_app_<%= n %> {
   .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
   .between_bytes_timeout = <%= node['scratchpads']['varnish']['between_bytes_timeout'] %>;
   .connect_timeout = <%= node['scratchpads']['varnish']['connect_timeout'] %>;
+  .probe = {
+    .url = "<%= node['scratchpads']['varnish']['probe']['url'] %>";
+    timeout = <%= node['scratchpads']['varnish']['probe']['timeout'] %>;
+    interval = <%= node['scratchpads']['varnish']['probe']['interval'] %>;
+    window = <%= node['scratchpads']['varnish']['probe']['window'] %>;
+    threshold = <%= node['scratchpads']['varnish']['probe']['threshold'] %>;
+  }
 }
 <% end -%>
 <% @sp_search_master_servers.each_with_index do |search_server, n| -%>
@@ -27,6 +41,13 @@ backend sp_search_master_<%= n %> {
   .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
   .between_bytes_timeout = <%= node['scratchpads']['varnish']['between_bytes_timeout'] %>;
   .connect_timeout = <%= node['scratchpads']['varnish']['connect_timeout'] %>;
+  .probe = {
+    .url = "/solr/";
+    timeout = <%= node['scratchpads']['varnish']['probe']['timeout'] %>;
+    interval = <%= node['scratchpads']['varnish']['probe']['interval'] %>;
+    window = <%= node['scratchpads']['varnish']['probe']['window'] %>;
+    threshold = <%= node['scratchpads']['varnish']['probe']['threshold'] %>;
+  }
 }
 <% end -%>
 <% @sp_search_slave_servers.each_with_index do |search_server, n| -%>
@@ -36,6 +57,13 @@ backend sp_search_slave_<%= n %> {
   .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
   .between_bytes_timeout = <%= node['scratchpads']['varnish']['between_bytes_timeout'] %>;
   .connect_timeout = <%= node['scratchpads']['varnish']['connect_timeout'] %>;
+  .probe = {
+    .url = "/solr/";
+    timeout = <%= node['scratchpads']['varnish']['probe']['timeout'] %>;
+    interval = <%= node['scratchpads']['varnish']['probe']['interval'] %>;
+    window = <%= node['scratchpads']['varnish']['probe']['window'] %>;
+    threshold = <%= node['scratchpads']['varnish']['probe']['threshold'] %>;
+  }
 }
 <% end -%>
 backend selenium {

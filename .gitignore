@@ -30,6 +30,7 @@ tramp
 
 # SublimeText
 *.sublime-workspace
+*.sublime-project
 
 # TextMate
 *.tmproj

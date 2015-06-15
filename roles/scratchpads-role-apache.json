@@ -23,6 +23,7 @@
         "php5-cli",
         "php5-curl",
         "php5-gd",
+        "php5-geos",
         "php5-gmp",
         "php5-intl",
         "php5-mcrypt",

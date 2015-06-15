@@ -23,6 +23,7 @@
   "run_list": [
     "recipe[scratchpads]",
     "recipe[scratchpads::aegir]",
+    "recipe[scratchpads::nfs]",
     "role[scratchpads-role-percona]",
     "recipe[scratchpads::postfix]",
     "recipe[memcached]"

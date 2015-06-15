@@ -8,16 +8,16 @@
 if node['roles'].index(node['scratchpads']['control']['role']) then
   # Install NFS server and set it to allow access to certain servers.
   include_recipe 'nfs::server4'
-  app_hosts = []
+  client_hosts = []
   unless Chef::Config[:solo]
-    app_hosts_search = search(:node, "roles:#{node['scratchpads']['app']['role']}")
-    app_hosts_search.each do|app_host|
-      app_hosts << app_host['fqdn']
+    client_hosts_search = search(:node, "roles:#{node['scratchpads']['app']['role']} OR roles:#{node['scratchpads']['data']['role']}")
+    client_hosts_search.each do|client_host|
+      client_hosts << client_host['fqdn']
     end
   end
   node['scratchpads']['nfs']['exports'].each do|mount_dir|
     nfs_export mount_dir do
-      network app_hosts
+      network client_hosts
       writeable true
       sync true
       options ['root_squash','no_subtree_check']

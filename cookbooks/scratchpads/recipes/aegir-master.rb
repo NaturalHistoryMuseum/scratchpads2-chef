@@ -31,11 +31,19 @@ directory "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads'][
 end
 # Execute the basic drush commands to download the provision code
 execute 'download provision' do
-  command "#{node['scratchpads']['control']['drush_command']} dl --destination=#{node['scratchpads']['aegir']['home_folder']}/.drush #{node['scratchpads']['aegir']['provision_version']}"
+  command "#{node['scratchpads']['control']['drush_command']} dl --destination=#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']} #{node['scratchpads']['aegir']['provision_version']}"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
   not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}/provision/provision.info")}
+end
+# Execute the basic drush command to download the registry_rebuild drush code which is useful for fixing broken sites.
+execute 'download registry_rebuild' do
+  command "#{node['scratchpads']['control']['drush_command']} dl --destination=#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']} registry_rebuild"
+  cwd node['scratchpads']['aegir']['home_folder']
+  group node['scratchpads']['aegir']['group']
+  user node['scratchpads']['aegir']['user']
+  not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}/registry_rebuild")}
 end
 # Clear the drush cache so that the provision command is found.
 execute 'clear drush cache' do
@@ -122,7 +130,14 @@ execute 'set the admin user password' do
   environment node['scratchpads']['aegir']['environment']
 end
 #
-# FIX CRON FOR AEGIR USER.
+# Add cron functions to Aegir
+#
+# - cron to delete backups older than one week (every hour, or daily - not sure if it matters much)
+# - Reinstall Sandbox, and possibly also tweak the drushrc.php file (every six hours)
+# - Cron to create the backups using Aegir (every minute, or possibly using hosting-queue)
+# - Run stats-aggregate on scratchpads.eu site (every four hours)
+# - Clear vbrant.eu site caches (every five minutes)
+# - Run updates on testing sites once a day
 #
 # Save SSH keys
 enc_data_bag = ScratchpadsEncryptedData.new(node, 'ssh')

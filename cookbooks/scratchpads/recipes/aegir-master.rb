@@ -123,11 +123,12 @@ end
 # Set the admin password to one contained in an encrypted data bag.
 admin_pw = passwords.get_encrypted_data 'aegir', 'admin'
 execute 'set the admin user password' do
-  command "#{node['scratchpads']['control']['drush_command']} @hm upwd admin --password=#{admin_pw} -y"
+  command "#{node['scratchpads']['control']['drush_command']} @hm upwd admin --password=#{admin_pw} -y ; touch #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}/admin_password_set"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
   environment node['scratchpads']['aegir']['environment']
+  not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}/admin_password_set")}
 end
 #
 # Add cron functions to Aegir

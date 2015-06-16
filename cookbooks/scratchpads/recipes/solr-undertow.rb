@@ -90,12 +90,11 @@ node['scratchpads']['solr-undertow']['templates'].each do|name,tmplte|
 end
 
 # Create a symlink to the wars folder
-execute 'link to wars folder' do
-  cwd node['scratchpads']['solr-undertow']['data_folder']
-  command "ln -s #{node['scratchpads']['solr-undertow']['application_folder']}/example/solr-wars"
-  user node['scratchpads']['solr-undertow']['user']
+link "#{node['scratchpads']['solr-undertow']['data_folder']}/solr-wars" do
+  owner node['scratchpads']['solr-undertow']['user']
   group node['scratchpads']['solr-undertow']['group']
-  not_if { ::File.exists?("#{node['scratchpads']['solr-undertow']['data_folder']}/solr-wars")}
+  action :create
+  to "#{node['scratchpads']['solr-undertow']['application_folder']}/example/solr-wars"
 end
 
 # Copy the configuration from Scratchpads which is held in a tar.gz file

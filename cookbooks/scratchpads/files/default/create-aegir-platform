@@ -14,7 +14,7 @@ if [ $# -eq 0 ]; then
 fi
 
 # Path to packages folder.
-PACKAGES_FOLDER="/var/aegir/platforms/scratchpadseu/sites/localize.scratchpads.eu/packages/"
+PACKAGES_FOLDER="/var/aegir/platforms/scratchpads.eu/sites/localize.scratchpads.eu/packages/"
 
 # Firstly, we need to clone the repo, and then checkout the tag.
 cd /var/aegir/platforms

@@ -271,6 +271,13 @@ git "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads.eu" do
   user node['scratchpads']['aegir']['user']
   timeout node['scratchpads']['aegir']['scratchpads.eu']['timeout']
 end
+# Link the scratchpads_eu theme from the scratchpads.eu Git repo to the hostmaster platform
+link "#{node['scratchpads']['aegir']['home_folder']}/platforms/hostmaster/sites/all/themes/scratchpads_eu" do
+  action :create
+  group node['scratchpads']['aegir']['group']
+  owner node['scratchpads']['aegir']['user']
+  to "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads.eu/sites/all/themes/scratchpads_eu"
+end
 # Create the scratchpads-master platform
 execute 'create the scratchpads-master platform node' do
   command "#{node['scratchpads']['control']['drush_command']} provision-save --context_type=platform --web_server='@server_automaticpack' --root='/var/aegir/platforms/scratchpads-master' platform_scratchpads-master"

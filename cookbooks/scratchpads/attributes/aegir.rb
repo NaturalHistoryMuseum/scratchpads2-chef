@@ -40,10 +40,14 @@ default['scratchpads']['aegir']['hosting_reinstall']['checkout_branch'] = '7.x-3
 # Hosting Auto Pack module settings for aegir
 default['scratchpads']['aegir']['hosting_auto_pack']['repository'] = 'https://github.com/NaturalHistoryMuseum/hosting_auto_pack.git'
 default['scratchpads']['aegir']['hosting_auto_pack']['checkout_branch'] = 'master'
-# Scratchpads repository
+# Scratchpads-master repository
 default['scratchpads']['aegir']['scratchpads_master']['repository'] = 'https://github.com/NaturalHistoryMuseum/scratchpads2.git'
 default['scratchpads']['aegir']['scratchpads_master']['checkout_branch'] = 'master'
 default['scratchpads']['aegir']['scratchpads_master']['timeout'] = 600
+# Scratchpads.eu repository
+default['scratchpads']['aegir']['scratchpads.eu']['repository'] = 'https://github.com/NaturalHistoryMuseum/scratchpads.eu.git'
+default['scratchpads']['aegir']['scratchpads.eu']['checkout_branch'] = 'master'
+default['scratchpads']['aegir']['scratchpads.eu']['timeout'] = 600
 # Files to create
 default['scratchpads']['aegir']['cookbook_files']['create-aegir-platform'] = {
   'path' => '/usr/local/sbin/create-aegir-platform',

@@ -264,8 +264,15 @@ git "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads-master
   user node['scratchpads']['aegir']['user']
   timeout node['scratchpads']['aegir']['scratchpads_master']['timeout']
 end
+# Create the scratchpads.eu platform on the pack server
+git "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads.eu" do
+  repository node['scratchpads']['aegir']['scratchpads.eu']['repository']
+  group node['scratchpads']['aegir']['group']
+  user node['scratchpads']['aegir']['user']
+  timeout node['scratchpads']['aegir']['scratchpads.eu']['timeout']
+end
 # Create the scratchpads-master platform
-execute 'create the platform node' do
+execute 'create the scratchpads-master platform node' do
   command "#{node['scratchpads']['control']['drush_command']} provision-save --context_type=platform --web_server='@server_automaticpack' --root='/var/aegir/platforms/scratchpads-master' platform_scratchpads-master"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']
@@ -274,8 +281,18 @@ execute 'create the platform node' do
   not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
 end
-# Verify the server
-execute 'verify the platform node' do
+# Create the scratchpads.eu platform
+execute 'create the scratchpads.eu platform node' do
+  command "#{node['scratchpads']['control']['drush_command']} provision-save --context_type=platform --web_server='@server_automaticpack' --root='/var/aegir/platforms/scratchpads.eu' platform_scratchpadseu"
+  cwd node['scratchpads']['aegir']['home_folder']
+  group node['scratchpads']['aegir']['group']
+  user node['scratchpads']['aegir']['user']
+  environment node['scratchpads']['aegir']['environment']
+  not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadseu.alias.drushrc.php")}
+  only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
+end
+# Verify the platform
+execute 'verify the scratchpads-master platform node' do
   command "drush @platform_scratchpads-master provision-verify"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']
@@ -285,10 +302,21 @@ execute 'verify the platform node' do
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
   not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
 end
+# Verify the platform
+execute 'verify the scratchpads.euplatform node' do
+  command "drush @platform_scratchpadseu provision-verify"
+  cwd node['scratchpads']['aegir']['home_folder']
+  group node['scratchpads']['aegir']['group']
+  user node['scratchpads']['aegir']['user']
+  environment node['scratchpads']['aegir']['environment']
+  only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadseu.alias.drushrc.php")}
+  only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
+  not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadseu.alias.drushrc.php")}
+end
 #drush @hm hosting-import @server_spapp1nhmacuk
 # Import the platform into the front end
-execute 'import the platform into front end' do
-  command "touch #{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.imported ; drush @hm hosting-import @platform_scratchpads-master"
+execute 'import the scratchpads-master platform into front end' do
+  command "touch #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}/platform_scratchpads-master.imported ; drush @hm hosting-import @platform_scratchpads-master"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
@@ -296,4 +324,16 @@ execute 'import the platform into front end' do
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
   not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.imported")}
+end
+#drush @hm hosting-import @server_spapp1nhmacuk
+# Import the platform into the front end
+execute 'import the scratchpads.eu platform into front end' do
+  command "touch #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}/platform_scratchpadseu.imported ; drush @hm hosting-import @platform_scratchpadseu"
+  cwd node['scratchpads']['aegir']['home_folder']
+  group node['scratchpads']['aegir']['group']
+  user node['scratchpads']['aegir']['user']
+  environment node['scratchpads']['aegir']['environment']
+  only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadseu.alias.drushrc.php")}
+  only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
+  not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadseu.imported")}
 end

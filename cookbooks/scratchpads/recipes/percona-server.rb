@@ -4,11 +4,14 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
+# Tweak the backup directory so that the host backs up to a folder specific for the host
+node.default['percona']['conf']['xtrabackup']['target_dir'] = "/var/aegir/backups-databases/#{node['fqdn']}"
+
 # Manually add the Percona apt repository, as we need to use
 # the wheezy repo, and not the jessie one (which isn't yet
 # complete).
-include_recipe 'scratchpads::percona'
 include_recipe 'percona::server'
+include_recipe 'percona::backup'
 
 # Install the mysql2_chef_gem as required by database
 mysql2_chef_gem 'default' do

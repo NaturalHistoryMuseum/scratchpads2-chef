@@ -35,6 +35,13 @@ directory node['scratchpads']['aegir']['home_folder'] do
   mode 0755
   action :create
 end
+# Create the folder for the database backups
+directory "#{node['scratchpads']['aegir']['home_folder']}/backups-databases" do
+  owner node['scratchpads']['aegir']['user']
+  group node['scratchpads']['aegir']['group']
+  mode 0755
+  action :create
+end
 # Create the .ssh directory
 directory "#{node['scratchpads']['aegir']['home_folder']}/.ssh" do
   owner node['scratchpads']['aegir']['user']

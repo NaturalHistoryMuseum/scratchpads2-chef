@@ -18,6 +18,8 @@ default['scratchpads']['aegir']['group'] = 'www-data'
 default['scratchpads']['aegir']['user'] = 'aegir'
 default['scratchpads']['aegir']['provision_version'] = 'provision-7.x-3.x'
 default['scratchpads']['aegir']['modules_to_install'] = [
+  'beautytips_ui',
+  'image_captcha',  
   'hosting_alias',
   'hosting_auto_pack',
   'hosting_clone',
@@ -25,11 +27,14 @@ default['scratchpads']['aegir']['modules_to_install'] = [
   'hosting_migrate',
   'hosting_queued',
   'hosting_reinstall',
+  'hosting_scratchpads',
   'hosting_signup',
   'hosting_task_gc',
   'hosting_web_pack'
 ]
 default['scratchpads']['aegir']['modules_to_download'] = [
+  'beautytips',
+  'captcha',
   'memcache',
   'varnish'
 ]
@@ -40,6 +45,9 @@ default['scratchpads']['aegir']['hosting_reinstall']['checkout_branch'] = '7.x-3
 # Hosting Auto Pack module settings for aegir
 default['scratchpads']['aegir']['hosting_auto_pack']['repository'] = 'https://github.com/NaturalHistoryMuseum/hosting_auto_pack.git'
 default['scratchpads']['aegir']['hosting_auto_pack']['checkout_branch'] = 'master'
+# Hosting Scratchpads module settings for aegir
+default['scratchpads']['aegir']['hosting_scratchpads']['repository'] = 'https://github.com/NaturalHistoryMuseum/hosting_scratchpads.git'
+default['scratchpads']['aegir']['hosting_scratchpads']['checkout_branch'] = 'master'
 # Scratchpads-master repository
 default['scratchpads']['aegir']['scratchpads_master']['repository'] = 'https://github.com/NaturalHistoryMuseum/scratchpads2.git'
 default['scratchpads']['aegir']['scratchpads_master']['checkout_branch'] = 'master'

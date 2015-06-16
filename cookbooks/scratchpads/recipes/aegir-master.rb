@@ -86,6 +86,12 @@ git "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
 end
+# Download the Hosting Scratchpads module from our Git repository
+git "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/custom/hosting_scratchpads" do
+  repository node['scratchpads']['aegir']['hosting_scratchpads']['repository']
+  group node['scratchpads']['aegir']['group']
+  user node['scratchpads']['aegir']['user']
+end
 # Download the Hosting Reinstall module which is currently a Sandbox, and therefore can't be downloaded using the method below.
 git "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib/hosting_reinstall" do
   repository node['scratchpads']['aegir']['hosting_reinstall']['repository']

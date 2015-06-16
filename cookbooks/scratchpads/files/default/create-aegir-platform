@@ -1,13 +1,20 @@
 #!/bin/bash
 
-# Path to packages folder.
-PACKAGES_FOLDER="/var/aegir/platforms/scratchpads.eu*/sites/localize.scratchpads.eu/packages/"
+# Ensure this script is being run as the aegir
+if [ `whoami` != "aegir" ]
+then
+	echo "This script must be run as 'aegir'" 1>&2
+	exit 1
+fi
 
 # Ensure they gave us a branch/tag.
 if [ $# -eq 0 ]; then
 	echo "usage: $0 {branch|tag}" 1>&2
 	exit 1
 fi
+
+# Path to packages folder.
+PACKAGES_FOLDER="/var/aegir/platforms/scratchpadseu/sites/localize.scratchpads.eu/packages/"
 
 # Firstly, we need to clone the repo, and then checkout the tag.
 cd /var/aegir/platforms
@@ -19,9 +26,6 @@ then
 
 	# Delete the files we don't want (but would like to keep in the repo)
 	rm update.php install.php Scratchpads-Javascript.xml Scratchpads-PHP.xml web.config cron.php xmlrpc.php authorize.php scratchpads2.make
-
-	# Change the ownership
-	chown aegir:www-data -R .
 
 	if [ `echo $1 | grep "2\.[1-9]*\.[0-9].*"` ]
 	then
@@ -48,6 +52,11 @@ then
 			mv "$i-7.x-$1.tar.gz" $PACKAGES_FOLDER
 		done
 	fi
+
+	# Add the new platform to the Aegir front end
+	drush provision-save --context_type=platform --web_server="@server_automaticpack" --root="/var/aegir/platforms/scratchpads-"$1 platform_scratchpads-$1
+	drush @platform_scratchpads-$1 provision-verify
+	drush @hm hosting-import @platform_scratchpads-$1
 else
 	echo "Failed to clone repository"
 fi

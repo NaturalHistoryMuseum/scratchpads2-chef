@@ -50,7 +50,7 @@ default['scratchpads']['aegir']['scratchpads.eu']['checkout_branch'] = 'master'
 default['scratchpads']['aegir']['scratchpads.eu']['timeout'] = 600
 # Files to create
 default['scratchpads']['aegir']['cookbook_files']['create-aegir-platform'] = {
-  'path' => '/usr/local/sbin/create-aegir-platform',
+  'path' => '/usr/local/bin/create-aegir-platform',
   'source' => 'create-aegir-platform',
   'cookbook' => 'scratchpads',
   'owner' => 'root',

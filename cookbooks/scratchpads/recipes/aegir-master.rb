@@ -16,14 +16,8 @@ node['scratchpads']['aegir']['cookbook_files'].each do|name,cb_file|
 end
 
 # Create the .drush folder
+# FIXME - Is this required?
 directory "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}" do
-  owner node['scratchpads']['aegir']['user']
-  group node['scratchpads']['aegir']['group']
-  mode 0755
-  action :create
-end
-# Create the platforms folder
-directory "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}/platforms" do
   owner node['scratchpads']['aegir']['user']
   group node['scratchpads']['aegir']['group']
   mode 0755

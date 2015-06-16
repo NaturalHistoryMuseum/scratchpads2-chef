@@ -21,6 +21,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
       writeable true
       sync true
       options ['root_squash','no_subtree_check']
+      unique true
     end
   end
   # Restart nfs-server components

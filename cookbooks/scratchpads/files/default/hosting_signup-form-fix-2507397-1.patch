@@ -1,0 +1,66 @@
+diff --git a/alias/hosting_alias.module b/alias/hosting_alias.module
+index 8655015..6ae0939 100644
+--- a/alias/hosting_alias.module
++++ b/alias/hosting_alias.module
+@@ -233,7 +233,7 @@ function hosting_alias_get_aliases($node, $type = NULL) {
+  */
+ function hosting_alias_insert($node) {
+   $automatic = hosting_alias_automatic_aliases(strtolower(trim($node->title)));
+-  if ($node->aliases || sizeof($automatic)) {
++  if (!empty($node->aliases) || sizeof($automatic)) {
+     $aliases = (is_array($node->aliases)) ? $node->aliases : explode("\n", str_replace(",", "\n", $node->aliases));
+     if (is_array($aliases)) {
+       foreach ($aliases as $alias) {
+diff --git a/client/hosting_client.module b/client/hosting_client.module
+index daae34a..5d7dd2f 100644
+--- a/client/hosting_client.module
++++ b/client/hosting_client.module
+@@ -319,7 +319,7 @@ function hosting_client_validate($node, $form, &$form_state) {
+                               array('%suggestion' => hosting_client_validate_suggest($node->uname, TRUE))));
+   }
+ 
+-  if (!$node->nid && !empty($node->email)) {
++  if (!empty($node->nid) && !empty($node->email)) {
+     $user = user_load_by_mail($node->email);
+     if ($user) {
+       form_set_error('email', t("Email address already exists."));
+@@ -374,7 +374,7 @@ function hosting_client_validate_suggest($name, $internal = FALSE) {
+  * Implements hook_insert().
+  */
+ function hosting_client_insert($node) {
+-  if (isset($node->uname)) {
++  if (!empty($node->uname)) {
+     $node->uname = hosting_client_sanitize($node->uname);
+   }
+   else {
+diff --git a/signup/hosting_signup.module b/signup/hosting_signup.module
+index a2ea12d..3f0fc26 100644
+--- a/signup/hosting_signup.module
++++ b/signup/hosting_signup.module
+@@ -103,11 +103,11 @@ function hosting_signup_form_validate($form, &$form_state) {
+   $client = (object) $form_state['values'];
+   $client->type = 'client';
+   $client->title = $client->client_name;
+-  node_validate($client);
++  node_validate($client, $form, $form_state);
+ 
+   $site = (object) $form_state['values'];
+   $site->type = 'site';
+-  node_validate($site);
++  node_validate($site, $form, $form_state);
+ }
+ 
+ 
+diff --git a/site/hosting_site.form.inc b/site/hosting_site.form.inc
+index 7bf9c0d..44751a2 100644
+--- a/site/hosting_site.form.inc
++++ b/site/hosting_site.form.inc
+@@ -373,7 +373,7 @@ function hosting_site_validate($node, &$form) {
+ 
+   // If the quota module is loaded and this is a new node, check
+   // the site quota.
+-  if (!$node->nid && function_exists('hosting_site_quota_exceeded')) {
++  if (!empty($node->nid) && function_exists('hosting_site_quota_exceeded')) {
+     $quota_error = hosting_site_quota_exceeded($node);
+     if ($quota_error) {
+       form_set_error('title', $quota_error);

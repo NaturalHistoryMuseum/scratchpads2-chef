@@ -65,3 +65,11 @@ default['scratchpads']['aegir']['cookbook_files']['create-aegir-platform'] = {
   'group' => 'root',
   'mode' => '0755'
 }
+default['scratchpads']['aegir']['cookbook_files']['aegir-patch'] = {
+  'path' => '/var/chef/hosting_signup-form-fix-2507397-1.patch',
+  'source' => 'hosting_signup-form-fix-2507397-1.patch',
+  'cookbook' => 'scratchpads',
+  'owner' => 'root',
+  'group' => 'root',
+  'mode' => '0755'
+}

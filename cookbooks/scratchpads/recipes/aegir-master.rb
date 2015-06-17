@@ -66,6 +66,15 @@ execute 'install hostmaster' do
   not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/hm.alias.drushrc.php")}
   environment node['scratchpads']['aegir']['environment']
 end
+# Patch the hosting module
+execute 'patch hosting module' do
+  command "touch #{node['scratchpads']['aegir']['home_folder']}/.drush/patched_hosting ; patch -p1 < #{node['scratchpads']['aegir']['cookbook_files']['aegir-patch']['path']}"
+  cwd '/var/aegir/platforms/hostmaster/profiles/hostmaster/modules/aegir/hosting'
+  group node['scratchpads']['aegir']['group']
+  user node['scratchpads']['aegir']['user']
+  not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/patched_hosting")}
+  environment node['scratchpads']['aegir']['environment']
+end
 # Create the 'contrib' folder under sites/all for the memcache, varnish and any other modules to go into
 directory "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib" do
   owner node['scratchpads']['aegir']['user']

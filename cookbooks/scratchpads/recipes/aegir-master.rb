@@ -109,6 +109,42 @@ git "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
 end
+# Create the scratchpads-master platform on the pack server
+# First get the code
+git "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads-master" do
+  repository node['scratchpads']['aegir']['scratchpads_master']['repository']
+  group node['scratchpads']['aegir']['group']
+  user node['scratchpads']['aegir']['user']
+  timeout node['scratchpads']['aegir']['scratchpads_master']['timeout']
+end
+# Create the scratchpads.eu platform on the pack server
+git "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads.eu" do
+  repository node['scratchpads']['aegir']['scratchpads.eu']['repository']
+  group node['scratchpads']['aegir']['group']
+  user node['scratchpads']['aegir']['user']
+  timeout node['scratchpads']['aegir']['scratchpads.eu']['timeout']
+end
+# Link the scratchpads_eu theme from the scratchpads.eu Git repo to the hostmaster platform
+link "#{node['scratchpads']['aegir']['home_folder']}/platforms/hostmaster/sites/all/themes/scratchpads_eu" do
+  action :create
+  group node['scratchpads']['aegir']['group']
+  owner node['scratchpads']['aegir']['user']
+  to "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads.eu/sites/all/themes/scratchpads_eu"
+end
+# Link the omega theme from the scratchpads.eu Git repo to the hostmaster platform
+link "#{node['scratchpads']['aegir']['home_folder']}/platforms/hostmaster/sites/all/themes/omega" do
+  action :create
+  group node['scratchpads']['aegir']['group']
+  owner node['scratchpads']['aegir']['user']
+  to "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads.eu/sites/all/themes/omega"
+end
+# Link the lessphp library from the scratchpads.eu Git repo to the hostmaster platform
+link "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads.eu/sites/all/libraries/lessphp" do
+  action :create
+  group node['scratchpads']['aegir']['group']
+  owner node['scratchpads']['aegir']['user']
+  to "#{node['scratchpads']['aegir']['home_folder']}/platforms/hostmaster/sites/all/libaries/lessphp"
+end
 
 node['scratchpads']['aegir']['modules_to_download'].each do|module_name|
   # Download the additional module(s).
@@ -271,35 +307,6 @@ end
 # Add remote hosts (data and app servers)
 include_recipe 'scratchpads::aegir-add-remote-hosts'
 
-# Create the scratchpads-master platform on the pack server
-# First get the code
-git "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads-master" do
-  repository node['scratchpads']['aegir']['scratchpads_master']['repository']
-  group node['scratchpads']['aegir']['group']
-  user node['scratchpads']['aegir']['user']
-  timeout node['scratchpads']['aegir']['scratchpads_master']['timeout']
-end
-# Create the scratchpads.eu platform on the pack server
-git "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads.eu" do
-  repository node['scratchpads']['aegir']['scratchpads.eu']['repository']
-  group node['scratchpads']['aegir']['group']
-  user node['scratchpads']['aegir']['user']
-  timeout node['scratchpads']['aegir']['scratchpads.eu']['timeout']
-end
-# Link the scratchpads_eu theme from the scratchpads.eu Git repo to the hostmaster platform
-link "#{node['scratchpads']['aegir']['home_folder']}/platforms/hostmaster/sites/all/themes/scratchpads_eu" do
-  action :create
-  group node['scratchpads']['aegir']['group']
-  owner node['scratchpads']['aegir']['user']
-  to "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads.eu/sites/all/themes/scratchpads_eu"
-end
-# Link the omega theme from the scratchpads.eu Git repo to the hostmaster platform
-link "#{node['scratchpads']['aegir']['home_folder']}/platforms/hostmaster/sites/all/themes/omega" do
-  action :create
-  group node['scratchpads']['aegir']['group']
-  owner node['scratchpads']['aegir']['user']
-  to "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads.eu/sites/all/themes/omega"
-end
 # Create the scratchpads-master platform
 execute 'create the scratchpads-master platform node' do
   command "#{node['scratchpads']['control']['drush_command']} provision-save --context_type=platform --web_server='@server_automaticpack' --root='/var/aegir/platforms/scratchpads-master' platform_scratchpads-master"

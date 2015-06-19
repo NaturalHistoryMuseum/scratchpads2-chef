@@ -65,10 +65,11 @@ unless(::File.exists?("#{node['scratchpads']['solr-undertow']['application_folde
     owner node['scratchpads']['solr-undertow']['user']
     group node['scratchpads']['solr-undertow']['group']
     mode 0444
+    notifies :run, 'execute[extract the solr-undertow release]', :immediately
   end
-
   # Extract the shit out of that release
   execute 'extract the solr-undertow release' do
+    action :nothing
     cwd node['scratchpads']['solr-undertow']['application_folder']
     command "tar xfz #{node['scratchpads']['solr-undertow']['release_version']}-#{node['scratchpads']['solr-undertow']['solr_version']}.tar.gz --strip-components 1"
     user node['scratchpads']['solr-undertow']['user']
@@ -86,6 +87,8 @@ node['scratchpads']['solr-undertow']['templates'].each do|name,tmplte|
     group tmplte['group']
     mode tmplte['mode']
     action :create
+    notifies :run, 'execute[restart_systemctl_daemon]', :delayed
+    notifies [:enable, :start], 'service[solr-undertow]', :delayed
   end
 end
 
@@ -105,9 +108,11 @@ cookbook_file node['scratchpads']['solr-undertow']['scratchpads_conf']['path'] d
   owner node['scratchpads']['solr-undertow']['scratchpads_conf']['owner']
   group node['scratchpads']['solr-undertow']['scratchpads_conf']['group']
   mode node['scratchpads']['solr-undertow']['scratchpads_conf']['mode']
+  notifies :run, 'execute[extract the scratchpads conf]', :immediately
 end
 # Extract the scratchpads conf
 execute 'extract the scratchpads conf' do
+  action :nothing
   cwd "#{node['scratchpads']['solr-undertow']['data_folder']}/solr-home/scratchpads2"
   command "tar xfz #{node['scratchpads']['solr-undertow']['scratchpads_conf']['source']}"
   user node['scratchpads']['solr-undertow']['user']
@@ -123,6 +128,6 @@ end
 
 # Start the service
 service 'solr-undertow' do
-  action [:enable, :start]
+  action :nothing
   provider Chef::Provider::Service::Systemd
 end

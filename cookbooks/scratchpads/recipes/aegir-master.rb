@@ -30,6 +30,7 @@ execute 'download provision' do
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
   not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}/provision/provision.info")}
+  notifies :run, 'execute[clear drush cache]', :immediately
 end
 # Execute the basic drush command to download the registry_rebuild drush code which is useful for fixing broken sites.
 execute 'download registry_rebuild' do
@@ -38,9 +39,11 @@ execute 'download registry_rebuild' do
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
   not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}/registry_rebuild")}
+  notifies :run, 'execute[clear drush cache]', :immediately
 end
 # Clear the drush cache so that the provision command is found.
 execute 'clear drush cache' do
+  action :nothing
   command "#{node['scratchpads']['control']['drush_command']} cache-clear drush"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']
@@ -65,14 +68,16 @@ execute 'install hostmaster' do
   user node['scratchpads']['aegir']['user']
   not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/hm.alias.drushrc.php")}
   environment node['scratchpads']['aegir']['environment']
+  notifies :run, 'execute[patch hosting module]', :immediately
+  notifies :run, 'execute[set the admin user password]', :delayed
 end
 # Patch the hosting module
 execute 'patch hosting module' do
-  command "touch #{node['scratchpads']['aegir']['home_folder']}/.drush/patched_hosting ; patch -p1 < #{node['scratchpads']['aegir']['cookbook_files']['aegir-patch']['path']}"
+  action :nothing
+  command "patch -p1 < #{node['scratchpads']['aegir']['cookbook_files']['aegir-patch']['path']}"
   cwd '/var/aegir/platforms/hostmaster/profiles/hostmaster/modules/aegir/hosting'
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
-  not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/patched_hosting")}
   environment node['scratchpads']['aegir']['environment']
 end
 # Create the 'contrib' folder under sites/all for the memcache, varnish and any other modules to go into
@@ -155,10 +160,13 @@ node['scratchpads']['aegir']['modules_to_download'].each do|module_name|
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
     not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib/#{module_name}")}
+    notifies :run, 'execute[enable modules]', :immediately
+    notifies :run, 'execute[disable modules]', :immediately
   end
 end
 # Enable any additional modules as configured.
-execute 'enable additional modules' do
+execute 'enable modules' do
+  action :nothing
   command "#{node['scratchpads']['control']['drush_command']} @hm en #{node['scratchpads']['aegir']['modules_to_install'].join(' ')} -y"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']
@@ -166,7 +174,8 @@ execute 'enable additional modules' do
   environment node['scratchpads']['aegir']['environment']
 end
 # Disable any additional modules as configured.
-execute 'enable additional modules' do
+execute 'disable modules' do
+  action :nothing
   command "#{node['scratchpads']['control']['drush_command']} @hm dis #{node['scratchpads']['aegir']['modules_to_disable'].join(' ')} -y"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']
@@ -176,12 +185,12 @@ end
 # Set the admin password to one contained in an encrypted data bag.
 admin_pw = passwords.get_encrypted_data 'aegir', 'admin'
 execute 'set the admin user password' do
-  command "touch #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}/admin_password_set ; #{node['scratchpads']['control']['drush_command']} @hm upwd admin --password=#{admin_pw} -y"
+  action :nothing
+  command "#{node['scratchpads']['control']['drush_command']} @hm upwd admin --password=#{admin_pw} -y"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
   environment node['scratchpads']['aegir']['environment']
-  not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}/admin_password_set")}
 end
 #
 # Add cron functions to Aegir
@@ -345,6 +354,7 @@ execute 'verify the scratchpads-master platform node' do
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
   not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
+  notifies :run, 'execute[import the scratchpads-master platform into front end]', :immediately
 end
 # Verify the platform
 execute 'verify the scratchpads.euplatform node' do
@@ -356,28 +366,29 @@ execute 'verify the scratchpads.euplatform node' do
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadseu.alias.drushrc.php")}
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
   not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadseu.alias.drushrc.php")}
+  notifies :run, 'execute[import the scratchpads.eu platform into front end]', :immediately
 end
 #drush @hm hosting-import @server_spapp1nhmacuk
 # Import the platform into the front end
 execute 'import the scratchpads-master platform into front end' do
-  command "touch #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}/platform_scratchpads-master.imported ; drush @hm hosting-import @platform_scratchpads-master"
+  action :nothing
+  command "drush @hm hosting-import @platform_scratchpads-master"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
   environment node['scratchpads']['aegir']['environment']
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
-  not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.imported")}
 end
 #drush @hm hosting-import @server_spapp1nhmacuk
 # Import the platform into the front end
 execute 'import the scratchpads.eu platform into front end' do
-  command "touch #{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}/platform_scratchpadseu.imported ; drush @hm hosting-import @platform_scratchpadseu"
+  action :nothing
+  command "drush @hm hosting-import @platform_scratchpadseu"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
   environment node['scratchpads']['aegir']['environment']
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadseu.alias.drushrc.php")}
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
-  not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadseu.imported")}
 end

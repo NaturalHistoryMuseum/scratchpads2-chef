@@ -23,18 +23,22 @@ app_hosts.each do|app_host|
     user node['scratchpads']['aegir']['user']
     environment node['scratchpads']['aegir']['environment']
     not_if{::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_#{sanitised_server_name}.alias.drushrc.php")}
+    notifies :run, "execute[verify the #{sanitised_server_name} application server node]", :immediately
   end
   # Verify the server
   execute "verify the #{sanitised_server_name} application server node" do
+    action :nothing
     command "#{node['scratchpads']['control']['drush_command']} @server_#{sanitised_server_name} provision-verify"
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
     environment node['scratchpads']['aegir']['environment']
+    notifies :run, "execute[import the #{sanitised_server_name} application server into front end]", :immediately
   end
   #drush @hm hosting-import @server_spapp1nhmacuk
   # Import the server into the front end
   execute "import the #{sanitised_server_name} application server into front end" do
+    action :nothing
     command "#{node['scratchpads']['control']['drush_command']} @hm hosting-import @server_#{sanitised_server_name}"
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
@@ -64,17 +68,21 @@ data_hosts.each do|data_host|
     user node['scratchpads']['aegir']['user']
     environment node['scratchpads']['aegir']['environment']
     not_if{::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_#{sanitised_server_name}.alias.drushrc.php")}
+    notifies :run, "execute[verify the #{sanitised_server_name} database server node]", :immediately
   end
   # Verify the server
   execute "verify the #{sanitised_server_name} database server node" do
+    action :nothing
     command "#{node['scratchpads']['control']['drush_command']} @server_#{sanitised_server_name} provision-verify"
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']
     user node['scratchpads']['aegir']['user']
     environment node['scratchpads']['aegir']['environment']
+    notifies :run, "execute[import the #{sanitised_server_name} database server into front end]", :immediately
   end
   # Import the server into the front end
   execute "import the #{sanitised_server_name} database server into front end" do
+    action :nothing
     command "#{node['scratchpads']['control']['drush_command']} @hm hosting-import @server_#{sanitised_server_name}"
     cwd node['scratchpads']['aegir']['home_folder']
     group node['scratchpads']['aegir']['group']

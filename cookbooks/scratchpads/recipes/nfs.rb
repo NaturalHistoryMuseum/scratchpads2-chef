@@ -22,10 +22,12 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
       sync true
       options ['root_squash','no_subtree_check']
       unique true
+      notifies :run, 'execute[restart the NFS server]', :delayed
     end
   end
   # Restart nfs-server components
   execute 'restart the NFS server' do
+    action :nothing
     command '/bin/systemctl restart nfs-kernel-server'
     group 'root'
     user 'root'

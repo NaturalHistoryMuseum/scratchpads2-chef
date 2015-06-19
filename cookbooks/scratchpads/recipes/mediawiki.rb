@@ -16,10 +16,12 @@ directory node['scratchpads']['mediawiki']['install_location'] do
   group node['apache']['group']
   action :create
   mode 0755
+  notifies :run, 'execute[extract mediawiki]', :immediately
 end
 
 # Next, extract the contents of the mediawiki directory to the install location
 execute 'extract mediawiki' do
+  action :nothing
   cwd node['scratchpads']['mediawiki']['install_location']
   command "tar xfz #{node['scratchpads']['mediawiki']['download']['path']}/#{node['scratchpads']['mediawiki']['download']['filename']} --strip-components 1"
   user node['apache']['user']

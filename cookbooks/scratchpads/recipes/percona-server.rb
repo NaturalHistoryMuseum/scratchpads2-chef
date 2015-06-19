@@ -30,8 +30,10 @@ unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['percona-funct
     owner 'root'
     group 'root'
     mode '0400'
+    notifies :run, 'execute[percona functions]', :immediately
   end
   execute 'percona functions' do
+    action :nothing
     root_pw = passwords.get_encrypted_data 'mysql', 'root'
     command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < /var/chef/#{node['scratchpads']['percona']['percona-functions-file']}"
   end
@@ -45,8 +47,10 @@ unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['secure-instal
     owner 'root'
     group 'root'
     mode '0400'
+    notifies :run, 'execute[secure installation]', :immediately
   end
   execute 'secure installation' do
+    action :nothing
     root_pw = passwords.get_encrypted_data 'mysql', 'root'
     command "mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' < /var/chef/#{node['scratchpads']['percona']['secure-installation-file']}"
   end
@@ -88,12 +92,12 @@ unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['gm3_data_file
     command "zcat /var/chef/#{node['scratchpads']['percona']['gm3_data_file']} | mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' gm3"
   end
 end
-
 # Create the aegir user
 # Add a database user using the password in the passwords bag.
 root_pw = passwords.get_encrypted_data 'mysql', 'root'
 aegir_pw = passwords.get_encrypted_data 'mysql', 'aegir'
 mysql_database_user node['scratchpads']['control']['aegir']['dbuser'] do
+  action :nothing
   connection(
     :host => node['scratchpads']['control']['dbserver'],
     :username => node['scratchpads']['control']['dbuser'],
@@ -101,6 +105,5 @@ mysql_database_user node['scratchpads']['control']['aegir']['dbuser'] do
   )
   password aegir_pw
   host node['scratchpads']['control']['aegir']['dbuserhost']
-  action [:create, :grant]
   grant_option true
 end

@@ -108,12 +108,18 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
           owner node['apache']['user']
           group node['apache']['group']
           mode '0400'
+          notifies :run, "execute[extract #{tmplte['files']['source']}]", :immediately
+          if (tmplte['database'] && data_host)
+            notifies :create, "mysql_database[#{tmplte['database']['database']}]", immediately
+            notifies [:create, :grant], "mysql_database_user[#{tmplte['database']['user']}]", immediately
+          end
         end
         execute "extract #{tmplte['files']['source']}" do
           cwd tmplte['documentroot']
           command "tar xfz /var/chef/#{tmplte['files']['source']}"
           user node['apache']['user']
           group node['apache']['group']
+          action :nothing
         end
       end
       if (tmplte['database'] && data_host)
@@ -127,7 +133,7 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
             :username => node['scratchpads']['control']['aegir']['dbuser'],
             :password => db_pw
           )
-          action :create
+          action :nothing
         end
         # Create the MySQL user
         mysql_database_user tmplte['database']['user'] do
@@ -139,7 +145,7 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
           password tmplte['database']['password']
           database_name tmplte['database']['database']
           host '%'
-          action [:create, :grant]
+          action :nothing
         end
       end
       git site_name do
@@ -176,6 +182,7 @@ node['scratchpads']['webserver']['php']['pear']['pecl_modules'].each do|module_n
   php_pear module_name do
     action :install
     preferred_state details['preferred_state']
+    notifies :run, "execute[enable #{module_name} module]", :immediately
   end
   # Could do the following in one big command, but it doesn't really make a difference.
   # The following code should check whether we installed a pecl module, or a pear library, perhaps using a "if file exists"
@@ -183,5 +190,6 @@ node['scratchpads']['webserver']['php']['pear']['pecl_modules'].each do|module_n
     command "#{node['scratchpads']['webserver']['php']['php5enmod_command']} #{module_name}"
     group 'root'
     user 'root'
+    action :nothing
   end
 end

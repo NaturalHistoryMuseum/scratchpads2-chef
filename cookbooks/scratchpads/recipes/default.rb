@@ -37,7 +37,7 @@ Resolv::DNS.new.each_address(node['fqdn']) do|addr|
 end
 
 # Install monit
-include_recipe 'scratchpads::monit'
+# include_recipe 'scratchpads::monit'
 
 # Update apt repository and update
 include_recipe 'apt'

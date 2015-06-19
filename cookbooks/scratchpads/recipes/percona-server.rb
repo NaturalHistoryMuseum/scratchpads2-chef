@@ -57,40 +57,44 @@ unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['secure-instal
 end
 
 # Copy the gm3.sql.gz SQL file and load it
-unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['gm3_data_file']}"))
-  cookbook_file "/var/chef/#{node['scratchpads']['percona']['gm3_data_file']}" do
-    source node['scratchpads']['percona']['gm3_data_file']
-    cookbook 'scratchpads'
-    owner 'root'
-    group 'root'
-    mode '0400'
-  end
-  # Create the GM3 user
-  gm3_pw = passwords.get_encrypted_data 'mysql', 'gm3'
+cookbook_file "/var/chef/#{node['scratchpads']['percona']['gm3_data_file']}" do
+  source node['scratchpads']['percona']['gm3_data_file']
+  cookbook 'scratchpads'
+  owner 'root'
+  group 'root'
+  mode '0400'
+  notifies :run, 'execute[load gm3 data]', :immediately
+  notifies :run, 'mysql_database[gm3]', :immediately
+  notifies [:create, :grant], "mysql_database_user[#{node['scratchpads']['control']['aegir']['dbuser']}]", :immediately
+end
+# Create the GM3 user
+gm3_pw = passwords.get_encrypted_data 'mysql', 'gm3'
+root_pw = passwords.get_encrypted_data 'mysql', 'root'
+mysql_database 'gm3' do
+  notifies [:create, :grant], 'mysql_database_user[gm3]', :immediately
+  action :nothing
+  connection(
+    :host => node['scratchpads']['control']['dbserver'],
+    :username => node['scratchpads']['control']['dbuser'],
+    :password => root_pw
+  )
+  action :create
+end
+mysql_database_user 'gm3' do
+  action :nothing
+  connection(
+    :host => node['scratchpads']['control']['dbserver'],
+    :username => node['scratchpads']['control']['dbuser'],
+    :password => root_pw
+  )
+  password gm3_pw
+  database_name 'gm3'
+  host node['scratchpads']['control']['aegir']['dbuserhost']
+end
+execute 'load gm3 data' do
+  action :nothing
   root_pw = passwords.get_encrypted_data 'mysql', 'root'
-  mysql_database 'gm3' do
-    connection(
-      :host => node['scratchpads']['control']['dbserver'],
-      :username => node['scratchpads']['control']['dbuser'],
-      :password => root_pw
-    )
-    action :create
-  end
-  mysql_database_user 'gm3' do
-    connection(
-      :host => node['scratchpads']['control']['dbserver'],
-      :username => node['scratchpads']['control']['dbuser'],
-      :password => root_pw
-    )
-    password gm3_pw
-    database_name 'gm3'
-    host node['scratchpads']['control']['aegir']['dbuserhost']
-    action [:create, :grant]
-  end
-  execute 'load gm3 data' do
-    root_pw = passwords.get_encrypted_data 'mysql', 'root'
-    command "zcat /var/chef/#{node['scratchpads']['percona']['gm3_data_file']} | mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' gm3"
-  end
+  command "zcat /var/chef/#{node['scratchpads']['percona']['gm3_data_file']} | mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' gm3"
 end
 # Create the aegir user
 # Add a database user using the password in the passwords bag.

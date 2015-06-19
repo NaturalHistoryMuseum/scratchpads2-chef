@@ -1,5 +1,6 @@
 vcl 4.0;
 import directors;
+import std;
 acl trusted_network {
   <%= node['scratchpads']['varnish']['trusted_network'] %>;
 }
@@ -219,17 +220,8 @@ sub vcl_recv {
     }
   }
 
-  # Allow the backend to serve up stale content if it is responding slowly.
-#  if (!req.backend.healthy) {
-#    # Use anonymous, cached pages if all backends are down.
-#    unset req.http.Cookie;
-#    if (req.http.X-Forwarded-Proto == "https") {
-#      set req.http.X-Forwarded-Proto = "http";
-#    }
-#    set req.grace = 30m;
-#  } else {
-#    set req.grace = 15s;
-#  }
+  # Set the grace header which is overridden later.
+  set req.http.grace = "none";
 
 
   # Allow PURGE from the acl purge (defined at the top of this file)
@@ -332,6 +324,37 @@ sub vcl_recv {
   }
 }
 
+sub vcl_deliver {
+  set resp.http.grace = req.http.grace;
+}
+
+sub vcl_hit {
+  if (obj.ttl >= 0s) {
+    # normal hit
+    return (deliver);
+  }
+  # We have no fresh fish. Lets look at the stale ones.
+  if (std.healthy(req.backend_hint)) {
+    # Backend is healthy. Limit age to 10s.
+    if (obj.ttl + 10s > 0s) {
+      set req.http.grace = "normal(limited)";
+      return (deliver);
+    } else {
+      # No candidate for grace. Fetch a fresh object.
+      return(fetch);
+   }
+  } else {
+    # backend is sick - use full grace
+    if (obj.ttl + obj.grace > 0s) {
+      set req.http.grace = "full";
+      return (deliver);
+    } else {
+     # no graced object.
+    return (fetch);
+   }
+  }
+}
+
 sub vcl_backend_response {
   # do not cache files larger than 10MB
   if (beresp.http.Content-Length ~ "[0-9]{8,}" ) {
@@ -347,6 +370,7 @@ sub vcl_backend_response {
     unset beresp.http.set-cookie;
   }
   # Allow items to be stale if needed.
+  set beresp.ttl = 10s;
   set beresp.grace = 6h;
 }
 

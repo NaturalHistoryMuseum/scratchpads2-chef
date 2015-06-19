@@ -30,13 +30,17 @@ default['scratchpads']['aegir']['modules_to_install'] = [
   'hosting_scratchpads',
   'hosting_signup',
   'hosting_task_gc',
-  'hosting_web_pack'
+  'hosting_web_pack',
+  'scratchpads_eu'
 ]
 default['scratchpads']['aegir']['modules_to_download'] = [
   'beautytips',
   'captcha',
+  'less',
+  'libraries',
   'memcache',
-  'varnish'
+  'varnish',
+  'themekey'
 ]
 # Hosting Reinstall module settings for aegir
 default['scratchpads']['aegir']['hosting_reinstall']['repository'] = 'http://git.drupal.org/sandbox/ergonlogic/2386543.git'

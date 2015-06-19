@@ -55,10 +55,6 @@ mysql2_chef_gem 'default' do
   action :install
 end
 
-# We need to set some database settings before attempting to create the templates
-passwords = ScratchpadsEncryptedData.new(node)
-db_pw = passwords.get_encrypted_data 'mysql', node['scratchpads']['control']['aegir']['dbuser']
-
 # Fill in the host
 if Chef::Config[:solo]
   data_host = {'fqdn' => 'sp-data-1'}
@@ -133,6 +129,9 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
         end
       end
       if (tmplte['database'] && data_host)
+        # We need to set some database settings before attempting to create the templates
+        passwords = ScratchpadsEncryptedData.new(node)
+        db_pw = passwords.get_encrypted_data 'mysql', node['scratchpads']['control']['aegir']['dbuser']
         # Create the MySQL database
         mysql_database tmplte['database']['database'] do
           connection(

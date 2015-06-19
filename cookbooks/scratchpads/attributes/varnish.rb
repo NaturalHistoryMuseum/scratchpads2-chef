@@ -29,6 +29,7 @@ default['scratchpads']['varnish']['trusted_network'] = '"157.140.0.0"/16'
 default['scratchpads']['varnish']['no_cache_domains'] = ['zooemu.nhm.ac.uk','edit.nhm.ac.uk']
 default['scratchpads']['varnish']['no_cache_paths'] = ['^/status\.php$','^/modules/statistics/statistics\.php$','^/admin','^/uwho','^/admin/.*$','^/user','^/user/.*$','^/users/.*$','^/info/.*$','^/flag/.*$','^.*/ajax/.*$','^.*/ahah/.*$']
 default['scratchpads']['varnish']['trusted_network_only_domain_paterns'] = ['^dev.','^dev-']
+default['scratchpads']['varnish']['varnish_secret'] = 'abcdefghijklmnopqrstuvwxy2'
 default['scratchpads']['varnish']['error_message'] = '<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

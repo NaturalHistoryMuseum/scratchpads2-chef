@@ -2,6 +2,26 @@
   "name": "scratchpads-role-apache",
   "description": "Webserver role.",
   "default_attributes": {
+    "apache": {
+      "default_modules": [
+        "alias",
+        "auth_basic",
+        "authn_core",
+        "authn_file",
+        "authz_core",
+        "authz_groupfile",
+        "authz_host",
+        "authz_user",
+        "autoindex",
+        "dir",
+        "env",
+        "mime",
+        "negotiation",
+        "setenvif",
+        "expires",
+        "ssl"
+      ]
+    },
     "chef_client": {
       "init_style": "systemd"
     },

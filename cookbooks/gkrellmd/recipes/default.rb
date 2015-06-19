@@ -16,8 +16,9 @@ template "/etc/gkrellmd.conf" do
     :port          => node['gkrellmd']['port'],
     :allowed_hosts => node['gkrellmd']['allowed_hosts']
   )
+  notifies [:enable, :start], 'service[gkrellmd]', :immediately
 end
 
 service 'gkrellmd' do
-  action [:enable, :start]
+  action :nothing
 end

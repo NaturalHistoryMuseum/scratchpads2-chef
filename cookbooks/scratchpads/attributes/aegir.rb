@@ -19,7 +19,8 @@ default['scratchpads']['aegir']['user'] = 'aegir'
 default['scratchpads']['aegir']['provision_version'] = 'provision-7.x-3.x'
 default['scratchpads']['aegir']['modules_to_install'] = [
   'beautytips_ui',
-  'image_captcha',  
+  'image_captcha',
+  'less',
   'hosting_alias',
   'hosting_auto_pack',
   'hosting_clone',
@@ -32,6 +33,9 @@ default['scratchpads']['aegir']['modules_to_install'] = [
   'hosting_task_gc',
   'hosting_web_pack',
   'scratchpads_eu'
+]
+default['scratchpads']['aegir']['modules_to_disable'] = [
+  'betterlogin'
 ]
 default['scratchpads']['aegir']['modules_to_download'] = [
   'beautytips',

@@ -139,11 +139,11 @@ link "#{node['scratchpads']['aegir']['home_folder']}/platforms/hostmaster/sites/
   to "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads.eu/sites/all/themes/omega"
 end
 # Link the lessphp library from the scratchpads.eu Git repo to the hostmaster platform
-link "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads.eu/sites/all/libraries/lessphp" do
+link "#{node['scratchpads']['aegir']['home_folder']}/platforms/hostmaster/sites/all/libraries/lessphp" do
   action :create
   group node['scratchpads']['aegir']['group']
   owner node['scratchpads']['aegir']['user']
-  to "#{node['scratchpads']['aegir']['home_folder']}/platforms/hostmaster/sites/all/libaries/lessphp"
+  to "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads.eu/sites/all/libraries/lessphp"
 end
 
 node['scratchpads']['aegir']['modules_to_download'].each do|module_name|

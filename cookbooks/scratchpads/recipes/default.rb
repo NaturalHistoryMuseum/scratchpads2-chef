@@ -42,8 +42,7 @@ end
 # Update apt repository and update
 include_recipe 'apt'
 
-# Install Gkrellmd on all servers
-include_recipe 'gkrellmd'
-
 # Install rsync and unzip
-package ['rsync','unzip']
+package ['rsync','unzip', 'gkrellmd']
+
+# Add a template for the gkrellmd service

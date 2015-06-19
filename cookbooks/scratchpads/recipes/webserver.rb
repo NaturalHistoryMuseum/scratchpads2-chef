@@ -4,11 +4,6 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
-# Add modules to the list to enable
-node['scratchpads']['webserver']['apache']['modules_to_enable'].each do|module_name|
-  node.default['apache']['default_modules'] << module_name
-end
-
 # Install package required by Apache to connect to a MySQL database
 # package ['libaprutil1-dbd-mysql']
 
@@ -16,13 +11,6 @@ end
 include_recipe 'apache2'
 include_recipe 'apache2::mpm_prefork'
 include_recipe 'apache2::mod_php5'
-
-# Disable the pointless modules
-node['scratchpads']['webserver']['apache']['modules_to_disable'].each do |mod|
-  apache_module mod do
-    enable false
-  end
-end
 
 # Disable the other-vhosts-access-log configuration
 apache_config 'other-vhosts-access-log' do

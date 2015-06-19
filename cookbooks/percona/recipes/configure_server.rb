@@ -101,7 +101,7 @@ end
 # define the service
 service "mysql" do
   supports restart: true
-  action server["enable"] ? :enable : :disable
+  action :nothing
 end
 
 # install db to the data directory
@@ -125,7 +125,7 @@ template percona["main_config_file"] do
   sensitive true
   notifies :run, "execute[setup mysql datadir]", :immediately
   if node["percona"]["auto_restart"]
-    notifies :restart, "service[mysql]", :immediately
+    notifies [:enable, :restart], "service[mysql]", :immediately
   end
 end
 

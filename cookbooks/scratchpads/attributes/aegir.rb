@@ -59,11 +59,11 @@ default['scratchpads']['aegir']['hosting_scratchpads']['checkout_branch'] = 'mas
 # Scratchpads-master repository
 default['scratchpads']['aegir']['scratchpads_master']['repository'] = 'https://github.com/NaturalHistoryMuseum/scratchpads2.git'
 default['scratchpads']['aegir']['scratchpads_master']['checkout_branch'] = 'master'
-default['scratchpads']['aegir']['scratchpads_master']['timeout'] = 600
+default['scratchpads']['aegir']['scratchpads_master']['timeout'] = 3000
 # Scratchpads.eu repository
 default['scratchpads']['aegir']['scratchpads.eu']['repository'] = 'https://github.com/NaturalHistoryMuseum/scratchpads.eu.git'
 default['scratchpads']['aegir']['scratchpads.eu']['checkout_branch'] = 'master'
-default['scratchpads']['aegir']['scratchpads.eu']['timeout'] = 600
+default['scratchpads']['aegir']['scratchpads.eu']['timeout'] = 3000
 # Files to create
 default['scratchpads']['aegir']['cookbook_files']['create-aegir-platform'] = {
   'path' => '/usr/local/bin/create-aegir-platform',

@@ -87,8 +87,7 @@ node['scratchpads']['solr-undertow']['templates'].each do|name,tmplte|
     group tmplte['group']
     mode tmplte['mode']
     action :create
-    notifies :run, 'execute[restart_systemctl_daemon]', :delayed
-    notifies [:enable, :start], 'service[solr-undertow]', :delayed
+    notifies :run, 'execute[restart_systemctl_daemon]', :immediately
   end
 end
 
@@ -128,6 +127,6 @@ end
 
 # Start the service
 service 'solr-undertow' do
-  action :nothing
+  action [:enable, :start]
   provider Chef::Provider::Service::Systemd
 end

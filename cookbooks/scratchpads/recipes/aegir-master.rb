@@ -151,18 +151,23 @@ link "#{node['scratchpads']['aegir']['home_folder']}/platforms/hostmaster/sites/
   to "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads.eu/sites/all/libraries/lessphp"
 end
 
+# Modules to download
+modules_to_download = []
 node['scratchpads']['aegir']['modules_to_download'].each do|module_name|
   # Download the additional module(s).
-  execute "download #{module_name} module" do
-    command "#{node['scratchpads']['control']['drush_command']} @hm dl #{module_name}"
-    environment node['scratchpads']['aegir']['environment']
-    cwd node['scratchpads']['aegir']['home_folder']
-    group node['scratchpads']['aegir']['group']
-    user node['scratchpads']['aegir']['user']
-    not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib/#{module_name}")}
-    notifies :run, 'execute[enable modules]', :immediately
-    notifies :run, 'execute[disable modules]', :immediately
+  unless ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib/#{module_name}")
+    modules_to_download << module_name
   end
+end
+execute "download modules" do
+  command "#{node['scratchpads']['control']['drush_command']} @hm dl #{node['scratchpads']['aegir']['modules_to_download'].join(' ')}"
+  environment node['scratchpads']['aegir']['environment']
+  cwd node['scratchpads']['aegir']['home_folder']
+  group node['scratchpads']['aegir']['group']
+  user node['scratchpads']['aegir']['user']
+  only_if {modules_to_download.length > 0}
+  notifies :run, 'execute[enable modules]', :immediately
+  notifies :run, 'execute[disable modules]', :immediately
 end
 # Enable any additional modules as configured.
 execute 'enable modules' do
@@ -346,26 +351,26 @@ execute 'create the scratchpads.eu platform node' do
 end
 # Verify the platform
 execute 'verify the scratchpads-master platform node' do
-  command "drush @platform_scratchpads-master provision-verify"
+  command "touch #{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php.touch ; drush @platform_scratchpads-master provision-verify"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
   environment node['scratchpads']['aegir']['environment']
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
-  not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php")}
+  not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpads-master.alias.drushrc.php.touch")}
   notifies :run, 'execute[import the scratchpads-master platform into front end]', :immediately
 end
 # Verify the platform
 execute 'verify the scratchpads.euplatform node' do
-  command "drush @platform_scratchpadseu provision-verify"
+  command "touch #{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadseu.alias.drushrc.php.touch ; drush @platform_scratchpadseu provision-verify"
   cwd node['scratchpads']['aegir']['home_folder']
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
   environment node['scratchpads']['aegir']['environment']
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadseu.alias.drushrc.php")}
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
-  not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadseu.alias.drushrc.php")}
+  not_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadseu.alias.drushrc.php.touch")}
   notifies :run, 'execute[import the scratchpads.eu platform into front end]', :immediately
 end
 #drush @hm hosting-import @server_spapp1nhmacuk

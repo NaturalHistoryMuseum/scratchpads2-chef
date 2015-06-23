@@ -22,7 +22,7 @@
       "inet-interfaces": "all",
       "mail_type": "master",
       "main": {
-        "relayhost": "mailserver.nhm.ac.uk"
+        "relayhost": "smtprelay.nhm.ac.uk"
       }
     },
     "varnish": {

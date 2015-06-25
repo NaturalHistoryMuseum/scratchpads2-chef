@@ -1,14 +1,14 @@
 {
   "id": "scratchpads_gbif_registry",
   "username": {
-    "encrypted_data": "VQ9/RTmUNUzuUnXPClno+gGPjMBsncNDMOT5txF7i+0=\n",
-    "iv": "XCHNyfyQ539Ne7NXJsdAPA==\n",
+    "encrypted_data": "qxzwBUnbCN79KfnHKzKvi8UvO9EmcECKjHxGf98IF6jf1jI1kK3S6WmxrnGr\nhyzYbSRTfluLKbcokSKuwD1M7n9wXrJ/rs8Pi0/qRkBkRyvylnw8XXUz6RkI\niPp6V9Zz9NkBto504cv9qhRUjb8/wl+fUwoTFZk8ZkkR1u9LhECXyyTZRAjP\nN+9hNZtZgthOLnG1/hcQiRTNsZzuTzL2zQ==\n",
+    "iv": "cw46pETYYLA4Zt+dI3WZdw==\n",
     "version": 1,
     "cipher": "aes-256-cbc"
   },
   "password": {
-    "encrypted_data": "HBCqnBAMAXCIouQ5MJQbiEOhzwXluFKOzLtsSpi/fZQ=\n",
-    "iv": "8zYrf+AlLjC91JdMuksC4w==\n",
+    "encrypted_data": "j9D5Ak3dhoK6rJehUBX9WOjhzXIEcDetF7/TsBGdNxhSLLP2YHfouwSOoboz\nZk3UIi2C/5gx+xNdrFaMTRj0SrogT/HZu+/NEWE42uVcE4cBZcjE6Z0OSW96\nVXPCQsvTzFkRZRTsC6GUJqOYLJcAdWplu0t38r8rCyFTFcYMHd1Z6ft/zhc0\nk7o83o7wD+zaCUNNUJBKlbP0+Sb7WoriXw==\n",
+    "iv": "hr7b5I8cr1IwGePFBXep7w==\n",
     "version": 1,
     "cipher": "aes-256-cbc"
   }

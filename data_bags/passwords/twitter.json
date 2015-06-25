@@ -1,14 +1,14 @@
 {
   "id": "twitter",
   "key": {
-    "encrypted_data": "Djv+thdf/8u2udwa1xhB111VABNGQX2nJH/y5+DuAZ1BK43C0QaBct6GwmHl\no+uMTamuJJuv8XNAS5UT+Zzj0f1o0WbwKhSPPBpUYMphqNeyAfh7SF+g66d8\njsC0hKcTK43EBlxKYOEwIJoYkt5vSiLeopeIfNiTpKgUAW5EpuFULXQ6si/0\n76O/jRSjdBHvoLRcIemVFhzkbWOraX5gE55pSZXQ2aQslncqmZWTiyk=\n",
-    "iv": "VZnPJ9KnAowQuI0SBMimvg==\n",
+    "encrypted_data": "wlDRPXslT/c6z70Qwg71kdmibL0uS35vcwTOIAg6B5iWtmaji76YLSzeGoIp\nHCl2\n",
+    "iv": "VqdXNUU8VN5DIEX8+vZT9w==\n",
     "version": 1,
     "cipher": "aes-256-cbc"
   },
   "secret": {
-    "encrypted_data": "PL3qQJAOrG7eIFvgNNIQo3lJmOfNaDs28J8FUGrq6TuT5Fiv55OZnWH0b7RM\n4YhkvdpRH1EKB7SiTNkgUiztNsNDCdCORi/5WBhZLClw0LRlF/WPpUt+UoF3\n53KCwu2LVo+8c0yL+zpAyhv3vC/NPS2OgfQNSLkqdmdZ9Irch5T0GwzlxIz/\niWLsRdEipm46huOXBihzP045Nxa0MteR2PiqQ4qCVpOYEmQJWj6NXQkNGrf0\nNLcXyk3rYsPIASBpE0geWtUEPhHez9VPLx1kEA==\n",
-    "iv": "+EIvtG/lHsyVKTFr7Q6zTg==\n",
+    "encrypted_data": "CyTbjy/lPLt6buHSCteVKBV66WFRN6wHwHAQ5u3RFwQNNY0fnW6wxA1EOLA9\nfqI/Apx8bKo7q/q04bStC5D+hw==\n",
+    "iv": "XJw47XCH0b5BvhWIxxXyFw==\n",
     "version": 1,
     "cipher": "aes-256-cbc"
   }

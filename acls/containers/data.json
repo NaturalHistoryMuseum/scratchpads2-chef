@@ -5,6 +5,7 @@
     ],
     "groups": [
       "admins",
+      "clients",
       "users"
     ]
   },

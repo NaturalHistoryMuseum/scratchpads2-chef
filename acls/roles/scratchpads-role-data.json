@@ -2,17 +2,18 @@
   "create": {
     "actors": [
       "pivotal",
-      "sdrycroft"
+      "simor"
     ],
     "groups": [
       "admins",
+      "clients",
       "users"
     ]
   },
   "read": {
     "actors": [
       "pivotal",
-      "sdrycroft"
+      "simor"
     ],
     "groups": [
       "admins",
@@ -23,7 +24,7 @@
   "update": {
     "actors": [
       "pivotal",
-      "sdrycroft"
+      "simor"
     ],
     "groups": [
       "admins",
@@ -33,7 +34,7 @@
   "delete": {
     "actors": [
       "pivotal",
-      "sdrycroft"
+      "simor"
     ],
     "groups": [
       "admins",
@@ -43,7 +44,7 @@
   "grant": {
     "actors": [
       "pivotal",
-      "sdrycroft"
+      "simor"
     ],
     "groups": [
       "admins"

@@ -21,7 +21,8 @@
       "pivotal"
     ],
     "groups": [
-      "admins"
+      "admins",
+      "users"
     ]
   },
   "delete": {
@@ -38,7 +39,8 @@
       "pivotal"
     ],
     "groups": [
-      "admins"
+      "admins",
+      "users"
     ]
   }
 }

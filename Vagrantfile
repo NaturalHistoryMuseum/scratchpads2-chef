@@ -7,9 +7,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.vm.box = "scratchpads/debian8"
     v.vm.network "public_network"
     v.vm.provision "chef_client" do |chef|
-      chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
+      chef.chef_server_url = "https://api.opscode.com/organizations/nhm"
       chef.validation_key_path = ".chef/sdrycroft.pem"
-      chef.validation_client_name = "simor"
+      chef.validation_client_name = "sdrycroft"
       chef.add_role "scratchpads-role-control"
     end
     config.vm.provider "virtualbox" do |vb|
@@ -23,9 +23,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.vm.box = "scratchpads/debian8"
     v.vm.network "public_network"
     v.vm.provision "chef_client" do |chef|
-      chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
+      chef.chef_server_url = "https://api.opscode.com/organizations/nhm"
       chef.validation_key_path = ".chef/sdrycroft.pem"
-      chef.validation_client_name = "simor"
+      chef.validation_client_name = "sdrycroft"
       chef.add_role "scratchpads-role-app"
     end
     config.vm.provider "virtualbox" do |vb|
@@ -38,9 +38,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.vm.box = "scratchpads/debian8"
     v.vm.network "public_network"
     v.vm.provision "chef_client" do |chef|
-      chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
+      chef.chef_server_url = "https://api.opscode.com/organizations/nhm"
       chef.validation_key_path = ".chef/sdrycroft.pem"
-      chef.validation_client_name = "simor"
+      chef.validation_client_name = "sdrycroft"
       chef.add_role "scratchpads-role-app"
     end
     config.vm.provider "virtualbox" do |vb|
@@ -54,9 +54,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.vm.box = "scratchpads/debian8"
     v.vm.network "public_network"
     v.vm.provision "chef_client" do |chef|
-      chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
+      chef.chef_server_url = "https://api.opscode.com/organizations/nhm"
       chef.validation_key_path = ".chef/sdrycroft.pem"
-      chef.validation_client_name = "simor"
+      chef.validation_client_name = "sdrycroft"
       chef.add_role "scratchpads-role-data"
     end
     config.vm.provider "virtualbox" do |vb|
@@ -69,9 +69,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.vm.box = "scratchpads/debian8"
     v.vm.network "public_network"
     v.vm.provision "chef_client" do |chef|
-      chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
+      chef.chef_server_url = "https://api.opscode.com/organizations/nhm"
       chef.validation_key_path = ".chef/sdrycroft.pem"
-      chef.validation_client_name = "simor"
+      chef.validation_client_name = "sdrycroft"
       chef.add_role "scratchpads-role-data"
     end
     config.vm.provider "virtualbox" do |vb|
@@ -84,9 +84,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.vm.box = "scratchpads/debian8"
     v.vm.network "public_network"
     v.vm.provision "chef_client" do |chef|
-      chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"
+      chef.chef_server_url = "https://api.opscode.com/organizations/nhm"
       chef.validation_key_path = ".chef/sdrycroft.pem"
-      chef.validation_client_name = "simor"
+      chef.validation_client_name = "sdrycroft"
       chef.add_role "scratchpads-role-search"
     end
     config.vm.provider "virtualbox" do |vb|

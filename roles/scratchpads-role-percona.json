@@ -5,6 +5,7 @@
       "init_style": "systemd"
     },
     "percona": {
+      "apt_keyserver": "keyserver.ubuntu.com",
       "server": {
         "bind_address": "",
         "innodb_log_file_size": "100M",

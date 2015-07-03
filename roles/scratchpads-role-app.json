@@ -12,7 +12,9 @@
       ]
     },
     "percona": {
-      "apt_keyserver": "keyserver.ubuntu.com"
+      "apt": {
+        "keyserver": "keyserver.ubuntu.com"
+      }
     }
   },
   "override_attributes": {

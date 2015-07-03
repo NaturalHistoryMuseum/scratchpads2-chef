@@ -5,7 +5,16 @@
       "init_style": "systemd"
     },
     "percona": {
-      "apt_keyserver": "keyserver.ubuntu.com",
+      "apt": {
+        "keyserver": "keyserver.ubuntu.com"
+      },
+      "conf": {
+        "mysqld": {
+          "innodb_large_prefix": 1,
+          "max_user_connections": 20
+        }
+      },
+      "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret",
       "server": {
         "bind_address": "",
         "innodb_log_file_size": "100M",
@@ -13,19 +22,10 @@
         "innodb_file_format": "Barracuda",
         "max_connections": 101,
         "log_bin": ""
-      },
-      "conf": {
-        "mysqld": {
-          "innodb_large_prefix": 1,
-          "max_user_connections": 20
-        }
       }
     }
   },
   "override_attributes": {
-    "percona": {
-      "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret"
-    }
   },
   "run_list": [
     "recipe[scratchpads::percona-server]"

@@ -23,9 +23,7 @@ class Chef
         pwds = Chef::EncryptedDataBagItem.load(@bag, item, secret) unless vault
         # now, let's look for the user password
         password = pwds[user]
-      rescue Exception => e
-        Chef::Log.info(e.message)
-        Chef::Log.info(e.backtrace.inspect)
+      rescue
         Chef::Log.info("Unable to load password for #{user}, #{item},"\
                        "fall back to non-encrypted password")
       end

@@ -10,9 +10,6 @@
         "157.140.126.246",
         "monkey.nhm.ac.uk"
       ]
-    },
-    "percona": {
-      "apt_keyserver": "keyserver.ubuntu.com"
     }
   },
   "override_attributes": {

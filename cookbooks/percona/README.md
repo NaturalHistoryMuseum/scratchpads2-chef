@@ -253,7 +253,7 @@ default["percona"]["main_config_file"] = value_for_platform_family(
   "debian" => "/etc/mysql/my.cnf",
   "rhel" => "/etc/my.cnf"
 )
-default["percona"]["keyserver"] = "keys.gnupg.net"
+default["percona"]["apt"]["keyserver"] = "hkp://keys.gnupg.net:80"
 default["percona"]["encrypted_data_bag"] = "passwords"
 default["percona"]["encrypted_data_bag_secret_file"] = ""
 default["percona"]["use_chef_vault"] = false
@@ -272,6 +272,7 @@ default["percona"]["server"]["username"] = "mysql"
 default["percona"]["server"]["datadir"] = "/var/lib/mysql"
 default["percona"]["server"]["logdir"] = "/var/log/mysql"
 default["percona"]["server"]["tmpdir"] = "/tmp"
+default["percona"]["server"]["slave_load_tmpdir"] = "/tmp"
 default["percona"]["server"]["debian_username"] = "debian-sys-maint"
 default["percona"]["server"]["jemalloc"] = false
 default["percona"]["server"]["jemalloc_lib"] = value_for_platform_family(
@@ -392,6 +393,7 @@ default["percona"]["server"]["replication"]["ignore_table"] = []
 default["percona"]["server"]["replication"]["ssl_enabled"] = false
 default["percona"]["server"]["replication"]["suppress_1592"] = false
 default["percona"]["server"]["replication"]["skip_slave_start"] = false
+default["percona"]["server"]["replication"]["slave_transaction_retries"] = 10
 
 # XtraBackup Settings
 default["percona"]["backup"]["configure"] = false
@@ -732,10 +734,20 @@ Many thanks go to the following [contributors](https://github.com/phlipper/chef-
     * add `skip_slave_start` attribute
 * **[@joelhandwell](https://github.com/joelhandwell)**
     * fix duplication of slow query log directory creation
+    * suppress warning CHEF-3694 for log dir
 * **[@bitpusher-real](https://github.com/bitpusher-real)**
-    * add `binlog_ignore_db attribute` attribute
+    * add `binlog_ignore_db` attribute
     * add version restrictions on three MySQL directives
     * only set `old_passwords` only when a value defined
+    * add `slave_transaction_retries` attribute
+    * add `slave_load_tmpdir` attribute
+* **[@cyberflow](https://github.com/cyberflow)**
+    * add `replication_sql` attribute
+* **[@jklare](https://github.com/jklare)**
+    * fix cluster specific settings for `my.cnf` and client packages
+* **[@whiteley](https://github.com/whiteley)**
+    * remove duplicated attributes
+    * namespace apt attributes following yum example
 
 
 ## License

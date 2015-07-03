@@ -53,7 +53,7 @@ port              = <%= node["percona"]["server"]["port"] %>
 basedir           = <%= node["percona"]["server"]["basedir"] %>
 datadir           = <%= node["percona"]["server"]["datadir"] %>
 tmpdir            = <%= node["percona"]["server"]["tmpdir"] %>
-slave_load_tmpdir = <%= node["percona"]["server"]["tmpdir"] %>
+slave_load_tmpdir = <%= node["percona"]["server"]["slave_load_tmpdir"] %>
 # language          = <%= node["percona"]["server"]["language"] %>
 character_set_server = <%= node["percona"]["server"]["character_set"] %>
 collation_server  = <%= node["percona"]["server"]["collation"] %>
@@ -423,6 +423,12 @@ myisam_max_sort_file_size = <%= node["percona"]["server"]["myisam_max_sort_file_
 # thread to repair them by sorting in parallel. This makes sense if you
 # have multiple CPUs and plenty of memory.
 myisam_repair_threads = <%= node["percona"]["server"]["myisam_repair_threads"] %>
+
+# Automatically check and repair not properly closed MyISAM tables.
+<% if node["percona"]["server"]["myisam_recover_options"] %>
+myisam_recover
+<% end %>
+
 
 #
 # * InnoDB

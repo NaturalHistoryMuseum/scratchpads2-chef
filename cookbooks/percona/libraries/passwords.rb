@@ -23,7 +23,9 @@ class Chef
         pwds = Chef::EncryptedDataBagItem.load(@bag, item, secret) unless vault
         # now, let's look for the user password
         password = pwds[user]
-      rescue
+      rescue Exception => e
+        Chef::Log.info(e.message)
+        Chef::Log.info(e.backtrace.inspect)
         Chef::Log.info("Unable to load password for #{user}, #{item},"\
                        "fall back to non-encrypted password")
       end
@@ -34,26 +36,26 @@ class Chef
 
     # mysql root
     def root_password
-      find_password @mysql_item, "root", node_server["root_password"]
+      find_password @mysql_item, "root", node["percona"]["server"]["root_password"]
     end
 
     # debian script user password
     def debian_password
       find_password(
-        @system_item, node_server["debian_username"],
-        node_server["debian_password"]
+        @system_item, node["percona"]["server"]["debian_username"],
+        node["percona"]["server"]["debian_password"]
       )
     end
 
     # ?
     def old_passwords
-      find_password @mysql_item, "old_passwords", node_server["old_passwords"]
+      find_password @mysql_item, "old_passwords", node["percona"]["server"]["old_passwords"]
     end
 
     # password for user responsbile for replicating in master/slave environment
     def replication_password
       find_password(
-        @mysql_item, "replication", node_server["replication"]["password"]
+        @mysql_item, "replication", node["percona"]["server"]["replication"]["password"]
       )
     end
 
@@ -64,12 +66,6 @@ class Chef
     end
 
     private
-
-    # helper
-    def node_server
-      @node["percona"]["server"]
-    end
-
     def data_bag_secret_file
       if !secret_file.empty? && ::File.exist?(secret_file)
         secret_file
@@ -77,10 +73,8 @@ class Chef
         Chef::Config[:encrypted_data_bag_secret]
       end
     end
-
     def secret
       return unless data_bag_secret_file
-
       Chef::EncryptedDataBagItem.load_secret(data_bag_secret_file)
     end
   end

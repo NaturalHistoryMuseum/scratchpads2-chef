@@ -35,7 +35,6 @@ default["percona"]["main_config_file"] = value_for_platform_family(
   "debian" => "/etc/mysql/my.cnf",
   "rhel" => "/etc/my.cnf"
 )
-default["percona"]["keyserver"] = "keys.gnupg.net"
 default["percona"]["encrypted_data_bag"] = "passwords"
 default["percona"]["encrypted_data_bag_secret_file"] = ""
 default["percona"]["encrypted_data_bag_item_mysql"] = "mysql"
@@ -57,6 +56,7 @@ default["percona"]["server"]["username"] = "mysql"
 default["percona"]["server"]["datadir"] = "/var/lib/mysql"
 default["percona"]["server"]["logdir"] = "/var/log/mysql"
 default["percona"]["server"]["tmpdir"] = "/tmp"
+default["percona"]["server"]["slave_load_tmpdir"] = "/tmp"
 default["percona"]["server"]["debian_username"] = "debian-sys-maint"
 default["percona"]["server"]["jemalloc"] = false
 default["percona"]["server"]["jemalloc_lib"] = value_for_platform_family(
@@ -177,6 +177,8 @@ default["percona"]["server"]["replication"]["ignore_table"] = []
 default["percona"]["server"]["replication"]["ssl_enabled"] = false
 default["percona"]["server"]["replication"]["suppress_1592"] = false
 default["percona"]["server"]["replication"]["skip_slave_start"] = false
+default["percona"]["server"]["replication"]["replication_sql"] = "/etc/mysql/replication.sql"
+default["percona"]["server"]["replication"]["slave_transaction_retries"] = 10
 
 # XtraBackup Settings
 default["percona"]["backup"]["configure"] = false

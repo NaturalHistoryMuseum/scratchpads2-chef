@@ -1,0 +1,12 @@
+{
+  "name": "development",
+  "default_attributes": {
+    "scratchpads": {
+      "nfs": {
+        "default_hosts": [
+          "monkey.nhm.ac.uk"
+        ]
+      }
+    }
+  }
+}

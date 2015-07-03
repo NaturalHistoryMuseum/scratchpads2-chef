@@ -11,10 +11,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.validation_key_path = ".chef/simor.pem"
       chef.validation_client_name = "simor"
       chef.add_role "scratchpads-role-control"
-    end
-    config.vm.provider "virtualbox" do |vb|
-      vb.memory = 2048
-      vb.cpus = 2
+      chef.environment = "development"
     end
   end
   # App VM - Apache
@@ -27,10 +24,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.validation_key_path = ".chef/simor.pem"
       chef.validation_client_name = "simor"
       chef.add_role "scratchpads-role-app"
+      chef.environment = "development"
     end
     config.vm.provider "virtualbox" do |vb|
-      vb.memory = 2048
-      vb.cpus = 2
+      vb.memory = 512
     end
   end
   config.vm.define "app2", autostart: false do |v|
@@ -42,10 +39,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.validation_key_path = ".chef/simor.pem"
       chef.validation_client_name = "simor"
       chef.add_role "scratchpads-role-app"
+      chef.environment = "development"
     end
     config.vm.provider "virtualbox" do |vb|
-      vb.memory = 2048
-      vb.cpus = 2
+      vb.memory = 512
     end
   end
   # Data VM - Percona/MySQL, Memcached
@@ -58,10 +55,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.validation_key_path = ".chef/simor.pem"
       chef.validation_client_name = "simor"
       chef.add_role "scratchpads-role-data"
+      chef.environment = "development"
     end
     config.vm.provider "virtualbox" do |vb|
-      vb.memory = 2048
-      vb.cpus = 2
+      vb.memory = 512
+      vb.cpus = 1
     end
   end
   config.vm.define "data2", autostart: false do |v|
@@ -73,10 +71,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.validation_key_path = ".chef/simor.pem"
       chef.validation_client_name = "simor"
       chef.add_role "scratchpads-role-data"
+      chef.environment = "development"
     end
     config.vm.provider "virtualbox" do |vb|
-      vb.memory = 2048
-      vb.cpus = 2
+      vb.memory = 512
+      vb.cpus = 1
     end
   end
   config.vm.define "search1" do |v|
@@ -88,10 +87,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.validation_key_path = ".chef/simor.pem"
       chef.validation_client_name = "simor"
       chef.add_role "scratchpads-role-search"
+      chef.environment = "development"
     end
     config.vm.provider "virtualbox" do |vb|
-      vb.memory = 2048
-      vb.cpus = 2
+      vb.memory = 512
+      vb.cpus = 1
     end
   end
 end

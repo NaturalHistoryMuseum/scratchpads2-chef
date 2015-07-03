@@ -13,10 +13,11 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   unless Chef::Config[:solo]
     client_hosts_search = search(:node, "roles:#{node['scratchpads']['app']['role']} OR roles:#{node['scratchpads']['data']['role']}")
     if client_hosts_search.length > 0
-      client_hosts = node['scratchpads']['nfs']['default_hosts']
+      client_hosts = node['scratchpads']['nfs']['default_hosts'].dup
       client_hosts_search.each do|client_host|
         client_hosts << client_host['fqdn']
       end
+      node.default['scratchpads']['nfs']['hosts'] = client_hosts
     end
   end
   node['scratchpads']['nfs']['exports'].each do|mount_dir|

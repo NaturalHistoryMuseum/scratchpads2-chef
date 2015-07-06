@@ -190,6 +190,6 @@ node['scratchpads']['webserver']['php']['pear']['pecl_modules'].each do|module_n
     command "#{node['scratchpads']['webserver']['php']['php5enmod_command']} #{module_name}"
     group 'root'
     user 'root'
-    action :nothing
+    #action :nothing
   end
 end

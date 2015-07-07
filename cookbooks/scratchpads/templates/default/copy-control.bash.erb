@@ -1,0 +1,11 @@
+#!/bin/bash
+LOCAL="/var/aegir/platforms"
+REMOTE="/var/aegir/platforms-remote"
+rsync -rlpt --exclude '*/sites' --exclude '.git' --exclude 'big-sites-files' $REMOTE/* $LOCAL >/dev/null 2>/dev/null
+for i in $(ls -1 $REMOTE | sed "s|$REMOTE/||" | grep -v dummy_for_email | grep -v solanaceaesource-2.0 | grep -v big-sites-files)
+do
+  mkdir $LOCAL/$i/sites 2>/dev/null
+  rsync -rlpt $REMOTE/$i/sites/all $LOCAL/$i/sites/ 2>/dev/null >/dev/null
+  rsync -lpt $REMOTE/$i/sites/* $LOCAL/$i/sites/ 2>/dev/null >/dev/null
+done
+exit 0

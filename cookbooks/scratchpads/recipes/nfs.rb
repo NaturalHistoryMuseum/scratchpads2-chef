@@ -20,7 +20,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
       node.default['scratchpads']['nfs']['hosts'] = client_hosts
     end
   end
-  node['scratchpads']['nfs']['exports'].each do|mount_dir|
+  node['scratchpads']['nfs']['exports'].each do|mount_dir,mount_to|
     nfs_export mount_dir do
       network client_hosts
       writeable true
@@ -38,6 +38,18 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     user 'root'
   end
 else
+  # Create the bash script for copying files
+  node['scratchpads']['nfs']['templates']['clients'].each do|name,tmplte|
+    template tmplte['path'] do
+      path tmplte['path']
+      source name
+      cookbook tmplte['cookbook']
+      owner tmplte['owner']
+      group tmplte['group']
+      mode tmplte['mode']
+      action :create
+    end
+  end
   # We are not the control server, so must be an app server. We install the
   # client and add a mount point and mount!
   # Mount the folder from the control server
@@ -48,7 +60,7 @@ else
     control_hosts = search(:node, "roles:#{node['scratchpads']['control']['role']}")
     control_host = control_hosts.first
   end
-  node['scratchpads']['nfs']['exports'].each do|mount_dir|
+  node['scratchpads']['nfs']['exports'].each do|mount_dir,mount_to|
     # Create the mount directory
     directory mount_dir do
       owner 'aegir'
@@ -58,7 +70,7 @@ else
       not_if { ::File.exists?(mount_dir)}
     end
     # Mount the directory
-    mount mount_dir do
+    mount mount_to do
       device "#{control_host['fqdn']}:#{mount_dir}"
       fstype 'nfs'
       options 'rw,noacl,nocto,bg,ac,noatime,nodiratime'

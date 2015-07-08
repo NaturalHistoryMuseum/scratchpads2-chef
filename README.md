@@ -53,6 +53,7 @@ the Netinstallation disc, and then:
   - sudo
   - openssh-server
   - ca-certificates
+  - lsb-release
 - Add the user to the sudo group and configure sudo to not require passwords 
 for the sudo group (ssh keys are recommended instead).
 - Copy your ssh keys from your chef workstation (ssh-copy-id).

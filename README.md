@@ -48,10 +48,16 @@ Preparing nodes
 ---------------
 If using this setup in your production environment, you will need to create the 
 nodes prior to bootstrapping them. I would recommend installing Debian using 
-the Netinstallation disc, and then installing the following packages:
-- sudo
-- openssh-server
-- ca-certificates
+the Netinstallation disc, and then:
+- Install the following packages:
+-- sudo
+-- openssh-server
+-- ca-certificates
+- Add the user to the sudo group and configure sudo to not require passwords 
+for the sudo group (ssh keys are recommended instead).
+- Copy your ssh keys from your chef workstation (ssh-copy-id).
+- Copy the encrypted_data_bag_secret file to 
+/etc/chef/encrypted_data_bag_secret.
 
 Chef server
 -----------

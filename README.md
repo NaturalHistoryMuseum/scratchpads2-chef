@@ -50,9 +50,9 @@ If using this setup in your production environment, you will need to create the
 nodes prior to bootstrapping them. I would recommend installing Debian using 
 the Netinstallation disc, and then:
 - Install the following packages:
--- sudo
--- openssh-server
--- ca-certificates
+  - sudo
+  - openssh-server
+  - ca-certificates
 - Add the user to the sudo group and configure sudo to not require passwords 
 for the sudo group (ssh keys are recommended instead).
 - Copy your ssh keys from your chef workstation (ssh-copy-id).

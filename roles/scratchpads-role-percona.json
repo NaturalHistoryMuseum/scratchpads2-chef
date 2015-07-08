@@ -14,7 +14,7 @@
           "max_user_connections": 20
         }
       },
-      "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret",
+      "encrypted_data_bag_secret_file": "/etc/chef/encrypted_data_bag_secret",
       "server": {
         "bind_address": "",
         "innodb_log_file_size": "100M",

@@ -58,6 +58,9 @@ for the sudo group (ssh keys are recommended instead).
 - Copy your ssh keys from your chef workstation (ssh-copy-id).
 - Copy the encrypted_data_bag_secret file to 
 /etc/chef/encrypted_data_bag_secret.
+- Bootstrap with the following command
+    knife bootstrap sp-control-1.nhm.ac.uk -x simor -i ~/.ssh/id_rsa --sudo -r 
+'role[scratchpads-role-control]'
 
 Chef server
 -----------

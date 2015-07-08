@@ -82,6 +82,7 @@ node['scratchpads']['webserver']['apache']['templates'].each do|site_name,tmplte
         variables subtmplte['variables']
         action :create
         only_if {::File.exists?(::File.dirname(subtmplte['path']))}
+        not_if {::File.exists?(subtmplte['path'])}
         only_if {node['roles'].index(node['scratchpads']['control']['role']) || subtmplte['all_servers']}
       end
     end

@@ -9,5 +9,6 @@ validation_client_name   "nhm-validator"
 validation_key           "#{current_dir}/nhm-validator.pem"
 chef_server_url          "https://chef.nhm.ac.uk/organizations/nhm"
 cookbook_path            ["#{current_dir}/../cookbooks"]
+secret_file              "#{current_dir}/encrypted_data_bag_secret"
 
 knife['editor'] = "nano"

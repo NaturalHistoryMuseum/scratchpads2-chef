@@ -44,6 +44,15 @@ and then to execute the hostname command
 
     hostname -I
 
+Preparing nodes
+---------------
+If using this setup in your production environment, you will need to create the 
+nodes prior to bootstrapping them. I would recommend installing Debian using 
+the Netinstallation disc, and then installing the following packages:
+- sudo
+- openssh-server
+- ca-certificates
+
 Chef server
 -----------
 Most of the code within the Scratchpads cookbook expects you to be using 

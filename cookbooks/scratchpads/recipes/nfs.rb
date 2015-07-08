@@ -62,12 +62,12 @@ else
   end
   node['scratchpads']['nfs']['exports'].each do|mount_dir,mount_to|
     # Create the mount directory
-    directory mount_dir do
+    directory mount_to do
       owner 'aegir'
       group 'www-data'
       mode 0775
       action :create
-      not_if { ::File.exists?(mount_dir)}
+      not_if { ::File.exists?(mount_to)}
     end
     # Mount the directory
     mount mount_to do

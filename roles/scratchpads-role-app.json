@@ -28,6 +28,7 @@
     }
   },
   "run_list": [
+    "recipe[apt]",
     "recipe[git]",
     "recipe[imagemagick]",
     "recipe[scratchpads]",

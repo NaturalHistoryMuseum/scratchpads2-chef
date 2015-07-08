@@ -39,9 +39,6 @@ end
 # Install monit
 # include_recipe 'scratchpads::monit'
 
-# Update apt repository and update
-include_recipe 'apt'
-
 # Install rsync and unzip
 package ['rsync','unzip', 'gkrellmd']
 

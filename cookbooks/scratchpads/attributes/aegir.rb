@@ -81,4 +81,3 @@ default['scratchpads']['aegir']['cookbook_files']['aegir-patch'] = {
   'group' => 'root',
   'mode' => '0755'
 }
-default['scratchpads']['aegir']['platforms_directory'] = '/var/aegir/platforms'

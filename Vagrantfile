@@ -1,5 +1,6 @@
 # Scratchpads Vagrant file.
 VAGRANTFILE_API_VERSION = "2"
+NUMBER_OF_DATA_AND_APP_SERVERS = 1
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Control VM - Aegir, Varnish
   config.vm.define "control" do |v|
@@ -14,7 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.environment = "development"
     end
   end
-  (1..1).each do |i|
+  (1..NUMBER_OF_DATA_AND_APP_SERVERS).each do |i|
     config.vm.define "app#{i}" do |v|
       v.vm.hostname = "sp-app-#{i}.nhm.ac.uk"
       v.vm.box = "scratchpads/debian8"

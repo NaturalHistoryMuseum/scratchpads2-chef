@@ -208,19 +208,19 @@ unless ::File.exists?(node['scratchpads']['webserver']['php']['turbo_realpath'][
     user 'root'
     group 'root'
   end
-  template node['scratchpads']['webserver']['php']['turbo_realpath']['template']['path'] do
-    source node['scratchpads']['webserver']['php']['turbo_realpath']['template']['source']
-    cookbook node['scratchpads']['webserver']['php']['turbo_realpath']['template']['cookbook']
-    owner node['scratchpads']['webserver']['php']['turbo_realpath']['template']['owner']
-    group node['scratchpads']['webserver']['php']['turbo_realpath']['template']['group']
-    mode node['scratchpads']['webserver']['php']['turbo_realpath']['template']['mode']
-    action :create
-  end
   execute 'enable turbo_realpath' do
     command "#{node['scratchpads']['webserver']['php']['php5enmod_command']} turbo_realpath"
     group 'root'
     user 'root'
   end  
+end
+template node['scratchpads']['webserver']['php']['turbo_realpath']['template']['path'] do
+  source node['scratchpads']['webserver']['php']['turbo_realpath']['template']['source']
+  cookbook node['scratchpads']['webserver']['php']['turbo_realpath']['template']['cookbook']
+  owner node['scratchpads']['webserver']['php']['turbo_realpath']['template']['owner']
+  group node['scratchpads']['webserver']['php']['turbo_realpath']['template']['group']
+  mode node['scratchpads']['webserver']['php']['turbo_realpath']['template']['mode']
+  action :create
 end
 
 # Install pear modules from specific channels.

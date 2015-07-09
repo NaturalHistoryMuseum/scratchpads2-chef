@@ -165,6 +165,9 @@ end
 # other features/settings.
 include_recipe 'php'
 
+# Install re2c which is required by the mailparse module
+package ['re2c']
+
 # Install pear modules from specific channels.
 node['scratchpads']['webserver']['php']['pear']['pear_modules_custom_channels'].each do|module_name,channel|
   # Install drush from pear

@@ -1,0 +1,25 @@
+; you have to load the extension first
+extension=turbo_realpath.so
+
+; realpath_turbo security mode
+; Possible values:
+;   0 - Ignore potential security issues
+;   1 - Disable dangerous PHP functions (link,symlink)
+realpath_cache_security = 1
+
+; Set realpath_cache_basedir to whatever you want to set open_basedir to
+realpath_cache_basedir = "/var/aegir/platforms"
+
+; Disable PHP's open_basedir directive so that the realpath cache won't be
+; disabled.
+; Remember, turbo_realpath will set this option later to the
+; realpath_cache_basedir value.
+open_basedir = ""
+
+; Determines the size of the realpath cache to be used by PHP. This value should
+; http://www.php.net/manual/en/ini.core.php#ini.realpath-cache-size
+realpath_cache_size = 2M
+
+; Duration of time, in seconds for which to cache realpath information for a given
+; http://www.php.net/manual/en/ini.core.php#ini.realpath-cache-ttl
+realpath_cache_ttl = 600

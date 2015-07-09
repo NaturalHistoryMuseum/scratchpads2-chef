@@ -3,7 +3,7 @@ default['scratchpads']['nfs']['default_hosts'] = []
 # NFS
 default['scratchpads']['nfs']['exports'] = {
   '/var/www' => '/var/www',
-  '/var/aegir/platforms' => '/var/aegir/platforms-remote',
+  '/var/aegir/platforms' => '/var/aegir/platforms',
   '/var/aegir/backups' => '/var/aegir/backups',
   '/var/aegir/backups-databases' => '/var/aegir/backups-databases'
 }

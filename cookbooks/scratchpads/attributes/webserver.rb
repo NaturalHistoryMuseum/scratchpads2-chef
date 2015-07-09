@@ -198,3 +198,17 @@ default['scratchpads']['webserver']['php']['pear']['pecl_modules'] = {
   'mailparse' => {'preferred_state' => 'stable'},
   'xhprof' => {'preferred_state' => 'beta'}
 }
+
+# turbo_realpath
+default['scratchpads']['webserver']['php']['turbo_realpath'] = {
+  'download_path' => '/var/chef/turbo_realpath.zip',
+  'source' => 'https://github.com/Whissi/realpath_turbo/archive/master.zip',
+  'template' => {
+    'source' => 'turbo_realpath.ini.erb',
+    'cookbook' => 'scratchpads',
+    'path' => '/etc/php5/mods-available/turbo_realpath.ini',
+    'owner' => 'root',
+    'group' => 'root',
+    'mode' => '0644',
+  }
+}

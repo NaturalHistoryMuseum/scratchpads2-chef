@@ -168,6 +168,61 @@ include_recipe 'php'
 # Install re2c which is required by the mailparse module
 package ['re2c']
 
+# Download and install the turbo_realpath PHP module which fixes performance issues with
+# NFS.
+unless ::File.exists?(node['scratchpads']['webserver']['php']['turbo_realpath']['download_path'])
+  remote_file node['scratchpads']['webserver']['php']['turbo_realpath']['download_path'] do
+    source node['scratchpads']['webserver']['php']['turbo_realpath']['source']
+    owner 'root'
+    group 'root'
+    mode '0644'
+    action :create
+  end
+  execute 'extract turbo_realpath' do
+    command "unzip #{node['scratchpads']['webserver']['php']['turbo_realpath']['download_path']}"
+    cwd '/var/chef'
+    user 'root'
+    group 'root'
+  end
+  execute 'phpize turbo_realpath' do
+    command "phpize"
+    cwd '/var/chef/realpath_turbo'
+    user 'root'
+    group 'root'
+  end
+  execute 'configure turbo_realpath' do
+    command "./configure"
+    cwd '/var/chef/realpath_turbo-master'
+    user 'root'
+    group 'root'
+  end
+  execute 'make turbo_realpath' do
+    command "make"
+    cwd '/var/chef/realpath_turbo-master'
+    user 'root'
+    group 'root'
+  end
+  execute 'move turbo_realpath' do
+    command "mv turbo_realpath.so /usr/lib/php5/20131226/"
+    cwd '/var/chef/realpath_turbo-master/modules'
+    user 'root'
+    group 'root'
+  end
+  template node['scratchpads']['webserver']['php']['turbo_realpath']['template']['path'] do
+    source node['scratchpads']['webserver']['php']['turbo_realpath']['template']['source']
+    cookbook node['scratchpads']['webserver']['php']['turbo_realpath']['template']['cookbook']
+    owner node['scratchpads']['webserver']['php']['turbo_realpath']['template']['owner']
+    group node['scratchpads']['webserver']['php']['turbo_realpath']['template']['group']
+    mode node['scratchpads']['webserver']['php']['turbo_realpath']['template']['mode']
+    action :create
+  end
+  execute 'enable turbo_realpath' do
+    command "#{node['scratchpads']['webserver']['php']['php5enmod_command']} turbo_realpath"
+    group 'root'
+    user 'root'
+  end  
+end
+
 # Install pear modules from specific channels.
 node['scratchpads']['webserver']['php']['pear']['pear_modules_custom_channels'].each do|module_name,channel|
   # Install drush from pear

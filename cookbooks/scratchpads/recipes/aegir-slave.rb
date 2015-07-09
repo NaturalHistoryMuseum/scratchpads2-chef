@@ -19,3 +19,12 @@ template "#{node['scratchpads']['aegir']['home_folder']}/.ssh/authorized_keys" d
     :lines => lines
   })
 end
+
+# Create the local platforms directory if we're an application server
+directory default['scratchpads']['aegir']['platforms_directory'] do
+  owner node['scratchpads']['aegir']['user']
+  group node['scratchpads']['aegir']['group']
+  mode 0755
+  action :create
+  not_if {::File.exists?(default['scratchpads']['aegir']['platforms_directory'])}
+end

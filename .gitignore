@@ -1,5 +1,11 @@
 README.md.unfolded
 
+# Apache
+.htpasswd
+
+# Node setup script (contains passwds)
+pre-chef-node-setup.bash
+
 # Chef
 .chef/*.pem
 .chef/encrypted_data_bag_secret

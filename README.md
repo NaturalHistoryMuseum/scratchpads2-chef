@@ -62,6 +62,14 @@ for the sudo group (ssh keys are recommended instead).
 - Bootstrap with `knife bootstrap sp-control-1.nhm.ac.uk -x simor -i 
 ~/.ssh/id_rsa --sudo -r 'role[scratchpads-role-control]'`
 
+For those installing NHM nodes, you can use the pre-chef-node-setup.bash script 
+included in the Chef repository. The following should work with the NHM:
+
+    wget http://monkey.nhm.ac.uk/pre-chef-node-setup.bash.gpg
+    gpg --passphrase <ENTER PASSWORD> pre-chef-node-setup.bash.gpg
+    chmod +x pre-chef-node-setup.bash
+    ./pre-chef-node-setup.bash [hostname]
+
 Chef server
 -----------
 Most of the code within the Scratchpads cookbook expects you to be using 

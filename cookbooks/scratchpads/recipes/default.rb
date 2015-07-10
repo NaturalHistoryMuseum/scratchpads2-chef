@@ -43,3 +43,11 @@ end
 package ['gkrellmd','htop','iotop','rsync','unzip']
 
 # Add a template for the gkrellmd service
+template index do
+  path node['scratchpads']['gkrellmd']['path']
+  source node['scratchpads']['gkrellmd']['source']
+  cookbook node['scratchpads']['gkrellmd']['cookbook']
+  owner node['scratchpads']['gkrellmd']['owner']
+  group node['scratchpads']['gkrellmd']['group']
+  mode node['scratchpads']['gkrellmd']['mode']
+end

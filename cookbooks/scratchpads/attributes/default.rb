@@ -31,3 +31,13 @@ default['scratchpads']['control']['admin_email'] = 's.rycroft@nhm.ac.uk'
 # Drush config folder
 default['scratchpads']['control']['drush_config_folder'] = '.drush'
 default['scratchpads']['control']['drush_command'] = '/usr/bin/drush'
+
+# gkrellmd template
+default['scratchpads']['gkrellmd'] = {
+  'source' => 'gkrellmd.conf.erb',
+  'path' => '/etc/gkrellmd.conf',
+  'cookbook' => 'scratchpads',
+  'owner' => 'root',
+  'group' => 'root',
+  'mode' => '0644'
+}

@@ -39,7 +39,7 @@ end
 # Install monit
 # include_recipe 'scratchpads::monit'
 
-# Install rsync and unzip
-package ['rsync','unzip', 'gkrellmd']
+# Install various packages that are useful on all machines.
+package ['gkrellmd','htop','iotop','rsync','unzip']
 
 # Add a template for the gkrellmd service

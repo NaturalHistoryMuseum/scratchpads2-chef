@@ -1,6 +1,6 @@
 # Scratchpads Vagrant file.
 VAGRANTFILE_API_VERSION = "2"
-NUMBER_OF_DATA_AND_APP_SERVERS = 1
+NUMBER_OF_DATA_AND_APP_SERVERS = 2
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Control VM - Aegir, Varnish
   config.vm.define "control" do |v|
@@ -13,6 +13,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.validation_client_name = "simor"
       chef.add_role "scratchpads-role-control"
       chef.environment = "development"
+    end
+    config.vm.provider "virtualbox" do |vb|
+      vb.memory = 4096
+      vb.cpus = 1
     end
   end
   (1..NUMBER_OF_DATA_AND_APP_SERVERS).each do |i|
@@ -28,7 +32,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         chef.environment = "development"
       end
       config.vm.provider "virtualbox" do |vb|
-        vb.memory = 512
+        vb.memory = 4096
+        vb.cpus = 1
       end
     end
     config.vm.define "data#{i}" do |v|
@@ -43,7 +48,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         chef.environment = "development"
       end
       config.vm.provider "virtualbox" do |vb|
-        vb.memory = 512
+        vb.memory = 4096
         vb.cpus = 1
       end
     end
@@ -60,7 +65,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.environment = "development"
     end
     config.vm.provider "virtualbox" do |vb|
-      vb.memory = 512
+      vb.memory = 4096
       vb.cpus = 1
     end
   end

@@ -41,3 +41,13 @@ default['scratchpads']['gkrellmd'] = {
   'group' => 'root',
   'mode' => '0644'
 }
+
+# Deliver all mail template
+default['scratchpads']['postfix']['deliver_mail_to_aegir_template'] = {
+  'source' => 'canonical-redirect.erb',
+  'path' => '/etc/postfix/canonical-redirect',
+  'cookbook' => 'scratchpads',
+  'owner' => 'root',
+  'group' => 'root',
+  'mode' => '0644'
+}

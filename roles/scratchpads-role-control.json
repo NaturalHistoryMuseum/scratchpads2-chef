@@ -23,7 +23,8 @@
       "mail_type": "master",
       "main": {
         "relayhost": "mailserver.nhm.ac.uk",
-        "masquerade_domains": "nhm.ac.uk"
+        "masquerade_domains": "nhm.ac.uk",
+        "canonical_maps": "regexp:/etc/postfix/canonical-redirect"
       }
     },
     "varnish": {

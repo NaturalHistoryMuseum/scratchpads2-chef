@@ -20,7 +20,7 @@ backend control {
   }
 }
 <% @sp_app_servers.each_with_index do |app_server, n| -%>
-backend sp_app_<%= n %> {
+backend sp_app_<%= n+1 %> {
   .host = "<%= app_server['fqdn'] %>";
   .port = "<%= node['scratchpads']['varnish']['sp_app_server_port'] %>";
   .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
@@ -36,7 +36,7 @@ backend sp_app_<%= n %> {
 }
 <% end -%>
 <% @sp_search_master_servers.each_with_index do |search_server, n| -%>
-backend sp_search_master_<%= n %> {
+backend sp_search_master_<%= n+1 %> {
   .host = "<%= search_server['fqdn'] %>";
   .port = "<%= node['scratchpads']['solr-undertow']['port'] %>";
   .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
@@ -52,7 +52,7 @@ backend sp_search_master_<%= n %> {
 }
 <% end -%>
 <% @sp_search_slave_servers.each_with_index do |search_server, n| -%>
-backend sp_search_slave_<%= n %> {
+backend sp_search_slave_<%= n+1 %> {
   .host = "<%= search_server['fqdn'] %>";
   .port = "<%= node['scratchpads']['solr-undertow']['port'] %>";
   .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
@@ -159,13 +159,13 @@ sub vcl_init {
   new balanced_search_slaves = directors.round_robin();
   new balanced_search_masters = directors.round_robin();
 <% @sp_app_servers.each_with_index do |app_server, n| -%>
-  balanced.add_backend(sp_app_<%= n %>);
+  balanced.add_backend(sp_app_<%= n+1 %>);
 <% end -%>
 <% @sp_search_slave_servers.each_with_index do |search_server, n| -%>
-  balanced_search_slaves.add_backend(sp_search_slave_<%= n %>);
+  balanced_search_slaves.add_backend(sp_search_slave_<%= n+1 %>);
 <% end -%>
 <% @sp_search_master_servers.each_with_index do |search_server, n| -%>
-  balanced_search_masters.add_backend(sp_search_master_<%= n %>);
+  balanced_search_masters.add_backend(sp_search_master_<%= n+1 %>);
 <% end -%>
 }
 sub vcl_recv {

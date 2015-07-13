@@ -24,7 +24,8 @@
       "main": {
         "relayhost": "mailserver.nhm.ac.uk",
         "masquerade_domains": "nhm.ac.uk",
-        "canonical_maps": "regexp:/etc/postfix/canonical-redirect"
+        "luser_relay": "aegir",
+        "local_recipient_maps": ""
       }
     },
     "varnish": {

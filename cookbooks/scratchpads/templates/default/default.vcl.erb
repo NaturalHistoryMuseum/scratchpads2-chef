@@ -191,6 +191,12 @@ sub vcl_recv {
   call set_monit_domains;
   call set_selenium_domains;
   call set_no_cache_domains;
+  # Set the backen for server-status and xhprof
+<% @sp_app_servers.each_with_index do |app_server, n| -%>
+  if(req.http.host ~ "<%= app_server['fqdn'] %>$"){
+    set req.backend_hint = sp_app_<%= n+1 %>;
+  }
+<% end -%>
   # Set the search domains
 <%
   domains = []

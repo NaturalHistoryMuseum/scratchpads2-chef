@@ -41,3 +41,16 @@ default['scratchpads']['gkrellmd'] = {
   'group' => 'root',
   'mode' => '0644'
 }
+
+# hosts template
+default['scratchpads']['hosts'] = {
+  'source' => 'hosts.erb',
+  'path' => '/etc/hosts',
+  'cookbook' => 'scratchpads',
+  'owner' => 'root',
+  'group' => 'root',
+  'mode' => '0644',
+  'variables' => {
+    'hosts' => {}
+  }
+}

@@ -14,7 +14,22 @@
       "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret"
     },
     "scratchpads": {
-      "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret"
+      "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret",
+      "varnish": {
+        "trusted_network": "\"157.140.0.0\"/16"
+      },
+      "hosts": {
+        "variables": {
+          "hosts": {
+            "192.168.0.2": "sp-control-1.nhm.ac.uk",
+            "192.168.0.3": "sp-app-1.nhm.ac.uk",
+            "192.168.0.4": "sp-data-1.nhm.ac.uk",
+            "192.168.0.5": "sp-app-2.nhm.ac.uk",
+            "192.168.0.6": "sp-data-2.nhm.ac.uk",
+            "192.168.0.7": "sp-search-1.nhm.ac.uk"
+          }
+        }
+      }
     }
   }
 }

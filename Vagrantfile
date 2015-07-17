@@ -10,7 +10,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.vm.hostname = "sp-control-1.nhm.ac.uk"
     v.vm.box = "scratchpads/debian8"
     v.vm.network "private_network", ip: "192.168.0.#{ip_address_end}"
-    v.vm.network "forwarded_port", guest: 80, guest_ip: "192.168.0.#{ip_address_end}", host: 8080
     ip_address_end = ip_address_end + 1
     v.vm.provision "chef_client" do |chef|
       chef.chef_server_url = "https://chef.nhm.ac.uk/organizations/nhm"

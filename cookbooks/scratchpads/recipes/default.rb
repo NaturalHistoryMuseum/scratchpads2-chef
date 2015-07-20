@@ -11,12 +11,13 @@ else
   control_hosts = search(:node, "roles:#{node['scratchpads']['control']['role']}")
 end
 
-template node['scratchpads']['gkrellmd']['path'] do
-  source node['scratchpads']['gkrellmd']['source']
-  cookbook node['scratchpads']['gkrellmd']['cookbook']
-  owner node['scratchpads']['gkrellmd']['owner']
-  group node['scratchpads']['gkrellmd']['group']
-  mode node['scratchpads']['gkrellmd']['mode']
+template node['scratchpads']['hosts']['path'] do
+  source node['scratchpads']['hosts']['source']
+  cookbook node['scratchpads']['hosts']['cookbook']
+  owner node['scratchpads']['hosts']['owner']
+  group node['scratchpads']['hosts']['group']
+  mode node['scratchpads']['hosts']['mode']
+  variables node['scratchpads']['hosts']['variables']
 end
 
 # Install monit

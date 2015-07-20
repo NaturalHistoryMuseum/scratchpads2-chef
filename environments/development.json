@@ -15,9 +15,6 @@
     },
     "scratchpads": {
       "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret",
-      "varnish": {
-        "trusted_network": "\"157.140.0.0\"/16"
-      },
       "hosts": {
         "variables": {
           "hosts": {
@@ -29,6 +26,13 @@
             "192.168.0.7": "sp-search-1.nhm.ac.uk"
           }
         }
+      },
+      "varnish": {
+        "trusted_networks": [
+          "\"157.140.0.0\"/16",
+          "\"192.168.0.0\"/16",
+          "\"127.0.0.0\"/16"
+        ]
       }
     }
   }

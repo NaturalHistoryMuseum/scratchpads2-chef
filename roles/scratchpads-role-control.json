@@ -24,8 +24,8 @@
       "main": {
         "relayhost": "mailserver.nhm.ac.uk",
         "masquerade_domains": "nhm.ac.uk",
-        "luser_relay": "aegir",
-        "local_recipient_maps": ""
+        "virtual_alias_maps": "hash:/etc/postfix/virtual",
+        "virtual_alias_domains": "hash:/etc/postfix/virtual_domains"
       }
     },
     "varnish": {

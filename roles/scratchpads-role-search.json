@@ -30,6 +30,7 @@
   },
   "run_list": [
     "recipe[apt]",
+    "recipe[ntp]",
     "recipe[java]",
     "recipe[scratchpads]",
     "recipe[scratchpads::solr-undertow]",

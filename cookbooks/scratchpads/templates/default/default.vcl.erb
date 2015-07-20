@@ -2,7 +2,9 @@ vcl 4.0;
 import directors;
 import std;
 acl trusted_network {
-  <%= node['scratchpads']['varnish']['trusted_network'] %>;
+<% node['scratchpads']['varnish']['trusted_networks'].each do |trusted_network| -%>
+  <%= trusted_network %>;
+<% end -%>
 }
 backend control {
   .host = "<%= node['scratchpads']['varnish']['control']['host'] %>";

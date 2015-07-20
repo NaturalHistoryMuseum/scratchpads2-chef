@@ -14,7 +14,19 @@ node['scratchpads']['aegir']['cookbook_files'].each do|name,cb_file|
     mode cb_file['mode']
   end
 end
-
+# Add each template
+node['scratchpads']['aegir']['templates'].each do|name,tmplte|
+  template name do
+    path tmplte['path']
+    source tmplte['source']
+    cookbook tmplte['cookbook']
+    owner tmplte['owner']
+    group tmplte['group']
+    mode tmplte['mode']
+  end
+end
+# Install the procmail package for filtering mail
+package ['procmail']
 # Create the .drush folder
 # FIXME - Is this required?
 directory "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['control']['drush_config_folder']}" do

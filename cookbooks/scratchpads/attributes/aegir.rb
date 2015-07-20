@@ -64,6 +64,23 @@ default['scratchpads']['aegir']['scratchpads_master']['timeout'] = 3000
 default['scratchpads']['aegir']['scratchpads.eu']['repository'] = 'https://github.com/NaturalHistoryMuseum/scratchpads.eu.git'
 default['scratchpads']['aegir']['scratchpads.eu']['checkout_branch'] = 'master'
 default['scratchpads']['aegir']['scratchpads.eu']['timeout'] = 3000
+# Templates
+default['scratchpads']['aegir']['templates']['femail_procmail_drush'] = {
+  'path' => '/usr/local/bin/femail_procmail_drush',
+  'source' => 'femail_procmail_drush.erb',
+  'cookbook' => 'scratchpads',
+  'owner' => 'root',
+  'group' => 'root',
+  'mode' => '0755'
+}
+default['scratchpads']['aegir']['templates']['.procmailrc'] = {
+  'path' => '/var/aegir/.procmailrc',
+  'source' => 'procmailrc.erb',
+  'cookbook' => 'scratchpads',
+  'owner' => 'aegir',
+  'group' => 'www-data',
+  'mode' => '0644'
+}
 # Files to create
 default['scratchpads']['aegir']['cookbook_files']['create-aegir-platform'] = {
   'path' => '/usr/local/bin/create-aegir-platform',

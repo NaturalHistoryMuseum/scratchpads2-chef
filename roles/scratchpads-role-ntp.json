@@ -1,0 +1,14 @@
+{
+  "name": "scratchpads-role-ntp",
+  "default_attributes": {
+    "chef_client": {
+      "init_style": "systemd"
+    },
+    "ntp": {
+      "servers": ["mailserver.nhm.ac.uk"]
+    }
+  },
+  "run_list": [
+    "recipe[ntp]"
+  ]
+}

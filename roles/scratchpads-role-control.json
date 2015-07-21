@@ -38,7 +38,7 @@
   },
   "run_list": [
     "recipe[apt]",
-    "recipe[ntp]",
+    "role[scratchpads-role-ntp]",
     "recipe[git]",
     "recipe[imagemagick]",
     "recipe[scratchpads]",

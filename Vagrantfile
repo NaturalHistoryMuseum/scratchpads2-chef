@@ -7,7 +7,8 @@ CHEF_SERVER_URL = "https://api.opscode.com/organizations/nhm"
 CHEF_VALIDATION_KEY_PATH = ".chef/nhm-validator.pem"
 CHEF_VALIDATION_CLIENT_NAME = "nhm-validator"
 CHEF_ENVIRONMENT = "development"
-CHEF_HOSTNAME_PREFIX = "dev-"
+HOSTNAME=`hostname|tr -d "\n"`
+CHEF_HOSTNAME_PREFIX = "dev-#{HOSTNAME}-"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Control VM - Aegir, Varnish
   ip_address_end = 2

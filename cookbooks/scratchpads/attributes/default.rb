@@ -12,6 +12,7 @@ default['scratchpads']['control']['aegir_url'] = 'get.scratchpads.eu'
 
 # search/domain for the servers.
 default['scratchpads']['domain'] = 'nhm.ac.uk'
+default['scratchpads']['nameservers'] = ['157.140.15.233', '157.140.15.86']
 
 # Roles 
 default['scratchpads']['control']['role'] = 'scratchpads-role-control'

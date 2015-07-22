@@ -12,24 +12,15 @@ else
 end
 
 # Add the prefix to the hosts in case we have one.
+hosts = {}
 if node['fqdn'].index('sp-') > 0
   prefix = node['fqdn'][0, node['fqdn'].index('sp-')]
   Chef::Log.info("Prefix is: #{prefix}")
-  hosts = {}
   node['scratchpads']['hosts']['variables']['hosts'].each do|ip_address,hostname|
-    hosts[ip_address] = "#{prefix}hostname"
+    hosts[ip_address] = "#{prefix}#{hostname}"
   end
   Chef::Log.info(p hosts)
   node.default['scratchpads']['hosts']['variables']['hosts'] = hosts
-end
-
-# /etc/resolv.conf file
-template node['scratchpads']['resolv.conf']['path'] do
-  source node['scratchpads']['resolv.conf']['source']
-  cookbook node['scratchpads']['resolv.conf']['cookbook']
-  owner node['scratchpads']['resolv.conf']['owner']
-  group node['scratchpads']['resolv.conf']['group']
-  mode node['scratchpads']['resolv.conf']['mode']
 end
 
 # /etc/hosts file
@@ -39,7 +30,18 @@ template node['scratchpads']['hosts']['path'] do
   owner node['scratchpads']['hosts']['owner']
   group node['scratchpads']['hosts']['group']
   mode node['scratchpads']['hosts']['mode']
-  variables node['scratchpads']['hosts']['variables']
+  variables ({
+    :hosts => hosts
+  })
+end
+
+# /etc/resolv.conf file
+template node['scratchpads']['resolv.conf']['path'] do
+  source node['scratchpads']['resolv.conf']['source']
+  cookbook node['scratchpads']['resolv.conf']['cookbook']
+  owner node['scratchpads']['resolv.conf']['owner']
+  group node['scratchpads']['resolv.conf']['group']
+  mode node['scratchpads']['resolv.conf']['mode']
 end
 
 # Install monit

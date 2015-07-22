@@ -13,6 +13,7 @@ pre-chef-node-setup.bash
 nodes
 groups
 clients
+acls
 
 # Vagrant
 .vagrant

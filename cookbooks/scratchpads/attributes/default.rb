@@ -7,8 +7,11 @@ default['scratchpads']['encrypted_data_bag'] = 'passwords'
 # Registry IP address (currently running locally)
 default['scratchpads']['additional_hosts']['gbrds.gbif.org'] = '157.140.126.246'
 
-# FQDN of the control server (this probably shouldn't be set here)
+# URL of the Aegir instance
 default['scratchpads']['control']['aegir_url'] = 'get.scratchpads.eu'
+
+# search/domain for the servers.
+default['scratchpads']['domain'] = 'nhm.ac.uk'
 
 # Roles 
 default['scratchpads']['control']['role'] = 'scratchpads-role-control'
@@ -52,4 +55,15 @@ default['scratchpads']['hosts'] = {
   'variables' => {
     'hosts' => {}
   }
+}
+
+# resolv.conf template
+default['scratchpads']['resolv.conf'] = {
+  'source' => 'resolv.conf.erb',
+  'path' => '/etc/resolv.conf',
+  'cookbook' => 'scratchpads',
+  'owner' => 'root',
+  'group' => 'root',
+  'mode' => '0644',
+  'variables' => {}
 }

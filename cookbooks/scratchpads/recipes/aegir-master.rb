@@ -278,6 +278,18 @@ template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/memcach
     :sp_data_servers => data_hosts
   })
 end
+# Tweak the search domains
+unless Chef::Config[:solo]
+  control_hosts = search(:node, "roles:#{node['scratchpads']['control']['role']}")
+  if control_hosts.length > 0
+    node.default['scratchpads']['varnish']['search']['domains'] = []
+    varnish_search_domains = []
+    control_hosts.each do|control_host|
+      varnish_search_domains << control_host['fqdn']
+    end
+    node.default['scratchpads']['varnish']['search']['domains'] = varnish_search_domains
+  end
+end
 # Create the solr.inc file
 template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/solr.inc" do
   source 'solr.inc.erb'

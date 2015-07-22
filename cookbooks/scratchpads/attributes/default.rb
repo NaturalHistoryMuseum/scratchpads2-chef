@@ -20,7 +20,6 @@ default['scratchpads']['search-slave']['role'] = 'scratchpads-role-search-slave'
 # Aegir database user
 default['scratchpads']['control']['aegir']['dbuser'] = 'aegir'
 default['scratchpads']['control']['aegir']['dbuserhost'] = '%'
-#default['scratchpads']['control']['aegir']['host'] = 'sp-control-1'
 default['scratchpads']['control']['aegir']['dbname'] = 'aegir'
 
 # Aegir database server

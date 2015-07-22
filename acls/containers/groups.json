@@ -4,8 +4,7 @@
       "pivotal"
     ],
     "groups": [
-      "admins",
-      "users"
+      "admins"
     ]
   },
   "read": {

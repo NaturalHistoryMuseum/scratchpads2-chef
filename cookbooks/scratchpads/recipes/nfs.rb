@@ -15,6 +15,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
     if client_hosts_search.length > 0
       client_hosts = node['scratchpads']['nfs']['default_hosts'].dup
       client_hosts_search.each do|client_host|
+        Chef::Log.info("Added #{client_host['fqdn']} to nfs clients")
         client_hosts << client_host['fqdn']
       end
       node.default['scratchpads']['nfs']['hosts'] = client_hosts

@@ -167,7 +167,9 @@ end
 modules_to_download = []
 node['scratchpads']['aegir']['modules_to_download'].each do|module_name|
   # Download the additional module(s).
+  Chef::Log.info("Checking for module '#{module_name}'")
   unless ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib/#{module_name}")
+    Chef::Log.info("Adding module '#{module_name}' to download list")
     modules_to_download << module_name
   end
 end

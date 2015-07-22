@@ -15,11 +15,11 @@ end
 hosts = {}
 if node['fqdn'].index('sp-') > 0
   prefix = node['fqdn'][0, node['fqdn'].index('sp-')]
-  Chef::Log.info("Prefix is: #{prefix}")
+  Chef::Log.info("Hostname prefix: #{prefix}")
   node['scratchpads']['hosts']['variables']['hosts'].each do|ip_address,hostname|
     hosts[ip_address] = "#{prefix}#{hostname}"
+    Chef::Log.info("#{ip_address}: #{hostname} -> #{prefix}#{hostname}")
   end
-  Chef::Log.info(p hosts)
   node.default['scratchpads']['hosts']['variables']['hosts'] = hosts
 end
 

@@ -52,8 +52,10 @@ end
 # Check to see if we are running the 'control' role. If so we install Aegir, and if not
 # we just ensure that the aegir user on control can ssh to this box.
 if node['roles'].index(node['scratchpads']['control']['role']) then
+  Chef::Log.info('Including scratchpads::aegir-master')
   include_recipe 'scratchpads::aegir-master'
 else
+  Chef::Log.info('Including scratchpads::aegir-slave')
   include_recipe 'scratchpads::aegir-slave'
 end
 # Link the aegir configuration to the apache sites folder

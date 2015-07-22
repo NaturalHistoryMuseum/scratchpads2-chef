@@ -15,6 +15,7 @@ unless Chef::Config[:solo]
 end
 app_hosts.each do|app_host|
   sanitised_server_name = app_host.gsub(/[^a-z0-9]/, '')
+  Chef::Log.info("'#{app_host}' sanitised to '#{sanitised_server_name}'")
   # Create the server
   execute "create the #{sanitised_server_name} application server node" do
     command "#{node['scratchpads']['control']['drush_command']} @hm provision-save server_#{sanitised_server_name} --context_type=server --remote_host=#{app_host} --http_service_type='apache' --http_port=80"
@@ -58,6 +59,7 @@ unless Chef::Config[:solo]
 end
 data_hosts.each do|data_host|
   sanitised_server_name = data_host.gsub(/[^a-z0-9]/, '')
+  Chef::Log.info("'#{data_host}' sanitised to '#{sanitised_server_name}'")
   # Create the server
   passwords = ScratchpadsEncryptedData.new(node)
   aegir_pw = passwords.get_encrypted_data 'mysql', 'aegir'

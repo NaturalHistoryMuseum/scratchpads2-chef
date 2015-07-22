@@ -1,8 +1,8 @@
 {
   "id": "taverna",
   "auth_token": {
-    "encrypted_data": "z2d4L2xkJ+WUqjXCIOhDsvHl4z4wfq8OvTx0LfuYrcR2LKbSima9AxVD0ykE\nULJb\n",
-    "iv": "E4Lm9ppBYc6D4dq9JcBBaA==\n",
+    "encrypted_data": "nq18MckDf2eWKRO8O9K9aX2HH9a/BQl22GtndbNWBImmei/hmHV5ngSxp1ak\n+qwN\n",
+    "iv": "Cngj92IANbPe24l4DjhLbg==\n",
     "version": 1,
     "cipher": "aes-256-cbc"
   }

@@ -343,8 +343,8 @@ sub vcl_hit {
   }
   # We have no fresh fish. Lets look at the stale ones.
   if (std.healthy(req.backend_hint)) {
-    # Backend is healthy. Limit age to 10s.
-    if (obj.ttl + 10s > 0s) {
+    # Backend is healthy. Limit age to 1h.
+    if (obj.ttl + 1h > 0s) {
       set req.http.grace = "normal(limited)";
       return (deliver);
     } else {
@@ -378,7 +378,7 @@ sub vcl_backend_response {
     unset beresp.http.set-cookie;
   }
   # Allow items to be stale if needed.
-  set beresp.ttl = 10s;
+  set beresp.ttl = 1h;
   set beresp.grace = 6h;
 }
 

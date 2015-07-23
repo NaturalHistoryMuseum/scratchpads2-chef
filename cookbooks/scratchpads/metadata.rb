@@ -3,8 +3,10 @@ maintainer       'Simon Rycroft'
 maintainer_email 's.rycroft@nhm.ac.uk'
 license          'CC BY 4.0'
 description      'Installs and configures all services required to run a Scratchpads instance'
-long_description 'Installs/Configures scratchpads'
-version          '0.1.0'
+long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+version          '0.2.0'
+issues_url       'https://github.com/NaturalHistoryMuseum/scratchpads2-chef/issues'
+source_url       'https://github.com/NaturalHistoryMuseum/scratchpads2-chef'
 
 depends 'apache2',         '~> 3.0'
 depends 'apt',             '~> 2.7'

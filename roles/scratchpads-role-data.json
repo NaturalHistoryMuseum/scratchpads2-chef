@@ -22,6 +22,7 @@
   },
   "run_list": [
     "recipe[apt]",
+    "recipe[chef-client]",
     "role[scratchpads-role-ntp]",
     "recipe[scratchpads]",
     "recipe[scratchpads::aegir]",

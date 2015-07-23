@@ -29,6 +29,7 @@
   },
   "run_list": [
     "recipe[apt]",
+    "recipe[chef-client]",
     "role[scratchpads-role-ntp]",
     "recipe[git]",
     "recipe[imagemagick]",

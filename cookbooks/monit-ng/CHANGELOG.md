@@ -1,3 +1,35 @@
+# 2.0.2 / 2015-07-14
+
+* add attribute to skip service actions
+
+# 2.0.1 / 2015-07-02
+
+* add "depends" attribute (thanks @kcd83!)
+* allow nil to disable listen address specification (thanks @kcd83!)
+
+# 2.0.0 / 2015-06-17
+
+* consolidate repo/source recipe into "install" recipe
+* move service management into separate recipe
+* remove the common-service recipes
+* testing and documentation improvements
+
+# 1.8.1 / 2015-06-14
+
+* fix backwards compatibility with "subscriptions"
+
+# 1.8.0 / 2015-06-11
+
+# update to latest monit release: 5.14
+* better version comparison for old SSL bug
+* fix check_id attribute to support check_type "system". thanks @jorhett!
+* update proactive reload ruby_block naming for clarity
+* permit disabling proactive reloads
+
+# 1.7.0 / 2015-06-05
+
+* add alert, but_not_on, alert_events attributes for per-check alert event control (thanks @cpakman!)
+
 # 1.6.4 / 2015-05-15
 
 * fix upstart service name for postfix (thanks @szymonpk!)

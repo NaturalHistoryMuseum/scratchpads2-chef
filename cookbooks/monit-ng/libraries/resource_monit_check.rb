@@ -41,10 +41,11 @@ class Chef
         set_or_return(
           :check_id, arg,
           :kind_of => String,
-          :required => true
+          :required => !(check_type == 'system')
         )
       end
 
+      # rubocop: disable AbcSize
       # rubocop: disable MethodLength
       def id_type(arg = nil)
         set_or_return(
@@ -54,12 +55,13 @@ class Chef
           :default => check_pairs[check_type].first,
           :callbacks => {
             'is a valid id_type for check_type' => lambda do |spec|
-              check_pairs[check_type].include?(spec)
+              check_pairs[check_type].include?(spec) || check_type == 'system'
             end,
           }
         )
       end
       # rubocop: enable MethodLength
+      # rubocop: enable AbcSize
 
       def start_as(arg = nil)
         set_or_return(
@@ -122,6 +124,13 @@ class Chef
         )
       end
 
+      def depends(arg = nil)
+        set_or_return(
+          :depends, arg,
+          :kind_of => String
+        )
+      end
+
       def tests(arg = nil)
         set_or_return(
           :tests, arg,
@@ -134,6 +143,31 @@ class Chef
         set_or_return(
           :every, arg,
           :kind_of => String
+        )
+      end
+
+      def alert(arg = nil)
+        set_or_return(
+          :alert, arg,
+          :kind_of => String
+        )
+      end
+
+      def but_not_on(arg = nil)
+        set_or_return(
+          :but_not_on, arg,
+          :kind_of => [TrueClass, FalseClass],
+          :default => false,
+          :required => alert
+        )
+      end
+
+      def alert_events(arg = nil)
+        set_or_return(
+          :alert_events, arg,
+          :kind_of => Array,
+          :default => [],
+          :required => alert
         )
       end
 

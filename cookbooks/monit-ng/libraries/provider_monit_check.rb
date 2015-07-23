@@ -35,7 +35,6 @@ class Chef
         t.path tpl_path
         t.source 'monit.check.erb'
         t.variables monit_check_config
-        t.notifies :reload, 'service[monit]', :delayed
         if Chef::VERSION.to_f >= 12
           t.verify do |path|
             "monit -tc #{path}"
@@ -55,19 +54,24 @@ class Chef
         ::File.join(node['monit']['conf_dir'], "#{new_resource.name}.conf")
       end
 
+      # rubocop: disable MethodLength
       # rubocop: disable AbcSize
       def monit_check_config
         {
           :name => new_resource.name, :check_type => new_resource.check_type,
           :check_id => new_resource.check_id, :id_type => new_resource.id_type,
-          :group => new_resource.group, :start_as => new_resource.start_as,
+          :group => new_resource.group, :depends => new_resource.depends,
+          :start_as => new_resource.start_as,
           :start_as_group => new_resource.start_as_group,
           :start => new_resource.start, :stop => new_resource.stop,
           :stop_as => new_resource.stop_as,
           :stop_as_group => new_resource.stop_as_group,
-          :every => new_resource.every, :tests => new_resource.tests
+          :every => new_resource.every, :tests => new_resource.tests,
+          :alert => new_resource.alert, :but_not_on => new_resource.but_not_on,
+          :alert_events => new_resource.alert_events
         }
       end
+      # rubocop: enable MethodLength
       # rubocop: enable AbcSize
     end
   end

@@ -42,7 +42,7 @@
   "recipes": {
     "logrotate": "Installs logrotate package"
   },
-  "version": "1.9.1",
+  "version": "1.9.2",
   "source_url": "",
   "issues_url": ""
 }

@@ -2,6 +2,22 @@ git Cookbook CHANGELOG
 ======================
 This file is used to list changes made in each version of the git cookbook.
 
+v4.3.0 (2015-07-20)
+-------------------
+- Removing references to node attributes from provider code
+- Name-spacing of client resource property names
+- Addition of windows recipe
+- Creation of package recipe
+
+v4.2.4 (2015-07-19)
+-------------------
+- Fixing source provider selection bug from 4.2.3
+
+v4.2.3 (2015-07-18)
+-------------------
+- mac_os_x provider mapping
+- various rubocops
+
 v4.2.2 (2015-04-23)
 -------------------
 - Fix up action in Chef::Resource::GitService

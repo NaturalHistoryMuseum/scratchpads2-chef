@@ -1,14 +1,14 @@
 {
   "id": "scratchpads_gbif_registry",
   "username": {
-    "encrypted_data": "R6PdurCsfIYZaX/I+1yHTnnP3ppE6u5l5Fbr9CeqvW4=\n",
-    "iv": "kj9YgEGtqBzZcNjlya3Ayg==\n",
+    "encrypted_data": "7eknGbZ4K7irosa3ZiUlATIiObSZJSIZSInnE4G4ywg=\n",
+    "iv": "7Vyp/qirGBOdx62JAjajMw==\n",
     "version": 1,
     "cipher": "aes-256-cbc"
   },
   "password": {
-    "encrypted_data": "3vbGz/t9phKX/vct7oSBjKqg2Now287dQ+sGG+4Cnac=\n",
-    "iv": "f1VkG535pORA52i05DT2RA==\n",
+    "encrypted_data": "+KDaTAQ/fwI1dOz9xULFFMivmurrhFhwSOW1b0pobRuIrRUxlQfNKGTODlkX\nrhag1IWvqJwdrK+n8xqQEcdVoA==\n",
+    "iv": "NEgQBeG7i55y5H01hAfywA==\n",
     "version": 1,
     "cipher": "aes-256-cbc"
   }

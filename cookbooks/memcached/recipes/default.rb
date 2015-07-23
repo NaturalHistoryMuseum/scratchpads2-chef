@@ -22,23 +22,6 @@ include_recipe 'yum-epel' if node['platform_family'] == 'rhel' && node['platform
 
 package 'memcached'
 
-package 'libmemcache-dev' do
-  case node['platform_family']
-  when 'rhel', 'fedora'
-    package_name 'libmemcached-devel'
-  when 'smartos'
-    package_name 'libmemcached'
-  when 'suse'
-    if node['platform_version'].to_f < 12
-      package_name 'libmemcache-devel'
-    else
-      package_name 'libmemcached-devel'
-    end
-  else
-    package_name 'libmemcache-dev'
-  end
-end
-
 service 'memcached' do
   action :enable
   supports :status => true, :start => true, :stop => true, :restart => true, :enable => true

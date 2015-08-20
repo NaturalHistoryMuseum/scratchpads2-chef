@@ -3,3 +3,17 @@
 
 # Accept connections on port 443, 80 and 25 from everywhere.
 -A tcpin -p tcp -m tcp -m multiport --dports 443,80,25 -j ACCEPT
+
+# Allow connections to NFS server from other hosts.
+<% node['scratchpads']['all_hosts'].each do |hostname| -%>
+-A tcpin -s <%= hostname %> -p tcp -m tcp --dport 111 -j ACCEPT
+-A tcpin -s <%= hostname %> -p tcp -m tcp --dport 32765 -j ACCEPT
+-A tcpin -s <%= hostname %> -p tcp -m tcp --dport 32766 -j ACCEPT
+-A tcpin -s <%= hostname %> -p tcp -m tcp --dport 32767 -j ACCEPT
+-A tcpin -s <%= hostname %> -p tcp -m tcp --dport 32768 -j ACCEPT
+<% end -%>
+
+# Allow connections to m/monit from other hosts.
+<% node['scratchpads']['all_hosts'].each do |hostname| -%>
+-A tcpin -s <%= hostname %> -p tcp -m tcp --dport 8080 -j ACCEPT
+<% end -%>

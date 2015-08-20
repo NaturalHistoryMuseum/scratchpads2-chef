@@ -13,7 +13,7 @@ end
 
 # Add all hosts to the list (this may cause issues if we have dev boxes using the same chef server - need to look into this)
 all_hosts = []
-all_hosts_search = search(:node, "roles:#{node['scratchpads']['app']['role']}")
+all_hosts_search = search(:node, "*:*")
 all_hosts_search.each do|app_host|
   all_hosts << app_host['fqdn']
 end
@@ -21,7 +21,16 @@ node.default['scratchpads']['all_hosts'] = all_hosts
 
 # Add the default IPTables rules
 iptables_rule 'iptables_default'
-
+# Add role specific IPTables rules
+if node['roles'].index(node['scratchpads']['control']['role']) then
+  iptables_rule 'iptables_control'
+elsif node['roles'].index(node['scratchpads']['data']['role']) then
+  iptables_rule 'iptables_data'
+elsif node['roles'].index(node['scratchpads']['app']['role']) then
+  iptables_rule 'iptables_app'
+elsif node['roles'].index(node['scratchpads']['search']['role']) then
+  iptables_rule 'iptables_search'
+end
 
 # Add the prefix to the hosts in case we have one.
 hosts = {}

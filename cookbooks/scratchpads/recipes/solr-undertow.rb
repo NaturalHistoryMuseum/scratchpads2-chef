@@ -130,3 +130,6 @@ service 'solr-undertow' do
   action [:enable, :start]
   provider Chef::Provider::Service::Systemd
 end
+
+# Add the webserver IPTables rules
+iptables_rule 'iptables_search'

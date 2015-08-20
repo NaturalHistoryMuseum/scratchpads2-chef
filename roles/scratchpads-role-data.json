@@ -24,6 +24,7 @@
     "recipe[apt]",
     "recipe[chef-client]",
     "role[scratchpads-role-ntp]",
+    "recipe[iptables]",
     "recipe[scratchpads]",
     "recipe[scratchpads::aegir]",
     "recipe[scratchpads::nfs]",

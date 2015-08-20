@@ -108,3 +108,6 @@ mysql_database_user node['scratchpads']['control']['aegir']['dbuser'] do
   action [:create, :grant]
   grant_option true
 end
+
+# Add the data IPTables rules
+iptables_rule 'iptables_data'

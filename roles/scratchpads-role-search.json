@@ -33,6 +33,7 @@
     "recipe[chef-client]",
     "role[scratchpads-role-ntp]",
     "recipe[java]",
+    "recipe[iptables]",
     "recipe[scratchpads]",
     "recipe[scratchpads::solr-undertow]",
     "recipe[scratchpads::postfix]"

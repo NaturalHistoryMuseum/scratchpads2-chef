@@ -1,0 +1,4 @@
+# Allow access to solr-undertow from other hosts (just needs control)
+<% node['scratchpads']['all_hosts'].each do |hostname| -%>
+-A tcpin -s <%= hostname %> -p tcp -m tcp --dport 8983 -j ACCEPT
+<% end -%>

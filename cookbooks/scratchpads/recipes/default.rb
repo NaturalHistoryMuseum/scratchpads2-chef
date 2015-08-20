@@ -11,6 +11,18 @@ else
   control_hosts = search(:node, "roles:#{node['scratchpads']['control']['role']}")
 end
 
+# Add all hosts to the list (this may cause issues if we have dev boxes using the same chef server - need to look into this)
+all_hosts = []
+all_hosts_search = search(:node, "roles:#{node['scratchpads']['app']['role']}")
+all_hosts_search.each do|app_host|
+  all_hosts << app_host['fqdn']
+end
+node.default['scratchpads']['all_hosts'] = all_hosts
+
+# Add the default IPTables rules
+iptables_rule 'iptables_default'
+
+
 # Add the prefix to the hosts in case we have one.
 hosts = {}
 if node['fqdn'].index('sp-') > 0

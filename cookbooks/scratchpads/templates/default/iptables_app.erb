@@ -1,0 +1,4 @@
+# Accept connections on port 80 from other machines.
+<% node['scratchpads']['all_hosts'].each do |hostname| -%>
+-A tcpin -s <%= hostname %> -p tcp -m tcp --dport 80 -j ACCEPT
+<% end -%>

@@ -1,0 +1,9 @@
+# Allow connections to memcached from other hosts.
+<% node['scratchpads']['all_hosts'].each do |hostname| -%>
+-A tcpin -s <%= ip_address %> -p tcp -m tcp --dport 11211 -j ACCEPT
+<% end -%>
+
+# Allow connections to MySQL from other hosts.
+<% node['scratchpads']['all_hosts'].each do |hostname| -%>
+-A tcpin -s <%= ip_address %> -p tcp -m tcp --dport 3306 -j ACCEPT
+<% end -%>

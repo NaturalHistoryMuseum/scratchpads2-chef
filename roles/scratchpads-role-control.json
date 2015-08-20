@@ -42,6 +42,7 @@
     "role[scratchpads-role-ntp]",
     "recipe[git]",
     "recipe[imagemagick]",
+    "recipe[iptables]",
     "recipe[scratchpads]",
     "role[scratchpads-role-percona]",
     "role[scratchpads-role-apache]",

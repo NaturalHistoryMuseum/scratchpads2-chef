@@ -1,3 +1,8 @@
+# Desktop machines that we will allow to SSH and access privileged ports on each machine
+default['scratchpads']['trusted_ip_addresses'] = ['157.140.126.246/32', '192.168.0.0/16']
+# The following will be populated during a Chef run.
+default['scratchpads']['all_ip_addresses'] = []
+
 # Encrypted data file path
 default['scratchpads']['encrypted_data_bag_secret_file'] = '/etc/chef/encrypted_data_bag_secret'
 

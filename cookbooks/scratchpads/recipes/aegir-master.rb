@@ -423,3 +423,6 @@ execute 'import the scratchpads.eu platform into front end' do
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/platform_scratchpadseu.alias.drushrc.php")}
   only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/server_automaticpack.alias.drushrc.php")}
 end
+
+# Add the control IPTables rules
+iptables_rule 'iptables_control'

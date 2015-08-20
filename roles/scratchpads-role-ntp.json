@@ -5,7 +5,9 @@
       "init_style": "systemd"
     },
     "ntp": {
-      "servers": ["mailserver.nhm.ac.uk"]
+      "servers": [
+        "mailserver.nhm.ac.uk"
+      ]
     }
   },
   "run_list": [

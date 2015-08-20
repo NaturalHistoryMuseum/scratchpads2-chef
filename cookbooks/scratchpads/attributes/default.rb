@@ -4,8 +4,8 @@ default['scratchpads']['encrypted_data_bag_secret_file'] = '/etc/chef/encrypted_
 # Passwords bag
 default['scratchpads']['encrypted_data_bag'] = 'passwords'
 
-# Registry IP address (currently running locally)
-default['scratchpads']['additional_hosts']['gbrds.gbif.org'] = '157.140.126.246'
+# Default host prefix needs to be set to the empty string
+default['scratchpads']['hostname_prefix'] = ''
 
 # URL of the Aegir instance
 default['scratchpads']['control']['aegir_url'] = 'get.scratchpads.eu'

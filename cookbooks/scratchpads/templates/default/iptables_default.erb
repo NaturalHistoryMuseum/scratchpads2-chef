@@ -27,6 +27,3 @@
 <% node['scratchpads']['trusted_ip_addresses'].each do |ip_address| -%>
 -A tcpin -s <%= ip_address %> -p tcp -m tcp --dport 19150 -j ACCEPT
 <% end -%>
-
-# Drop everything else that's TCP.
--A tcpin -p tcp -m state --state INVALID,NEW -m tcp --dport 1:65535 -j DROP

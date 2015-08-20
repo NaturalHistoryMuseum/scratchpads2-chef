@@ -1,19 +1,10 @@
 # Limit the number of connections to port 80 from a single IP address to 10.
 -A tcpin -p tcp -m tcp --dport 80 --tcp-flags FIN,SYN,RST,ACK SYN -m connlimit --connlimit-above 10 --connlimit-mask 32 -j REJECT --reject-with tcp-reset 
 
-# Accept connections on port 443, 80 and 25 from everywhere.
+# Accept connections to HTTP/HTTPS (80,443) and SMTP (25) from everywhere.
 -A tcpin -p tcp -m tcp -m multiport --dports 443,80,25 -j ACCEPT
 
-# Allow connections to NFS server from other hosts.
+# Allow connections to NFS server (111,2049,32765,32766,32767,32768) from other hosts and m/monit (8080)
 <% node['scratchpads']['all_hosts'].each do |hostname| -%>
--A tcpin -s <%= hostname %> -p tcp -m tcp --dport 111 -j ACCEPT
--A tcpin -s <%= hostname %> -p tcp -m tcp --dport 32765 -j ACCEPT
--A tcpin -s <%= hostname %> -p tcp -m tcp --dport 32766 -j ACCEPT
--A tcpin -s <%= hostname %> -p tcp -m tcp --dport 32767 -j ACCEPT
--A tcpin -s <%= hostname %> -p tcp -m tcp --dport 32768 -j ACCEPT
-<% end -%>
-
-# Allow connections to m/monit from other hosts.
-<% node['scratchpads']['all_hosts'].each do |hostname| -%>
--A tcpin -s <%= hostname %> -p tcp -m tcp --dport 8080 -j ACCEPT
+-A tcpin -s <%= hostname %> -p tcp -m tcp -m multiport --dports 111,2049,32765,32766,32767,32768,8080 -j ACCEPT
 <% end -%>

@@ -39,6 +39,7 @@
     "role[scratchpads-role-apache]",
     "recipe[scratchpads::aegir]",
     "recipe[scratchpads::nfs]",
-    "recipe[scratchpads::postfix]"
+    "recipe[scratchpads::postfix]",
+    "role[scratchpads-role-monit]"
   ]
 }

@@ -30,6 +30,7 @@
     "recipe[scratchpads::nfs]",
     "role[scratchpads-role-percona]",
     "recipe[scratchpads::postfix]",
-    "recipe[memcached]"
+    "recipe[memcached]",
+    "role[scratchpads-role-monit]"
   ]
 }

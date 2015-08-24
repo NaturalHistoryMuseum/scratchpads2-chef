@@ -36,6 +36,7 @@
     "recipe[iptables]",
     "recipe[scratchpads]",
     "recipe[scratchpads::solr-undertow]",
-    "recipe[scratchpads::postfix]"
+    "recipe[scratchpads::postfix]",
+    "role[scratchpads-role-monit]"
   ]
 }

@@ -1,0 +1,11 @@
+{
+  "name": "scratchpads-role-monit",
+  "default_attributes": {
+    "monit":{
+      "install_method": "source"
+    }
+  },
+  "run_list": [
+    "recipe[scratchpads::monit]"
+  ]
+}

@@ -12,7 +12,8 @@ remote_file src_filepath do
   owner "root"
   group "root"
   mode 00644
-  not_if {: :File.exists?(src_filepath) }
+  not_if { ::File.exists?(src_filepath) }
+  not_if { ::File.exists?(node["mmonit"]["dir"]) }
 end
 
 bash "extract_source" do

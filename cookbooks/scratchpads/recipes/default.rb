@@ -65,9 +65,6 @@ template node['scratchpads']['resolv.conf']['path'] do
   mode node['scratchpads']['resolv.conf']['mode']
 end
 
-# Install monit
-include_recipe 'scratchpads::monit'
-
 # Install various packages that are useful on all machines.
 package ['gkrellmd','htop','iotop','rsync','unzip','dnsmasq']
 

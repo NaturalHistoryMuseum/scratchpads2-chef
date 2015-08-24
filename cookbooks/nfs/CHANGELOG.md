@@ -1,3 +1,44 @@
+v2.2.5
+------
+
+* @yoshiwaan - improved Amazon Linux platform support.
+  - Also added tests, and example .kitchen.yml.aws file.
+
+v2.2.4
+------
+
+* @shortgun corrected an Amazon Linux regression introduced by #57
+* Cleaned out redundant BATS tests, in favor of Serverspec tests.
+* Cleaned up Serverspec tests introduced by #57 to better reflect
+  expected behavior.
+
+v2.2.3
+------
+
+* @joerocklin added CentOS 7 support, and tests, in #57
+* @sdrycroft added whitespace padding to replacement pattern in #62
+
+v2.2.2
+------
+
+* Make service_provider edge cases an Ubuntu-specific hack.
+  - More feedback may be needed on Debian platforms/versions
+* CentOS platforms seem to detect service_provider fine, without
+  explicitly setting one.
+* Remove windows/solaris guard regression, because this should not be needed
+  without overriding the service provider
+
+v2.2.1
+------
+
+* Partial revert of service_provider Ubuntu hacks. 
+
+v2.2.0
+------
+
+* De-kludge service_provider hacks
+* Add pattern parameter to looped service resources
+
 v2.1.0
 ------
 

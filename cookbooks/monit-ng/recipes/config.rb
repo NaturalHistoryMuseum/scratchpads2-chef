@@ -81,7 +81,7 @@ ruby_block 'reload-monit' do
     end
 
     if checks.any?(&:updated_by_last_action?)
-      resources(:service => 'monit').run_action(:reload)
+      resources(:service => 'monit').run_action(:restart)
     end
   end
   action :nothing

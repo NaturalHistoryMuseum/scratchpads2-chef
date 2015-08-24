@@ -64,6 +64,10 @@ default['scratchpads']['aegir']['scratchpads_master']['timeout'] = 3000
 default['scratchpads']['aegir']['scratchpads.eu']['repository'] = 'https://github.com/NaturalHistoryMuseum/scratchpads.eu.git'
 default['scratchpads']['aegir']['scratchpads.eu']['checkout_branch'] = 'master'
 default['scratchpads']['aegir']['scratchpads.eu']['timeout'] = 3000
+# Solanaceae source repository
+default['scratchpads']['aegir']['solanaceae_source']['repository'] = 'https://github.com/NaturalHistoryMuseum/solanaceaesource-2.0.git'
+default['scratchpads']['aegir']['solanaceae_source']['checkout_branch'] = 'master'
+default['scratchpads']['aegir']['solanaceae_source']['timeout'] = 300
 # Templates
 default['scratchpads']['aegir']['templates']['femail_procmail_drush'] = {
   'path' => '/usr/local/bin/femail_procmail_drush',

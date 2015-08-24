@@ -118,6 +118,13 @@ git "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
 end
+# Download the Solanaceae source repository
+git "#{node['scratchpads']['aegir']['home_folder']}/platforms/solanaceaesource-2.0" do
+  repository node['scratchpads']['aegir']['solanaceae_source']['repository']
+  group node['scratchpads']['aegir']['group']
+  user node['scratchpads']['aegir']['user']
+  timeout node['scratchpads']['aegir']['solanaceae_source']['timeout']
+end  
 # Download the Hosting Reinstall module which is currently a Sandbox, and therefore can't be downloaded using the method below.
 git "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib/hosting_reinstall" do
   repository node['scratchpads']['aegir']['hosting_reinstall']['repository']

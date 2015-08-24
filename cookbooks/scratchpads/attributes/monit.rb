@@ -1,4 +1,4 @@
-default['scratchpads']['monit']['varnish']['cookbook'] = 'scratchpads'
+default['scratchpads']['monit']['varnish']['cookbook'] = 'monit-ng'
 default['scratchpads']['monit']['varnish']['check_type'] = 'process'
 default['scratchpads']['monit']['varnish']['check_id'] = '/var/run/varnishd.pid'
 default['scratchpads']['monit']['varnish']['id_type'] = 'pidfile'
@@ -29,12 +29,13 @@ default['scratchpads']['monit']['varnish']['tests'] = [
   {
     'condition' => 'loadavg(5min) greater than 10 for 8 cycles',
     'action' => 'alert'
-  },
-  {
-    'condition' => 'failed host quartz.nhm.ac.uk port 80
-      send "GET / HTTP/1.1\r\nHost: scratchpads.eu\r\n\r\n"
-      expect "HTTP/[0-9\.]{3} 200 .*\r\n" 
-      for 3 cycles',
-    'action' => 'alert'
   }
+  #,
+  # {
+  #   'condition' => 'failed host quartz.nhm.ac.uk port 80
+  #     send "GET / HTTP/1.1\r\nHost: scratchpads.eu\r\n\r\n"
+  #     expect "HTTP/[0-9\.]{3} 200 .*\r\n" 
+  #     for 3 cycles',
+  #   'action' => 'alert'
+  # }
 ]

@@ -13,4 +13,5 @@ DAEMON_OPTS="-a <%= node['varnish']['listen_address'] %>:<%= node['varnish']['li
                   -p thread_pool_min=<%= node['varnish']['parameters']['thread_pool_min'] %> \
                   -p thread_pool_max=<%= node['varnish']['parameters']['thread_pool_max'] %> \
                   -p thread_pool_timeout=<%= node['varnish']['parameters']['thread_pool_timeout'] %> \
-              -S <%= node['varnish']['secret_file'] %>"
+              -S <%= node['varnish']['secret_file'] %> \
+              -P /var/run/varnishd.pid"

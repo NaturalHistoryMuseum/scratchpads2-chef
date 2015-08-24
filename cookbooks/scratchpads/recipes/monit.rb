@@ -31,7 +31,7 @@ include_recipe 'monit-ng::config'
 # Add monit checks for each role.
 if node['roles'].index(node['scratchpads']['control']['role']) then
   # Add check for varnish
-  monit_check 'varnish_monit' do
+  monit_check 'varnish' do
     cookbook node['scratchpads']['monit']['varnish']['cookbook']
     check_type node['scratchpads']['monit']['varnish']['check_type']
     check_id node['scratchpads']['monit']['varnish']['check_id']

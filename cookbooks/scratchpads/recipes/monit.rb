@@ -42,15 +42,15 @@ monit_check 'varnish' do
   only_if {node['roles'].index(node['scratchpads']['control']['role'])}
 end
 # Add check for apache to control and app role.
-monit_check 'varnish' do
-  cookbook node['scratchpads']['monit']['varnish']['cookbook']
-  check_type node['scratchpads']['monit']['varnish']['check_type']
-  check_id node['scratchpads']['monit']['varnish']['check_id']
-  id_type node['scratchpads']['monit']['varnish']['id_type']
-  start node['scratchpads']['monit']['varnish']['start']
-  stop node['scratchpads']['monit']['varnish']['stop']
-  group node['scratchpads']['monit']['varnish']['group']
-  tests node['scratchpads']['monit']['varnish']['tests']
+monit_check 'apache2' do
+  cookbook node['scratchpads']['monit']['apache2']['cookbook']
+  check_type node['scratchpads']['monit']['apache2']['check_type']
+  check_id node['scratchpads']['monit']['apache2']['check_id']
+  id_type node['scratchpads']['monit']['apache2']['id_type']
+  start node['scratchpads']['monit']['apache2']['start']
+  stop node['scratchpads']['monit']['apache2']['stop']
+  group node['scratchpads']['monit']['apache2']['group']
+  tests node['scratchpads']['monit']['apache2']['tests']
   only_if {node['roles'].index(node['scratchpads']['control']['role']) || node['roles'].index(node['scratchpads']['app']['role'])}
 end
 # elsif node['roles'].index(node['scratchpads']['data']['role']) then

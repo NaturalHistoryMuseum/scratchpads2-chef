@@ -24,6 +24,10 @@ default['scratchpads']['control']['role'] = 'scratchpads-role-control'
 default['scratchpads']['app']['role'] = 'scratchpads-role-app'
 default['scratchpads']['data']['role'] = 'scratchpads-role-data'
 default['scratchpads']['search']['role'] = 'scratchpads-role-search'
+default['scratchpads']['monit']['role'] = 'scratchpads-role-monit'
+default['scratchpads']['ntp']['role'] = 'scratchpads-role-ntp'
+default['scratchpads']['percona']['role'] = 'scratchpads-role-percona'
+default['scratchpads']['apache']['role'] = 'scratchpads-role-apache'
 default['scratchpads']['search-slave']['role'] = 'scratchpads-role-search-slave'
 
 # Aegir database user

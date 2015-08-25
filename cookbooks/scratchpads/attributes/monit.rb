@@ -6,6 +6,7 @@ default['scratchpads']['monit']['varnish']['id_type'] = 'pidfile'
 default['scratchpads']['monit']['varnish']['start'] = 'systemctl restart varnish'
 default['scratchpads']['monit']['varnish']['stop'] = 'systemctl stop varnish'
 default['scratchpads']['monit']['varnish']['group'] = 'web'
+default['scratchpads']['monit']['varnish']['role'] = node['scratchpads']['control']['role']
 default['scratchpads']['monit']['varnish']['tests'] = [
   {
     'condition' => 'cpu > 60% for 20 cycles',
@@ -40,6 +41,26 @@ default['scratchpads']['monit']['varnish']['tests'] = [
   #   'action' => 'alert'
   # }
 ]
+# Sandbox
+default['scratchpads']['monit']['apache2']['cookbook'] = 'monit-ng'
+default['scratchpads']['monit']['apache2']['check_type'] = 'host'
+default['scratchpads']['monit']['apache2']['check_id'] = '/var/run/apache2/apache2.pid'
+default['scratchpads']['monit']['apache2']['id_type'] = 'pidfile'
+default['scratchpads']['monit']['apache2']['start'] = 'systemctl restart apache2'
+default['scratchpads']['monit']['apache2']['stop'] = 'systemctl stop apache2'
+default['scratchpads']['monit']['apache2']['group'] = 'web'
+default['scratchpads']['monit']['varnish']['role'] = node['scratchpads']['control']['role']
+default['scratchpads']['monit']['apache2']['tests'] = [
+  {
+    'condition' => 'failed (url http://sandbox.scratchpads.eu/
+    and content != \'Sandbox is rebuilding\')
+    for 20 cycles',
+    'action' => 'alert'
+  }
+]
+check host Sandbox with address sandbox.scratchpads.eu
+   group web
+   depends on apache2
 # Apache
 default['scratchpads']['monit']['apache2']['cookbook'] = 'monit-ng'
 default['scratchpads']['monit']['apache2']['check_type'] = 'process'
@@ -48,6 +69,7 @@ default['scratchpads']['monit']['apache2']['id_type'] = 'pidfile'
 default['scratchpads']['monit']['apache2']['start'] = 'systemctl restart apache2'
 default['scratchpads']['monit']['apache2']['stop'] = 'systemctl stop apache2'
 default['scratchpads']['monit']['apache2']['group'] = 'web'
+default['scratchpads']['monit']['varnish']['role'] = node['scratchpads']['apache']['role']
 default['scratchpads']['monit']['apache2']['tests'] = [
   {
     'condition' => 'cpu > 60% for 20 cycles',

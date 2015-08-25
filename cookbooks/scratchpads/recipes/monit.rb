@@ -28,31 +28,17 @@ node.default['monit']['config']['listen'] = node['fqdn']
 include_recipe 'monit-ng::install'
 include_recipe 'monit-ng::configure'
 
-# Add monit checks for each role.
-# Add check for varnish to control role
-monit_check 'varnish' do
-  cookbook node['scratchpads']['monit']['varnish']['cookbook']
-  check_type node['scratchpads']['monit']['varnish']['check_type']
-  check_id node['scratchpads']['monit']['varnish']['check_id']
-  id_type node['scratchpads']['monit']['varnish']['id_type']
-  start node['scratchpads']['monit']['varnish']['start']
-  stop node['scratchpads']['monit']['varnish']['stop']
-  group node['scratchpads']['monit']['varnish']['group']
-  tests node['scratchpads']['monit']['varnish']['tests']
-  only_if {node['roles'].index(node['scratchpads']['control']['role'])}
+# Add monit checks
+node['scratchpads']['monit']['conf'].each do|index,monit_conf|
+  monit_check index do
+    cookbook monit_conf['cookbook']
+    check_type monit_conf['check_type']
+    check_id monit_conf['check_id']
+    id_type monit_conf['id_type']
+    start monit_conf['start']
+    stop monit_conf['stop']
+    group monit_conf['group']
+    tests monit_conf['tests']
+    only_if {node['roles'].index(monit_conf['role'])}
+  end
 end
-# Add check for apache to control and app role.
-monit_check 'apache2' do
-  cookbook node['scratchpads']['monit']['apache2']['cookbook']
-  check_type node['scratchpads']['monit']['apache2']['check_type']
-  check_id node['scratchpads']['monit']['apache2']['check_id']
-  id_type node['scratchpads']['monit']['apache2']['id_type']
-  start node['scratchpads']['monit']['apache2']['start']
-  stop node['scratchpads']['monit']['apache2']['stop']
-  group node['scratchpads']['monit']['apache2']['group']
-  tests node['scratchpads']['monit']['apache2']['tests']
-  only_if {node['roles'].index(node['scratchpads']['control']['role']) || node['roles'].index(node['scratchpads']['app']['role'])}
-end
-# elsif node['roles'].index(node['scratchpads']['data']['role']) then
-# elsif node['roles'].index(node['scratchpads']['app']['role']) then
-# elsif node['roles'].index(node['scratchpads']['search']['role']) then

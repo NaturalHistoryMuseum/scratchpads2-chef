@@ -72,6 +72,62 @@ default['scratchpads']['monit']['conf']['sandbox']['tests'] = [{
     and content != \'Sandbox is rebuilding\')
     for 20 cycles',
     'action' => 'alert'}]
+# MySQL/Percona
+default['scratchpads']['monit']['conf']['mysql']['cookbook'] = 'monit-ng'
+default['scratchpads']['monit']['conf']['mysql']['check_type'] = 'process'
+default['scratchpads']['monit']['conf']['mysql']['check_id'] = '/var/run/mysqld/mysqld.pid'
+default['scratchpads']['monit']['conf']['mysql']['id_type'] = 'pidfile'
+default['scratchpads']['monit']['conf']['mysql']['start'] = '/bin/systemctl restart mysql'
+default['scratchpads']['monit']['conf']['mysql']['stop'] = '/bin/systemctl stop mysql'
+default['scratchpads']['monit']['conf']['mysql']['group'] = 'data'
+default['scratchpads']['monit']['conf']['mysql']['role'] = node['scratchpads']['percona']['role']
+default['scratchpads']['monit']['conf']['mysql']['tests'] = [{
+    'condition' => 'cpu > 60% for 20 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => 'cpu > 80% for 5 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => 'totalmem > 16.0 GB for 5 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => 'children > 250',
+    'action' => 'alert'
+  },{
+    'condition' => 'loadavg(5min) greater than 10 for 8 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => "failed host #{node['fqdn']} port 3306 protocol mysql for 3 cycles",
+    'action' => 'alert'
+  }]
+# Memcached
+default['scratchpads']['monit']['conf']['memcached']['cookbook'] = 'monit-ng'
+default['scratchpads']['monit']['conf']['memcached']['check_type'] = 'process'
+default['scratchpads']['monit']['conf']['memcached']['check_id'] = '/var/run/memcached.pid'
+default['scratchpads']['monit']['conf']['memcached']['id_type'] = 'pidfile'
+default['scratchpads']['monit']['conf']['memcached']['start'] = '/bin/systemctl restart memcached'
+default['scratchpads']['monit']['conf']['memcached']['stop'] = '/bin/systemctl stop memcached'
+default['scratchpads']['monit']['conf']['memcached']['group'] = 'data'
+default['scratchpads']['monit']['conf']['memcached']['role'] = node['scratchpads']['data']['role']
+default['scratchpads']['monit']['conf']['memcached']['tests'] = [{
+    'condition' => 'cpu > 60% for 20 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => 'cpu > 80% for 5 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => 'totalmem > 6.0 GB for 5 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => 'children > 250',
+    'action' => 'alert'
+  },{
+    'condition' => 'loadavg(5min) greater than 10 for 8 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => "failed host #{node['fqdn']} port 11211 for 3 cycles",
+    'action' => 'alert'
+  }]
 # Apache
 default['scratchpads']['monit']['conf']['apache2']['cookbook'] = 'monit-ng'
 default['scratchpads']['monit']['conf']['apache2']['check_type'] = 'process'

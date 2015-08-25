@@ -19,6 +19,3 @@ template "#{node['scratchpads']['aegir']['home_folder']}/.ssh/authorized_keys" d
     :lines => lines
   })
 end
-
-# Add the app IPTables rules
-iptables_rule 'iptables_app'

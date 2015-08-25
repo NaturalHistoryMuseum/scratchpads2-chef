@@ -195,5 +195,6 @@ node['scratchpads']['webserver']['php']['pear']['pecl_modules'].each do|module_n
     group 'root'
     user 'root'
     #action :nothing
+    not_if { ::File.exists?("/etc/php5/apache2/conf.d/20-#{module_name}.ini")}
   end
 end

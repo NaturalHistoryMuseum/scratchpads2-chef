@@ -3,8 +3,8 @@ default['scratchpads']['monit']['conf']['varnish']['cookbook'] = 'monit-ng'
 default['scratchpads']['monit']['conf']['varnish']['check_type'] = 'process'
 default['scratchpads']['monit']['conf']['varnish']['check_id'] = '/var/run/varnishd.pid'
 default['scratchpads']['monit']['conf']['varnish']['id_type'] = 'pidfile'
-default['scratchpads']['monit']['conf']['varnish']['start'] = 'systemctl restart varnish'
-default['scratchpads']['monit']['conf']['varnish']['stop'] = 'systemctl stop varnish'
+default['scratchpads']['monit']['conf']['varnish']['start'] = '/bin/systemctl restart varnish'
+default['scratchpads']['monit']['conf']['varnish']['stop'] = '/bin/systemctl stop varnish'
 default['scratchpads']['monit']['conf']['varnish']['group'] = 'web'
 default['scratchpads']['monit']['conf']['varnish']['role'] = node['scratchpads']['control']['role']
 default['scratchpads']['monit']['conf']['varnish']['tests'] = [{
@@ -39,8 +39,8 @@ default['scratchpads']['monit']['conf']['postfix']['cookbook'] = 'monit-ng'
 default['scratchpads']['monit']['conf']['postfix']['check_type'] = 'process'
 default['scratchpads']['monit']['conf']['postfix']['check_id'] = '/var/spool/postfix/pid/master.pid'
 default['scratchpads']['monit']['conf']['postfix']['id_type'] = 'pidfile'
-default['scratchpads']['monit']['conf']['postfix']['start'] = 'systemctl restart postfix'
-default['scratchpads']['monit']['conf']['postfix']['stop'] = 'systemctl stop postfix'
+default['scratchpads']['monit']['conf']['postfix']['start'] = '/bin/systemctl restart postfix'
+default['scratchpads']['monit']['conf']['postfix']['stop'] = '/bin/systemctl stop postfix'
 default['scratchpads']['monit']['conf']['postfix']['group'] = 'mail'
 default['scratchpads']['monit']['conf']['postfix']['role'] = node['scratchpads']['ntp']['role']
 default['scratchpads']['monit']['conf']['postfix']['tests'] = [{
@@ -56,18 +56,17 @@ default['scratchpads']['monit']['conf']['postfix']['tests'] = [{
     'condition' => 'loadavg(5min) greater than 10 for 8 cycles',
     'action' => 'alert'
   },{
-    'condition' => 'failed host quartz.nhm.ac.uk port 25 protocol smtp for 3 cycles',
+    'condition' => "failed host #{node['fqdn']} port 25 protocol smtp for 3 cycles",
     'action' => 'alert'
   }]
 # Sandbox
 default['scratchpads']['monit']['conf']['sandbox']['cookbook'] = 'monit-ng'
 default['scratchpads']['monit']['conf']['sandbox']['check_type'] = 'host'
-default['scratchpads']['monit']['conf']['sandbox']['check_id'] = '/var/run/apache2/apache2.pid'
-default['scratchpads']['monit']['conf']['sandbox']['id_type'] = 'pidfile'
-default['scratchpads']['monit']['conf']['sandbox']['start'] = 'systemctl restart apache2'
-default['scratchpads']['monit']['conf']['sandbox']['stop'] = 'systemctl stop apache2'
+default['scratchpads']['monit']['conf']['sandbox']['check_id'] = 'sandbox.scratchpads.eu'
+default['scratchpads']['monit']['conf']['sandbox']['id_type'] = 'address'
 default['scratchpads']['monit']['conf']['sandbox']['group'] = 'web'
 default['scratchpads']['monit']['conf']['sandbox']['role'] = node['scratchpads']['control']['role']
+default['scratchpads']['monit']['conf']['sandbox']['depends'] = 'apache2'
 default['scratchpads']['monit']['conf']['sandbox']['tests'] = [{
     'condition' => 'failed (url http://sandbox.scratchpads.eu/
     and content != \'Sandbox is rebuilding\')
@@ -78,8 +77,8 @@ default['scratchpads']['monit']['conf']['apache2']['cookbook'] = 'monit-ng'
 default['scratchpads']['monit']['conf']['apache2']['check_type'] = 'process'
 default['scratchpads']['monit']['conf']['apache2']['check_id'] = '/var/run/apache2/apache2.pid'
 default['scratchpads']['monit']['conf']['apache2']['id_type'] = 'pidfile'
-default['scratchpads']['monit']['conf']['apache2']['start'] = 'systemctl restart apache2'
-default['scratchpads']['monit']['conf']['apache2']['stop'] = 'systemctl stop apache2'
+default['scratchpads']['monit']['conf']['apache2']['start'] = '/bin/systemctl restart apache2'
+default['scratchpads']['monit']['conf']['apache2']['stop'] = '/bin/systemctl stop apache2'
 default['scratchpads']['monit']['conf']['apache2']['group'] = 'web'
 default['scratchpads']['monit']['conf']['apache2']['role'] = node['scratchpads']['apache']['role']
 default['scratchpads']['monit']['conf']['apache2']['tests'] = [{
@@ -108,13 +107,11 @@ default['scratchpads']['monit']['conf']['apache2']['tests'] = [{
     'action' => 'alert'
   }]
 ##### SYSTEMS #####
-# sp-control-1.nhm.ac.uk
-default['scratchpads']['monit']['conf']['system']['cookbook'] = 'monit-ng'
-default['scratchpads']['monit']['conf']['system']['check_type'] = 'host'
-default['scratchpads']['monit']['conf']['system']['check_id'] = node['fqdn']
-default['scratchpads']['monit']['conf']['system']['id_type'] = 'system'
-default['scratchpads']['monit']['conf']['system']['role'] = node['scratchpads']['control']['role']
-default['scratchpads']['monit']['conf']['system']['tests'] = [{
+default['scratchpads']['monit']['conf'][node['fqdn']]['cookbook'] = 'monit-ng' # ~FC047
+default['scratchpads']['monit']['conf'][node['fqdn']]['check_type'] = 'system' # ~FC047
+default['scratchpads']['monit']['conf'][node['fqdn']]['check_id'] = node['fqdn'] # ~FC047
+default['scratchpads']['monit']['conf'][node['fqdn']]['role'] = node['scratchpads']['ntp']['role'] # ~FC047
+default['scratchpads']['monit']['conf'][node['fqdn']]['tests'] = [{ # ~FC047
     'condition' => 'loadavg (5min) > 6 for 15 cycles',
     'action' => 'alert'
   },{

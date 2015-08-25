@@ -39,6 +39,7 @@ node['scratchpads']['monit']['conf'].each do|index,monit_conf|
     stop monit_conf['stop']
     group monit_conf['group']
     tests monit_conf['tests']
+    depends monit_conf['depends']
     only_if {node['roles'].index(monit_conf['role'])}
   end
 end

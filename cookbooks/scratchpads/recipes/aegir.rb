@@ -54,20 +54,22 @@ end
 if node['roles'].index(node['scratchpads']['control']['role']) then
   Chef::Log.info('Including scratchpads::aegir-master')
   include_recipe 'scratchpads::aegir-master'
-else
+elsif node['roles'].index(node['scratchpads']['app']['role']) then
   Chef::Log.info('Including scratchpads::aegir-slave')
   include_recipe 'scratchpads::aegir-slave'
 end
-# Link the aegir configuration to the apache sites folder
-link '/etc/apache2/sites-available/aegir.conf' do
-  action :create
-  group 'root'
-  owner 'root'
-  to "#{node['scratchpads']['aegir']['home_folder']}/config/apache.conf"
-  only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/config/apache.conf")}
-end
-# Enable the aegir configuration
-apache_site 'aegir' do
-  enable true
-  only_if {::File.exists?('/etc/apache2/sites-available/aegir.conf')}
+if node['roles'].index(node['scratchpads']['control']['role']) || node['roles'].index(node['scratchpads']['app']['role']) then
+  # Link the aegir configuration to the apache sites folder
+  link '/etc/apache2/sites-available/aegir.conf' do
+    action :create
+    group 'root'
+    owner 'root'
+    to "#{node['scratchpads']['aegir']['home_folder']}/config/apache.conf"
+    only_if {::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/config/apache.conf")}
+  end
+  # Enable the aegir configuration
+  apache_site 'aegir' do
+    enable true
+    only_if {::File.exists?('/etc/apache2/sites-available/aegir.conf')}
+  end
 end

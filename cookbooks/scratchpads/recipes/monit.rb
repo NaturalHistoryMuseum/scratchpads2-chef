@@ -26,7 +26,7 @@ node.default['monit']['config']['listen'] = node['fqdn']
 
 # Install 'basic' monit on each server
 include_recipe 'monit-ng::install'
-include_recipe 'monit-ng::config'
+include_recipe 'monit-ng::configure'
 
 # Add monit checks for each role.
 # Add check for varnish to control role

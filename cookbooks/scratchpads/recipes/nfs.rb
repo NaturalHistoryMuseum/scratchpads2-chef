@@ -34,7 +34,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   # Restart nfs-server components
   execute 'restart the NFS server' do
     action :nothing
-    command '/bin/systemctl restart nfs-kernel-server'
+    command '/bin/systemctl reload nfs-kernel-server'
     group 'root'
     user 'root'
   end

@@ -60,15 +60,15 @@ default['scratchpads']['monit']['conf']['postfix']['tests'] = [{
     'action' => 'alert'
   }]
 # Sandbox
-default['scratchpads']['monit']['conf']['apache2']['cookbook'] = 'monit-ng'
-default['scratchpads']['monit']['conf']['apache2']['check_type'] = 'host'
-default['scratchpads']['monit']['conf']['apache2']['check_id'] = '/var/run/apache2/apache2.pid'
-default['scratchpads']['monit']['conf']['apache2']['id_type'] = 'pidfile'
-default['scratchpads']['monit']['conf']['apache2']['start'] = 'systemctl restart apache2'
-default['scratchpads']['monit']['conf']['apache2']['stop'] = 'systemctl stop apache2'
-default['scratchpads']['monit']['conf']['apache2']['group'] = 'web'
-default['scratchpads']['monit']['conf']['varnish']['role'] = node['scratchpads']['control']['role']
-default['scratchpads']['monit']['conf']['apache2']['tests'] = [{
+default['scratchpads']['monit']['conf']['sandbox']['cookbook'] = 'monit-ng'
+default['scratchpads']['monit']['conf']['sandbox']['check_type'] = 'host'
+default['scratchpads']['monit']['conf']['sandbox']['check_id'] = '/var/run/apache2/apache2.pid'
+default['scratchpads']['monit']['conf']['sandbox']['id_type'] = 'pidfile'
+default['scratchpads']['monit']['conf']['sandbox']['start'] = 'systemctl restart apache2'
+default['scratchpads']['monit']['conf']['sandbox']['stop'] = 'systemctl stop apache2'
+default['scratchpads']['monit']['conf']['sandbox']['group'] = 'web'
+default['scratchpads']['monit']['conf']['sandbox']['role'] = node['scratchpads']['control']['role']
+default['scratchpads']['monit']['conf']['sandbox']['tests'] = [{
     'condition' => 'failed (url http://sandbox.scratchpads.eu/
     and content != \'Sandbox is rebuilding\')
     for 20 cycles',
@@ -81,7 +81,7 @@ default['scratchpads']['monit']['conf']['apache2']['id_type'] = 'pidfile'
 default['scratchpads']['monit']['conf']['apache2']['start'] = 'systemctl restart apache2'
 default['scratchpads']['monit']['conf']['apache2']['stop'] = 'systemctl stop apache2'
 default['scratchpads']['monit']['conf']['apache2']['group'] = 'web'
-default['scratchpads']['monit']['conf']['varnish']['role'] = node['scratchpads']['apache']['role']
+default['scratchpads']['monit']['conf']['apache2']['role'] = node['scratchpads']['apache']['role']
 default['scratchpads']['monit']['conf']['apache2']['tests'] = [{
     'condition' => 'cpu > 60% for 20 cycles',
     'action' => 'alert'

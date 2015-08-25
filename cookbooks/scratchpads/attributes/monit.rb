@@ -107,3 +107,80 @@ default['scratchpads']['monit']['conf']['apache2']['tests'] = [{
       for 3 cycles',
     'action' => 'alert'
   }]
+##### SYSTEMS #####
+# sp-control-1.nhm.ac.uk
+default['scratchpads']['monit']['conf']['system']['cookbook'] = 'monit-ng'
+default['scratchpads']['monit']['conf']['system']['check_type'] = 'host'
+default['scratchpads']['monit']['conf']['system']['check_id'] = node['fqdn']
+default['scratchpads']['monit']['conf']['system']['id_type'] = 'system'
+default['scratchpads']['monit']['conf']['system']['role'] = node['scratchpads']['control']['role']
+default['scratchpads']['monit']['conf']['system']['tests'] = [{
+    'condition' => 'loadavg (5min) > 6 for 15 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => 'memory usage > 90% for 15 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => 'swap usage > 25%',
+    'action' => 'alert'
+  },{
+    'condition' => 'cpu usage (user) > 70% for 15 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => 'cpu usage (system) > 30% for 15 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => 'cpu usage (wait) > 20% for 15 cycles',
+    'action' => 'alert'
+  }]
+##### File systems #####
+# sp-control-1 /var
+default['scratchpads']['monit']['conf']['var-partition']['cookbook'] = 'monit-ng'
+default['scratchpads']['monit']['conf']['var-partition']['check_type'] = 'filesystem'
+default['scratchpads']['monit']['conf']['var-partition']['check_id'] = '/var'
+default['scratchpads']['monit']['conf']['var-partition']['id_type'] = 'path'
+default['scratchpads']['monit']['conf']['var-partition']['role'] = node['scratchpads']['control']['role']
+default['scratchpads']['monit']['conf']['var-partition']['tests'] = [{
+    'condition' => 'space > 800 GB for 10 cycles',
+    'action' => 'alert'
+  }]
+# Servers with 50GB root directories.
+default['scratchpads']['monit']['conf']['50gb-root-partition']['cookbook'] = 'monit-ng'
+default['scratchpads']['monit']['conf']['50gb-root-partition']['check_type'] = 'filesystem'
+default['scratchpads']['monit']['conf']['50gb-root-partition']['check_id'] = '/'
+default['scratchpads']['monit']['conf']['50gb-root-partition']['id_type'] = 'path'
+default['scratchpads']['monit']['conf']['50gb-root-partition']['role'] = node['scratchpads']['apache']['role']
+default['scratchpads']['monit']['conf']['50gb-root-partition']['tests'] = [{
+    'condition' => 'space > 30 GB for 10 cycles',
+    'action' => 'alert'
+  }]
+# Servers with 100GB root directories.
+default['scratchpads']['monit']['conf']['100gb-root-partition-1']['cookbook'] = 'monit-ng'
+default['scratchpads']['monit']['conf']['100gb-root-partition-1']['check_type'] = 'filesystem'
+default['scratchpads']['monit']['conf']['100gb-root-partition-1']['check_id'] = '/'
+default['scratchpads']['monit']['conf']['100gb-root-partition-1']['id_type'] = 'path'
+default['scratchpads']['monit']['conf']['100gb-root-partition-1']['role'] = node['scratchpads']['data']['role']
+default['scratchpads']['monit']['conf']['100gb-root-partition-1']['tests'] = [{
+    'condition' => 'space > 80 GB for 10 cycles',
+    'action' => 'alert'
+  }]
+# Servers with 100GB root directories.
+default['scratchpads']['monit']['conf']['100gb-root-partition-2']['cookbook'] = 'monit-ng'
+default['scratchpads']['monit']['conf']['100gb-root-partition-2']['check_type'] = 'filesystem'
+default['scratchpads']['monit']['conf']['100gb-root-partition-2']['check_id'] = '/'
+default['scratchpads']['monit']['conf']['100gb-root-partition-2']['id_type'] = 'path'
+default['scratchpads']['monit']['conf']['100gb-root-partition-2']['role'] = node['scratchpads']['search']['role']
+default['scratchpads']['monit']['conf']['100gb-root-partition-2']['tests'] = [{
+    'condition' => 'space > 80 GB for 10 cycles',
+    'action' => 'alert'
+  }]
+# Boot partition (all servers)
+default['scratchpads']['monit']['conf']['boot-partition']['cookbook'] = 'monit-ng'
+default['scratchpads']['monit']['conf']['boot-partition']['check_type'] = 'filesystem'
+default['scratchpads']['monit']['conf']['boot-partition']['check_id'] = '/boot'
+default['scratchpads']['monit']['conf']['boot-partition']['id_type'] = 'path'
+default['scratchpads']['monit']['conf']['boot-partition']['role'] = node['scratchpads']['ntp']['role']
+default['scratchpads']['monit']['conf']['boot-partition']['tests'] = [{
+    'condition' => 'space > 500 MB for 10 cycles',
+    'action' => 'alert'
+  }]

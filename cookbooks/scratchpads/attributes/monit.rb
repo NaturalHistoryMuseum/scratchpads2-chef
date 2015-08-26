@@ -59,6 +59,22 @@ default['scratchpads']['monit']['conf']['postfix']['tests'] = [{
     'condition' => "failed host 127.0.0.1 port 25 protocol smtp for 3 cycles",
     'action' => 'alert'
   }]
+# SSH
+default['scratchpads']['monit']['conf']['ssh']['cookbook'] = 'monit-ng'
+default['scratchpads']['monit']['conf']['ssh']['check_type'] = 'process'
+default['scratchpads']['monit']['conf']['ssh']['check_id'] = '/var/run/sshd.pid'
+default['scratchpads']['monit']['conf']['ssh']['id_type'] = 'pidfile'
+default['scratchpads']['monit']['conf']['ssh']['start'] = '/bin/systemctl restart ssh'
+default['scratchpads']['monit']['conf']['ssh']['stop'] = '/bin/systemctl stop ssh'
+default['scratchpads']['monit']['conf']['ssh']['group'] = 'admin'
+default['scratchpads']['monit']['conf']['ssh']['roles'] = [node['scratchpads']['ntp']['role']]
+default['scratchpads']['monit']['conf']['ssh']['tests'] = [{
+    'condition' => "failed host #{node['fqdn']} port 22 protocol ssh for 3 cycles",
+    'action' => 'restart'
+  },{
+    'condition' => "3 restarts within 5 cycles",
+    'action' => 'timeout'
+  }]
 # Sandbox
 default['scratchpads']['monit']['conf']['sandbox']['cookbook'] = 'monit-ng'
 default['scratchpads']['monit']['conf']['sandbox']['check_type'] = 'host'

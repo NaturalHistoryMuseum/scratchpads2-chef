@@ -179,15 +179,15 @@ default['scratchpads']['monit']['conf']['apache2']['tests'] = [{
     'action' => 'alert'
   }]
 # solr-undertow
-default['scratchpads']['monit']['conf']['apache2']['cookbook'] = 'monit-ng'
-default['scratchpads']['monit']['conf']['apache2']['check_type'] = 'process'
-default['scratchpads']['monit']['conf']['apache2']['check_id'] = '/var/run/apache2/apache2.pid'
-default['scratchpads']['monit']['conf']['apache2']['id_type'] = 'pidfile'
-default['scratchpads']['monit']['conf']['apache2']['start'] = '/bin/systemctl restart apache2'
-default['scratchpads']['monit']['conf']['apache2']['stop'] = '/bin/systemctl stop apache2'
-default['scratchpads']['monit']['conf']['apache2']['group'] = 'web'
-default['scratchpads']['monit']['conf']['apache2']['roles'] = [node['scratchpads']['apache']['role']]
-default['scratchpads']['monit']['conf']['apache2']['tests'] = [{
+default['scratchpads']['monit']['conf']['solr-undertow']['cookbook'] = 'monit-ng'
+default['scratchpads']['monit']['conf']['solr-undertow']['check_type'] = 'process'
+default['scratchpads']['monit']['conf']['solr-undertow']['check_id'] = '/tmp/solr-undertow.pid'
+default['scratchpads']['monit']['conf']['solr-undertow']['id_type'] = 'pidfile'
+default['scratchpads']['monit']['conf']['solr-undertow']['start'] = '/bin/systemctl restart solr-undertow'
+default['scratchpads']['monit']['conf']['solr-undertow']['stop'] = '/bin/systemctl stop solr-undertow'
+default['scratchpads']['monit']['conf']['solr-undertow']['group'] = 'web'
+default['scratchpads']['monit']['conf']['solr-undertow']['roles'] = [node['scratchpads']['search']['role']]
+default['scratchpads']['monit']['conf']['solr-undertow']['tests'] = [{
     'condition' => 'cpu > 60% for 20 cycles',
     'action' => 'alert'
   },{
@@ -206,10 +206,9 @@ default['scratchpads']['monit']['conf']['apache2']['tests'] = [{
     'condition' => 'loadavg(5min) greater than 10 for 8 cycles',
     'action' => 'alert'
   },{
-    'condition' => 'failed host 127.0.0.1 port 80
-      send "GET / HTTP/1.1\r\nHost: 127.0.0.1\r\n\r\n"
-      expect "HTTP/[0-9\.]{3} 200 .*\r\n" 
-      for 3 cycles',
+    'condition' => "failed host #{node['fqdn']} port 8983 protocol http 
+      and request '/solr/'
+      for 5 cycles",
     'action' => 'alert'
   }]
 ##### SYSTEMS #####

@@ -103,7 +103,7 @@ default['scratchpads']['monit']['conf']['mysql']['tests'] = [{
 # Memcached
 default['scratchpads']['monit']['conf']['memcached']['cookbook'] = 'monit-ng'
 default['scratchpads']['monit']['conf']['memcached']['check_type'] = 'process'
-default['scratchpads']['monit']['conf']['memcached']['check_id'] = '/var/run/memcached.pid'
+default['scratchpads']['monit']['conf']['memcached']['check_id'] = '/tmp/memcached.pid'
 default['scratchpads']['monit']['conf']['memcached']['id_type'] = 'pidfile'
 default['scratchpads']['monit']['conf']['memcached']['start'] = '/bin/systemctl restart memcached'
 default['scratchpads']['monit']['conf']['memcached']['stop'] = '/bin/systemctl stop memcached'

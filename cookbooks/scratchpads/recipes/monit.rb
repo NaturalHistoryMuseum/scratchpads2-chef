@@ -30,16 +30,18 @@ include_recipe 'monit-ng::configure'
 
 # Add monit checks
 node['scratchpads']['monit']['conf'].each do|index,monit_conf|
-  monit_check index do
-    cookbook monit_conf['cookbook']
-    check_type monit_conf['check_type']
-    check_id monit_conf['check_id']
-    id_type monit_conf['id_type']
-    start monit_conf['start']
-    stop monit_conf['stop']
-    group monit_conf['group']
-    tests monit_conf['tests']
-    depends monit_conf['depends']
-    only_if {node['roles'].index(monit_conf['role'])}
+  monit_conf['roles'].each do|role|
+    monit_check index do # ~FC022
+      cookbook monit_conf['cookbook']
+      check_type monit_conf['check_type']
+      check_id monit_conf['check_id']
+      id_type monit_conf['id_type']
+      start monit_conf['start']
+      stop monit_conf['stop']
+      group monit_conf['group']
+      tests monit_conf['tests']
+      depends monit_conf['depends']
+      only_if {node['roles'].index(role)}
+    end
   end
 end

@@ -66,7 +66,7 @@ template node['scratchpads']['resolv.conf']['path'] do
 end
 
 # Install various packages that are useful on all machines.
-package ['gkrellmd','htop','iotop','rsync','unzip','dnsmasq']
+package ['gkrellmd','htop','iotop','rsync','unzip','iptables-persistent']
 
 # Add a template for the gkrellmd service
 template node['scratchpads']['gkrellmd']['path'] do

@@ -1,4 +1,5 @@
 #!/bin/bash
 export SOLR_UNDERTOW_OPTS="<%= node['scratchpads']['solr-undertow']['options'] %>"
 cd <%= node['scratchpads']['solr-undertow']['application_folder'] %>
-./bin/solr-undertow <%= node['scratchpads']['solr-undertow']['templates']['conf_file']['path'] %>
+./bin/solr-undertow <%= node['scratchpads']['solr-undertow']['templates']['conf_file']['path'] %> &
+echo $! > /tmp/solr-undertow.pid

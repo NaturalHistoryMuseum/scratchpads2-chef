@@ -2,7 +2,7 @@
 Description=Solr-Undertow
 
 [Service]
-Type=simple
+Type=forking
 Restart=always
 ExecStart=<%= node['scratchpads']['solr-undertow']['templates']['bash_script']['path'] %>
 User=<%= node['scratchpads']['solr-undertow']['user'] %>

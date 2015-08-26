@@ -19,7 +19,10 @@ default['scratchpads']['control']['aegir_url'] = 'get.scratchpads.eu'
 default['scratchpads']['domain'] = 'nhm.ac.uk'
 default['scratchpads']['nameservers'] = ['157.140.15.233', '157.140.15.86']
 
-# Roles 
+# Roles
+# Note, ensure you do not use an attribute named 'roles' which contains an array
+# of these role names. It will totally screw with all searches on the chef-server,
+# and will therefore ruin the whole server configuration.
 default['scratchpads']['control']['role'] = 'scratchpads-role-control'
 default['scratchpads']['app']['role'] = 'scratchpads-role-app'
 default['scratchpads']['data']['role'] = 'scratchpads-role-data'

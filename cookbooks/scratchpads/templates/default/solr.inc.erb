@@ -2,6 +2,6 @@
 global $conf;
 $conf['scratchpads_solr_urls'] = array(
 <% node['scratchpads']['varnish']['search']['domains'].each do |domain| -%>
-  'http://<%= domain %>/solr/scratchpads2'
+  'http://<%= domain %>/solr/scratchpads2',
 <% end -%>
 );

@@ -42,7 +42,7 @@ default['scratchpads']['monit']['conf']['postfix']['id_type'] = 'pidfile'
 default['scratchpads']['monit']['conf']['postfix']['start'] = '/bin/systemctl restart postfix'
 default['scratchpads']['monit']['conf']['postfix']['stop'] = '/bin/systemctl stop postfix'
 default['scratchpads']['monit']['conf']['postfix']['group'] = 'mail'
-default['scratchpads']['monit']['conf']['postfix']['role'] = node['scratchpads']['ntp']['role']
+default['scratchpads']['monit']['conf']['postfix']['role'] = node['scratchpads']['control']['role']
 default['scratchpads']['monit']['conf']['postfix']['tests'] = [{
     'condition' => 'cpu > 60% for 20 cycles',
     'action' => 'alert'
@@ -56,7 +56,7 @@ default['scratchpads']['monit']['conf']['postfix']['tests'] = [{
     'condition' => 'loadavg(5min) greater than 10 for 8 cycles',
     'action' => 'alert'
   },{
-    'condition' => "failed host #{node['fqdn']} port 25 protocol smtp for 3 cycles",
+    'condition' => "failed host 127.0.0.1 port 25 protocol smtp for 3 cycles",
     'action' => 'alert'
   }]
 # Sandbox
@@ -129,6 +129,40 @@ default['scratchpads']['monit']['conf']['memcached']['tests'] = [{
     'action' => 'alert'
   }]
 # Apache
+default['scratchpads']['monit']['conf']['apache2']['cookbook'] = 'monit-ng'
+default['scratchpads']['monit']['conf']['apache2']['check_type'] = 'process'
+default['scratchpads']['monit']['conf']['apache2']['check_id'] = '/var/run/apache2/apache2.pid'
+default['scratchpads']['monit']['conf']['apache2']['id_type'] = 'pidfile'
+default['scratchpads']['monit']['conf']['apache2']['start'] = '/bin/systemctl restart apache2'
+default['scratchpads']['monit']['conf']['apache2']['stop'] = '/bin/systemctl stop apache2'
+default['scratchpads']['monit']['conf']['apache2']['group'] = 'web'
+default['scratchpads']['monit']['conf']['apache2']['role'] = node['scratchpads']['apache']['role']
+default['scratchpads']['monit']['conf']['apache2']['tests'] = [{
+    'condition' => 'cpu > 60% for 20 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => 'cpu > 80% for 5 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => 'totalmem > 9.0 GB for 5 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => 'totalmem > 10.0 GB',
+    'action' => 'alert'
+  },{
+    'condition' => 'children > 250',
+    'action' => 'alert'
+  },{
+    'condition' => 'loadavg(5min) greater than 10 for 8 cycles',
+    'action' => 'alert'
+  },{
+    'condition' => 'failed host 127.0.0.1 port 80
+      send "GET / HTTP/1.1\r\nHost: 127.0.0.1\r\n\r\n"
+      expect "HTTP/[0-9\.]{3} 200 .*\r\n" 
+      for 3 cycles',
+    'action' => 'alert'
+  }]
+# solr-undertow
 default['scratchpads']['monit']['conf']['apache2']['cookbook'] = 'monit-ng'
 default['scratchpads']['monit']['conf']['apache2']['check_type'] = 'process'
 default['scratchpads']['monit']['conf']['apache2']['check_id'] = '/var/run/apache2/apache2.pid'

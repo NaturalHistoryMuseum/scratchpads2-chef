@@ -30,7 +30,7 @@ include_recipe 'monit-ng::configure'
 
 # Add monit checks
 node['scratchpads']['monit']['conf'].each do|index,monit_conf|
-  monit_conf['roles'].each do|role|
+  monit_conf['rls'].each do|role|
     monit_check index do # ~FC022
       cookbook monit_conf['cookbook']
       check_type monit_conf['check_type']

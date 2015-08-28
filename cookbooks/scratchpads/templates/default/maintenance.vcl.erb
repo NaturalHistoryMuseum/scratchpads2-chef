@@ -1,0 +1,22 @@
+backend default {
+  .host = "127.0.0.1";
+  .port = "80";
+}
+
+sub vcl_recv {
+  error 503;
+}
+
+sub vcl_error {
+  set obj.http.Content-Type = "text/html; charset=utf-8";
+  # you can put absolutely what you want
+  synthetic {"<html>
+<head>
+<title>Scratchpads maintenance</title>
+</head>
+<body>
+<h1>The Scratchpads are currently undergoing maintenance, please come back later.</h1>
+</body>
+</html>"};
+  return (deliver);
+}

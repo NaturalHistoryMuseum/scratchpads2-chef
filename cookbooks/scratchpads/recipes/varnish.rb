@@ -30,6 +30,22 @@ template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
     :sp_search_slave_servers => search_slave_hosts
   })
 end
+# Add the maintenance varnish configuration.
+template "#{node['varnish']['dir']}/maintenance.vcl" do
+  source 'maintenance.vcl.erb'
+  cookbook 'scratchpads'
+  owner 'root'
+  group 'root'
+  mode 0644
+end
+# Add the script which turns maintenance mode on. To turn maintenance mode off Varnish must simply be restarted.
+template '/usr/local/sbin/varnish-mainenance' do
+  source 'varnish-mainenance.erb'
+  cookbook 'scratchpads'
+  owner 'root'
+  group 'root'
+  mode 0700
+end
 execute 'restart_systemctl_daemon' do
   command 'systemctl daemon-reload'
   action :nothing

@@ -1,0 +1,3 @@
+#!/bin/bash
+varnishadm -T 127.0.0.1:<%= node['varnish']['admin_listen_port'] %> -S <%= node['varnish']['secret_file'] %> "vcl.load maintenance /etc/varnish/maintenance.vcl"
+varnishadm -T 127.0.0.1:<%= node['varnish']['admin_listen_port'] %> -S <%= node['varnish']['secret_file'] %> "vcl.use maintenance"

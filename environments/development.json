@@ -1,5 +1,6 @@
 {
   "name": "development",
+  "description": "Development environment for use by all.",
   "default_attributes": {
     "scratchpads": {
       "nfs": {

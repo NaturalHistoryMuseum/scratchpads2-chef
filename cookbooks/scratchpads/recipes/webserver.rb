@@ -47,7 +47,7 @@ end
 if Chef::Config[:solo]
   data_host = {'fqdn' => 'sp-data-1'}
 else
-  data_hosts = search(:node, "roles:#{node['scratchpads']['data']['role']}")
+  data_hosts = search(:node, "roles:#{node['scratchpads']['data']['role']} AND chef_environment:#{node.chef_environment}")
   data_host = data_hosts.first
 end
 if(data_host)

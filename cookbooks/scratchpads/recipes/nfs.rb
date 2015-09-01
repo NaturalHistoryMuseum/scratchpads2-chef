@@ -11,7 +11,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   # Add any hosts that you'd like to use for development work here.
   client_hosts = []
   unless Chef::Config[:solo]
-    client_hosts_search = search(:node, "roles:#{node['scratchpads']['app']['role']} OR roles:#{node['scratchpads']['data']['role']}")
+    client_hosts_search = search(:node, "(roles:#{node['scratchpads']['app']['role']} OR roles:#{node['scratchpads']['data']['role']}) AND chef_environment:#{node.chef_environment}")
     if client_hosts_search.length > 0
       client_hosts = node['scratchpads']['nfs']['default_hosts'].dup
       client_hosts_search.each do|client_host|
@@ -58,7 +58,7 @@ else
   if Chef::Config[:solo]
     control_host = {'fqdn' => 'sp-control-1'}
   else
-    control_hosts = search(:node, "roles:#{node['scratchpads']['control']['role']}")
+    control_hosts = search(:node, "roles:#{node['scratchpads']['control']['role']} AND chef_environment:#{node.chef_environment}")
     control_host = control_hosts.first
   end
   node['scratchpads']['nfs']['exports'].each do|mount_dir,mount_to|

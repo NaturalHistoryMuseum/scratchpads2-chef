@@ -16,7 +16,7 @@ end
 if Chef::Config[:solo]
   control_hosts_search = []
 else
-  control_hosts_search = search(:node, "roles:#{node['scratchpads']['control']['role']}")
+  control_hosts_search = search(:node, "roles:#{node['scratchpads']['control']['role']} AND chef_environment:#{node.chef_environment}")
 end
 control_hosts_search.each do|control_host|
   node.default['monit']['config']['mmonit_url'] = "http://monit:monit@#{control_host['fqdn']}:8080/collector"

@@ -272,7 +272,7 @@ end
 # to use the memcache servers on the roles:data servers.
 data_hosts = []
 unless Chef::Config[:solo]
-  data_hosts_search = search(:node, "roles:#{node['scratchpads']['data']['role']}")
+  data_hosts_search = search(:node, "roles:#{node['scratchpads']['data']['role']} AND chef_environment:#{node.chef_environment}")
   data_hosts_search.each do|data_host|
     data_hosts << data_host['fqdn']
   end
@@ -289,7 +289,7 @@ template "#{node['scratchpads']['aegir']['home_folder']}/config/includes/memcach
 end
 # Tweak the search domains
 unless Chef::Config[:solo]
-  control_hosts = search(:node, "roles:#{node['scratchpads']['control']['role']}")
+  control_hosts = search(:node, "roles:#{node['scratchpads']['control']['role']} AND chef_environment:#{node.chef_environment}")
   if control_hosts.length > 0
     node.default['scratchpads']['varnish']['search']['domains'] = []
     varnish_search_domains = []

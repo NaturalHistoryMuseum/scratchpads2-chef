@@ -39,8 +39,8 @@ template "#{node['varnish']['dir']}/maintenance.vcl" do
   mode 0644
 end
 # Add the script which turns maintenance mode on. To turn maintenance mode off Varnish must simply be restarted.
-template '/usr/local/sbin/varnish-mainenance' do
-  source 'varnish-mainenance.erb'
+template '/usr/local/sbin/varnish-maintenance' do
+  source 'varnish-maintenance.erb'
   cookbook 'scratchpads'
   owner 'root'
   group 'root'

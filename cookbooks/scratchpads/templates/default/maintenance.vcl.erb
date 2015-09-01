@@ -1,22 +1,19 @@
+vcl 4.0;
+
+import std;
+
 backend default {
   .host = "127.0.0.1";
   .port = "80";
 }
 
 sub vcl_recv {
-  error 503;
+  return (synth(503, "Maintenance"));
 }
 
-sub vcl_error {
-  set obj.http.Content-Type = "text/html; charset=utf-8";
-  # you can put absolutely what you want
-  synthetic {"<html>
-<head>
-<title>Scratchpads maintenance</title>
-</head>
-<body>
-<h1>The Scratchpads are currently undergoing maintenance, please come back later.</h1>
-</body>
-</html>"};
+sub vcl_synth {
+  set resp.status = 503;
+  set resp.http.Content-Type = "text/html; charset=utf-8";
+  synthetic(std.fileread("/etc/varnish/maintenance.html"));
   return (deliver);
 }

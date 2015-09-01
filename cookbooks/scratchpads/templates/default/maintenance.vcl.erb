@@ -2,12 +2,33 @@ vcl 4.0;
 
 import std;
 
-backend default {
-  .host = "127.0.0.1";
-  .port = "80";
+backend control {
+  .host = "<%= node['scratchpads']['varnish']['control']['host'] %>";
+  .port = "<%= node['scratchpads']['varnish']['control']['port'] %>";
+  .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
+  .between_bytes_timeout = <%= node['scratchpads']['varnish']['between_bytes_timeout'] %>;
+  .connect_timeout = <%= node['scratchpads']['varnish']['connect_timeout'] %>;
+  .max_connections = <%= node['scratchpads']['varnish']['control']['max_connections'] %>;
+  .probe = {
+    .url = "<%= node['scratchpads']['varnish']['probe']['url'] %>";
+    .timeout = <%= node['scratchpads']['varnish']['probe']['timeout'] %>;
+    .interval = <%= node['scratchpads']['varnish']['probe']['interval'] %>;
+    .window = <%= node['scratchpads']['varnish']['probe']['window'] %>;
+    .threshold = <%= node['scratchpads']['varnish']['probe']['threshold'] %>;
+  }
 }
 
 sub vcl_recv {
+<%
+  domains = []
+  node['scratchpads']['varnish']['control']['domains'].each do|domain|
+    domains << 'req.http.host ~ "^'+domain+'$"'
+  end
+%>
+  if(<%= domains.join(' || ') %>){
+    set req.backend_hint = control;
+    return (pipe);
+  }  
   return (synth(503, "Maintenance"));
 }
 

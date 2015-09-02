@@ -74,7 +74,6 @@ unless(::File.exists?("#{node['scratchpads']['solr-undertow']['application_folde
     command "tar xfz #{node['scratchpads']['solr-undertow']['release_version']}-#{node['scratchpads']['solr-undertow']['solr_version']}.tar.gz --strip-components 1"
     user node['scratchpads']['solr-undertow']['user']
     group node['scratchpads']['solr-undertow']['group']
-    not_if { ::File.exists?("#{node['scratchpads']['solr-undertow']['application_folder']}/bin")}
   end
 end
 

@@ -1,5 +1,5 @@
 # Desktop machines that we will allow to SSH and access privileged ports on each machine
-default['scratchpads']['trusted_ip_addresses'] = ['157.140.126.246/32', '192.168.0.0/16']
+default['scratchpads']['trusted_ip_addresses'] = ['157.140.126.246/32', '192.168.0.0/16', '157.140.121.33/32']
 # The following will be populated during a Chef run.
 default['scratchpads']['all_ip_addresses'] = []
 

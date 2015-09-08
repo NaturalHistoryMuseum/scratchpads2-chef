@@ -7,9 +7,7 @@
 # Tweak the backup directory so that the host backs up to a folder specific for the host
 node.default['percona']['conf']['xtrabackup']['target_dir'] = "/var/aegir/backups-databases/#{node['fqdn']}"
 
-# Manually add the Percona apt repository, as we need to use
-# the wheezy repo, and not the jessie one (which isn't yet
-# complete).
+# Include the percona recipes
 include_recipe 'percona::server'
 include_recipe 'percona::backup'
 

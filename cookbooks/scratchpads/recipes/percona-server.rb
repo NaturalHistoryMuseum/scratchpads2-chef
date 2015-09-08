@@ -4,9 +4,6 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
-# Tweak the backup directory so that the host backs up to a folder specific for the host
-node.default['percona']['conf']['xtrabackup']['target_dir'] = "/var/aegir/backups-databases/#{node['fqdn']}"
-
 # Include the percona recipes
 include_recipe 'percona::server'
 include_recipe 'percona::backup'
@@ -89,6 +86,16 @@ unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['gm3_data_file
     root_pw = passwords.get_encrypted_data 'mysql', 'root'
     command "zcat /var/chef/#{node['scratchpads']['percona']['gm3_data_file']} | mysql -h #{node['scratchpads']['control']['dbserver']} -u #{node['scratchpads']['control']['dbuser']} -p'#{root_pw}' gm3"
   end
+end
+
+# Add the cron stuff
+template "/etc/cron.d/xtrabackup" do
+  source 'xtrabackup-cron.erb'
+  cookbook 'scratchpads'
+  owner 'root'
+  group 'root'
+  mode '0744'
+  action :create
 end
 
 # Create the aegir user

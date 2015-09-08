@@ -21,13 +21,13 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
       node.default['scratchpads']['nfs']['hosts'] = client_hosts
     end
   end
-  node['scratchpads']['nfs']['exports'].each do|mount_dir,mount_to|
+  node['scratchpads']['nfs']['exports'].each do|mount_dir,nfs_mnt|
     nfs_export mount_dir do
       network client_hosts
-      writeable true
-      sync true
-      options ['root_squash','no_subtree_check']
-      unique true
+      writeable nfs_mnt['writable']
+      sync nfs_mnt['sync']
+      options nfs_mnt['options']
+      unique nfs_mnt['unique']
       notifies :run, 'execute[restart the NFS server]', :delayed
     end
   end

@@ -1,11 +1,29 @@
 # List of hosts to always allow to mount
 default['scratchpads']['nfs']['default_hosts'] = []
 # NFS
-default['scratchpads']['nfs']['exports'] = {
-  '/var/www' => '/var/www',
-  '/var/aegir/platforms' => '/var/aegir/platforms',
-  '/var/aegir/backups' => '/var/aegir/backups',
-  '/var/aegir/backups-databases' => '/var/aegir/backups-databases'
+default['scratchpads']['nfs']['exports']['/var/www'] = {
+  'writeable' => true,
+  'sync' => true,
+  'options' => ['root_squash','no_subtree_check'],
+  'unique' => true
+}
+default['scratchpads']['nfs']['exports']['/var/aegir/platforms'] = {
+  'writeable' => true,
+  'sync' => true,
+  'options' => ['root_squash','no_subtree_check'],
+  'unique' => true
+}
+default['scratchpads']['nfs']['exports']['/var/aegir/backups'] = {
+  'writeable' => true,
+  'sync' => true,
+  'options' => ['root_squash','no_subtree_check'],
+  'unique' => true
+}
+default['scratchpads']['nfs']['exports']['/var/aegir/backups-databases'] = {
+  'writeable' => true,
+  'sync' => true,
+  'options' => ['no_root_squash','no_subtree_check'],
+  'unique' => true
 }
 # Bash template
 default['scratchpads']['nfs']['templates']['clients']['copy-control.bash.erb'] = {

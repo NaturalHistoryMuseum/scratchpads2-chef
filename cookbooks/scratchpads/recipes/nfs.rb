@@ -61,17 +61,17 @@ else
     control_hosts = search(:node, "roles:#{node['scratchpads']['control']['role']} AND chef_environment:#{node.chef_environment}")
     control_host = control_hosts.first
   end
-  node['scratchpads']['nfs']['exports'].each do|mount_dir,mount_to|
+  node['scratchpads']['nfs']['exports'].each do|mount_dir,nfs_mnt|
     # Create the mount directory
-    directory mount_to do
+    directory mount_dir do
       owner 'aegir'
       group 'www-data'
       mode 0775
       action :create
-      not_if { ::File.exists?(mount_to)}
+      not_if { ::File.exists?(mount_dir)}
     end
     # Mount the directory
-    mount mount_to do
+    mount mount_dir do
       device "#{control_host['fqdn']}:#{mount_dir}"
       fstype 'nfs'
       options 'rw,noacl,nocto,bg,ac,noatime,nodiratime,intr,hard'

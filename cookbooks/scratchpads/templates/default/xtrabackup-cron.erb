@@ -6,12 +6,12 @@
 20 4 * * 0 root /bin/rm -rf /var/aegir/backups-databases/<%= node['fqdn'] %>.3 ; /bin/mv /var/aegir/backups-databases/<%= node['fqdn'] %>.2 /var/aegir/backups-databases/<%= node['fqdn'] %>.3 ; /bin/mv /var/aegir/backups-databases/<%= node['fqdn'] %>.1 /var/aegir/backups-databases/<%= node['fqdn'] %>.2 ; /bin/mv /var/aegir/backups-databases/<%= node['fqdn'] %> /var/aegir/backups-databases/<%= node['fqdn'] %>.1
 
 # Create the full backup at the start of the week
-33 4 * * 0 root /usr/bin/xtrabackup --backup --target-dir=/var/aegir/backups-databases/<%= node['fqdn'] %>
+33 4 * * 0 root /usr/bin/xtrabackup --backup --target-dir=/var/aegir/backups-databases/<%= node['fqdn'] %> 2>/dev/null
 
 # Create incremental backups during the week. Note, these will fail if any previous stage has failed.
-33 4 * * 1 root /usr/bin/xtrabackup --backup --target-dir=/var/aegir/backups-databases/<%= node['fqdn'] %>/mon --incremental-basedir=/var/aegir/backups-databases/<%= node['fqdn'] %>
-33 4 * * 2 root /usr/bin/xtrabackup --backup --target-dir=/var/aegir/backups-databases/<%= node['fqdn'] %>/tue --incremental-basedir=/var/aegir/backups-databases/<%= node['fqdn'] %>/mon
-33 4 * * 3 root /usr/bin/xtrabackup --backup --target-dir=/var/aegir/backups-databases/<%= node['fqdn'] %>/wed --incremental-basedir=/var/aegir/backups-databases/<%= node['fqdn'] %>/tue
-33 4 * * 4 root /usr/bin/xtrabackup --backup --target-dir=/var/aegir/backups-databases/<%= node['fqdn'] %>/thu --incremental-basedir=/var/aegir/backups-databases/<%= node['fqdn'] %>/wed
-33 4 * * 5 root /usr/bin/xtrabackup --backup --target-dir=/var/aegir/backups-databases/<%= node['fqdn'] %>/fri --incremental-basedir=/var/aegir/backups-databases/<%= node['fqdn'] %>/thu
-33 4 * * 6 root /usr/bin/xtrabackup --backup --target-dir=/var/aegir/backups-databases/<%= node['fqdn'] %>/sat --incremental-basedir=/var/aegir/backups-databases/<%= node['fqdn'] %>/fri
+33 4 * * 1 root /usr/bin/xtrabackup --backup --target-dir=/var/aegir/backups-databases/<%= node['fqdn'] %>/mon --incremental-basedir=/var/aegir/backups-databases/<%= node['fqdn'] %> 2>/dev/null
+33 4 * * 2 root /usr/bin/xtrabackup --backup --target-dir=/var/aegir/backups-databases/<%= node['fqdn'] %>/tue --incremental-basedir=/var/aegir/backups-databases/<%= node['fqdn'] %>/mon 2>/dev/null
+33 4 * * 3 root /usr/bin/xtrabackup --backup --target-dir=/var/aegir/backups-databases/<%= node['fqdn'] %>/wed --incremental-basedir=/var/aegir/backups-databases/<%= node['fqdn'] %>/tue 2>/dev/null
+33 4 * * 4 root /usr/bin/xtrabackup --backup --target-dir=/var/aegir/backups-databases/<%= node['fqdn'] %>/thu --incremental-basedir=/var/aegir/backups-databases/<%= node['fqdn'] %>/wed 2>/dev/null
+33 4 * * 5 root /usr/bin/xtrabackup --backup --target-dir=/var/aegir/backups-databases/<%= node['fqdn'] %>/fri --incremental-basedir=/var/aegir/backups-databases/<%= node['fqdn'] %>/thu 2>/dev/null
+33 4 * * 6 root /usr/bin/xtrabackup --backup --target-dir=/var/aegir/backups-databases/<%= node['fqdn'] %>/sat --incremental-basedir=/var/aegir/backups-databases/<%= node['fqdn'] %>/fri 2>/dev/null

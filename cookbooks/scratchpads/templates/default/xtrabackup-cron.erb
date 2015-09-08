@@ -3,7 +3,7 @@
 #m h dom mon dow user command
 
 # Rotate the previous weeks backups
-20 4 * * 0 root /bin/rm -rf /var/aegir/backups-databases/<%= node['fqdn'] %>.3 && /bin/mv /var/aegir/backups-databases/<%= node['fqdn'] %>.2 /var/aegir/backups-databases/<%= node['fqdn'] %>.3 && /bin/mv /var/aegir/backups-databases/<%= node['fqdn'] %>.1 /var/aegir/backups-databases/<%= node['fqdn'] %>.2 && /bin/mv /var/aegir/backups-databases/<%= node['fqdn'] %> /var/aegir/backups-databases/<%= node['fqdn'] %>.1
+20 4 * * 0 root /bin/rm -rf /var/aegir/backups-databases/<%= node['fqdn'] %>.3 ; /bin/mv /var/aegir/backups-databases/<%= node['fqdn'] %>.2 /var/aegir/backups-databases/<%= node['fqdn'] %>.3 ; /bin/mv /var/aegir/backups-databases/<%= node['fqdn'] %>.1 /var/aegir/backups-databases/<%= node['fqdn'] %>.2 ; /bin/mv /var/aegir/backups-databases/<%= node['fqdn'] %> /var/aegir/backups-databases/<%= node['fqdn'] %>.1
 
 # Create the full backup at the start of the week
 33 4 * * 0 root /usr/bin/xtrabackup --backup --target-dir=/var/aegir/backups-databases/<%= node['fqdn'] %>

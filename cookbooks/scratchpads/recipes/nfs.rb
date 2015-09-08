@@ -24,7 +24,7 @@ if node['roles'].index(node['scratchpads']['control']['role']) then
   node['scratchpads']['nfs']['exports'].each do|mount_dir,nfs_mnt|
     nfs_export mount_dir do
       network client_hosts
-      writeable nfs_mnt['writable']
+      writeable nfs_mnt['writeable']
       sync nfs_mnt['sync']
       options nfs_mnt['options']
       unique nfs_mnt['unique']
@@ -64,8 +64,8 @@ else
   node['scratchpads']['nfs']['exports'].each do|mount_dir,nfs_mnt|
     # Create the mount directory
     directory mount_dir do
-      owner 'aegir'
-      group 'www-data'
+      owner 'root'
+      group 'root'
       mode 0775
       action :create
       not_if { ::File.exists?(mount_dir)}
@@ -74,7 +74,7 @@ else
     mount mount_dir do
       device "#{control_host['fqdn']}:#{mount_dir}"
       fstype 'nfs'
-      options 'rw,noacl,nocto,bg,ac,noatime,nodiratime,intr,hard'
+      options nfs_mnt['mount_options']
       action [:mount, :enable]
     end
   end

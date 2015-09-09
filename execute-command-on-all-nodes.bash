@@ -10,5 +10,6 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 # Loop through each node
 for i in $(ls -1 $DIR/nodes | sed "s|.json$||")
 do
+	echo $i
 	ssh $i $@
 done

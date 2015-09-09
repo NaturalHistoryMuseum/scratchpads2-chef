@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Ensure this script is being run as the aegir
+if [ `whoami` != "aegir" ]
+then
+  echo "This script must be run as 'aegir'" 1>&2
+  exit 1
+fi
+
+# Look for the request files
+for i in $(ls -1 /var/aegir/platforms/*/sites/*/files/scratchpads_backup_requested 2>/dev/null)
+do
+  # Get the domain name from the path of the file
+  DOMAIN=`echo $i|sed "s|/var/aegir/platforms/[^/]*/sites/||;s|/.*||"`
+  # Request the backup
+  drush @$DOMAIN provision-backup
+  # Delete the file so that we know this backup has been created
+  rm $i
+done

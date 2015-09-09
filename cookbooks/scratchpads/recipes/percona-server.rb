@@ -89,13 +89,21 @@ unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['gm3_data_file
 end
 
 # Add the cron stuff
-template "/etc/cron.d/xtrabackup" do
-  source 'xtrabackup-cron.erb'
-  cookbook 'scratchpads'
-  owner 'root'
-  group 'root'
-  mode '0744'
-  action :create
+node['scratchpads']['percona']['cron'].each do|name,crn|
+  cron name do
+    minute crn['minute']
+    hour crn['hour']
+    day crn['day']
+    month crn['month']
+    weekday crn['weekday']
+    command crn['command']
+    environment crn['environment']
+    home crn['home']
+    action crn['action']
+    user crn['user']
+    mailto crn['mailto']
+    path crn['path']
+  end
 end
 
 # Create the aegir user

@@ -81,6 +81,7 @@ execute 'install hostmaster' do
   not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/hm.alias.drushrc.php")}
   environment node['scratchpads']['aegir']['environment']
   notifies :run, 'execute[patch hosting module]', :immediately
+  notifies :run, 'execute[remove aegir cron]', :immediately
   notifies :run, 'execute[set the admin user password]', :delayed
 end
 # Patch the hosting module
@@ -88,6 +89,14 @@ execute 'patch hosting module' do
   action :nothing
   command "patch -p1 < #{node['scratchpads']['aegir']['cookbook_files']['aegir-patch']['path']}"
   cwd '/var/aegir/platforms/hostmaster/profiles/hostmaster/modules/aegir/hosting'
+  group node['scratchpads']['aegir']['group']
+  user node['scratchpads']['aegir']['user']
+  environment node['scratchpads']['aegir']['environment']
+end
+# Remove the aegir user's cron
+execute 'remove aegir cron' do
+  action :nothing
+  command "crontab -r"
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
   environment node['scratchpads']['aegir']['environment']
@@ -218,15 +227,23 @@ execute 'set the admin user password' do
   user node['scratchpads']['aegir']['user']
   environment node['scratchpads']['aegir']['environment']
 end
-#
-# Add cron functions to Aegir
-#
-# - cron to delete backups older than one week (every hour, or daily - not sure if it matters much)
-# - Reinstall Sandbox, and possibly also tweak the drushrc.php file (every six hours)
-# - Cron to create the backups using Aegir (every minute, or possibly using hosting-queue)
-# - Run stats-aggregate on scratchpads.eu site (every four hours)
-# - Clear vbrant.eu site caches (every five minutes)
-# - Run updates on testing sites once a day
+# Add the cron stuff
+node['scratchpads']['aegir']['cron'].each do|name,crn|
+  cron name do
+    minute crn['minute']
+    hour crn['hour']
+    day crn['day']
+    month crn['month']
+    weekday crn['weekday']
+    command crn['command']
+    environment crn['environment']
+    home crn['home']
+    action crn['action']
+    user crn['user']
+    mailto crn['mailto']
+    path crn['path']
+  end
+end
 #
 # Save SSH keys
 enc_data_bag = ScratchpadsEncryptedData.new(node, 'ssh')

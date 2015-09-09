@@ -85,6 +85,14 @@ default['scratchpads']['aegir']['templates']['.procmailrc'] = {
   'group' => 'www-data',
   'mode' => '0644'
 }
+default['scratchpads']['aegir']['templates']['create_scratchpads_backups'] = {
+  'path' => '/usr/local/bin/create_scratchpads_backups',
+  'source' => 'create_scratchpads_backups.erb',
+  'cookbook' => 'scratchpads',
+  'owner' => 'root',
+  'group' => 'root',
+  'mode' => '0755'
+}
 # Files to create
 default['scratchpads']['aegir']['cookbook_files']['create-aegir-platform'] = {
   'path' => '/usr/local/bin/create-aegir-platform',
@@ -97,14 +105,6 @@ default['scratchpads']['aegir']['cookbook_files']['create-aegir-platform'] = {
 default['scratchpads']['aegir']['cookbook_files']['aegir-patch'] = {
   'path' => '/var/chef/hosting_signup-form-fix-2507397-1.patch',
   'source' => 'hosting_signup-form-fix-2507397-1.patch',
-  'cookbook' => 'scratchpads',
-  'owner' => 'root',
-  'group' => 'root',
-  'mode' => '0755'
-}
-default['scratchpads']['aegir']['cookbook_files']['create_scratchpads_backups'] = {
-  'path' => '/usr/local/bin/create_scratchpads_backups',
-  'source' => 'create_scratchpads_backups.erb',
   'cookbook' => 'scratchpads',
   'owner' => 'root',
   'group' => 'root',

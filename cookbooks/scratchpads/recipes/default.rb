@@ -67,6 +67,21 @@ end
 # Install various packages that are useful on all machines.
 package ['gkrellmd','htop','iotop','rsync','unzip','iptables-persistent']
 
+# link /etc/iptables/rules.v4 to /etc/iptables/general
+link '/etc/iptables/rules.v4' do
+  action :create
+  group 'root'
+  owner 'root'
+  to '/etc/iptables/general'
+end
+# Rebuild the iptables once an hour
+cron 'rebuild-iptables' do
+  command '/usr/sbin/rebuild-iptables'
+  minute '1'
+  mailto node['scratchpads']['control']['admin_email']
+  user 'root'
+end
+
 # Add a template for the gkrellmd service
 template node['scratchpads']['gkrellmd']['path'] do
   source node['scratchpads']['gkrellmd']['source']

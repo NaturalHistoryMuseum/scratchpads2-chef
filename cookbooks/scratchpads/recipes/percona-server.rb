@@ -7,7 +7,6 @@
 # Include the percona recipes
 include_recipe 'percona::server'
 include_recipe 'percona::backup'
-include_recipe 'ulimit'
 
 # Install the mysql2_chef_gem as required by database
 mysql2_chef_gem 'default' do

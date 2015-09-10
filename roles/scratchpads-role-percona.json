@@ -12,6 +12,9 @@
         "mysqld": {
           "innodb_large_prefix": 1,
           "max_user_connections": 20
+        },
+        "mysqld_safe": {
+          "open-files-limit": 1000000
         }
       },
       "encrypted_data_bag_secret_file": "/etc/chef/encrypted_data_bag_secret",

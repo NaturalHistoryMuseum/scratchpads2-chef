@@ -20,8 +20,8 @@
 # Allow access to monit from other hosts (just needs control)
 <% node['scratchpads']['all_hosts'].each do |hostname| -%>
 -A tcpin -s <%= hostname %> -p tcp -m tcp --dport 2812 -j ACCEPT
--A tcpin -s 127.0.0.1 -p tcp -m tcp --dport 2812 -j ACCEPT
 <% end -%>
+-A tcpin -s 127.0.0.1 -p tcp -m tcp --dport 2812 -j ACCEPT
 
 # Allow Gkrellmd from specified ip addresses
 <% node['scratchpads']['trusted_ip_addresses'].each do |ip_address| -%>

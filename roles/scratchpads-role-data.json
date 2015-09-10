@@ -13,6 +13,13 @@
     "memcached": {
       "max_object_size": "3M",
       "memory": 4000
+    },
+    "ulimit": {
+      "users": {
+        "mysql": {
+          "filehandle_limit": 1048576
+        }
+      }
     }
   },
   "override_attributes": {

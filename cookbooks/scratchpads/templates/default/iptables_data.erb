@@ -7,7 +7,7 @@
 <% node['scratchpads']['all_hosts'].each do |hostname| -%>
 -A tcpin -s <%= hostname %> -p tcp -m tcp --dport 3306 -j ACCEPT
 <% end -%>
-# Allow connections to MySQL (3306) from Quartz and Silica.
+# Allow connections to MySQL (3306) from Quartz, Silica and web-scratchpad-solr
 -A tcpin -s 157.140.2.32 -p tcp -m tcp --dport 3306 -j ACCEPT
--A tcpin -s 157.140.2.23 -p tcp -m tcp --dport 3306 -j ACCEPT
 -A tcpin -s 157.140.2.132 -p tcp -m tcp --dport 3306 -j ACCEPT
+-A tcpin -s 157.140.2.112 -p tcp -m tcp --dport 3306 -j ACCEPT

@@ -8,6 +8,9 @@
 include_recipe 'percona::server'
 include_recipe 'percona::backup'
 
+# Install the Percona toolkit for extra tools
+package ['percona-toolkit']
+
 # Install the mysql2_chef_gem as required by database
 mysql2_chef_gem 'default' do
   provider Chef::Provider::Mysql2ChefGem::Percona

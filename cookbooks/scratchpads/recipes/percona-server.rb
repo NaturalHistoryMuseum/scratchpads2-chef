@@ -11,6 +11,22 @@ include_recipe 'percona::backup'
 # Install the Percona toolkit for extra tools, also install bc as it's required by the optimize script
 package ['percona-toolkit','bc']
 
+# Download and install the mysqltuner.pl and tuning-primer.sh scripts which are useful for debugging speed issues with MySQL servers
+remote_file '/usr/local/sbin/tuning-primer' do
+  source 'https://launchpad.net/mysql-tuning-primer/trunk/1.6-r1/+download/tuning-primer.sh'
+  owner 'root'
+  group 'root'
+  mode 0700
+  action :create
+end
+remote_file '/usr/local/sbin/mysqltuner' do
+  source 'http://mysqltuner.pl/'
+  owner 'root'
+  group 'root'
+  mode 0700
+  action :create
+end
+
 # Script for optimizing tables.
 template "/usr/local/sbin/optimize-and-innodbize-tables" do
   source 'optimize-and-innodbize-tables.bash.erb'

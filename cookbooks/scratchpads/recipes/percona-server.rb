@@ -8,8 +8,18 @@
 include_recipe 'percona::server'
 include_recipe 'percona::backup'
 
-# Install the Percona toolkit for extra tools
-package ['percona-toolkit']
+# Install the Percona toolkit for extra tools, also install bc as it's required by the optimize script
+package ['percona-toolkit','bc']
+
+# Script for optimizing tables.
+template "/usr/local/sbin/optimize-and-innodbize-tables" do
+  source 'optimize-and-innodbize-tables.bash.erb'
+  cookbook 'scratchpads'
+  owner 'root'
+  group 'root'
+  mode '0700'
+  action :create
+end
 
 # Install the mysql2_chef_gem as required by database
 mysql2_chef_gem 'default' do

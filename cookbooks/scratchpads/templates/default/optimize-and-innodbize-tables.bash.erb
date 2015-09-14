@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Ensure they gave us online/quick
+if [ $# -eq 0 ]; then
+  echo "usage: $0 {online|quick}" 1>&2
+  exit 1
+fi
+
+DATABASES=`find /var/lib/mysql/ -type d | sed "s|/var/lib/mysql/||" | grep -v ^mysql$ | grep -v ^performance_schema$ | sort -R`
+NUM_DATABASES=`echo $DATABASES|wc -w`
+DATABASE_INDEX=0
+for DATABASE in $DATABASES
+do
+  DATABASE_INDEX=$((DATABASE_INDEX+1))
+  echo -ne `echo "scale=1; $DATABASE_INDEX*100/$NUM_DATABASES" | bc`"% Complete\r"
+  for TABLE in $(find /var/lib/mysql/$DATABASE -type f | grep -E "(\.ibd$|\.MYD$)" | sed "s|/var/lib/mysql/[^/]*/||;s|\..*||" | sort)
+  do
+    case "$1" in
+      quick)
+        echo "ALTER TABLE "$DATABASE"."$TABLE" ENGINE=INNODB, ROW_FORMAT=COMPRESSED" | mysql
+        ;;
+      online)
+        pt-online-schema-change --alter "ENGINE=InnoDB, ROW_FORMAT=COMPRESSED" D=$DATABASE,t=$TABLE
+        ;;
+    esac
+  done
+done

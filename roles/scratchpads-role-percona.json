@@ -25,7 +25,8 @@
         "group_concat_max_len": 4294967295,
         "innodb_file_format": "Barracuda",
         "max_connections": 101,
-        "log_bin": ""
+        "log_bin": "",
+        "table_cache": 500000
       }
     }
   },

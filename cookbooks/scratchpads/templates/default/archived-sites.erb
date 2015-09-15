@@ -30,8 +30,11 @@
     </FilesMatch>
     Options None
     Options +FollowSymLinks
+    Require all granted
   </Directory>
   <Directory /var/www/archived>
+    Require all granted
+
     AllowOverride None
 
     # Don't show directory listings for URLs which map to a directory.

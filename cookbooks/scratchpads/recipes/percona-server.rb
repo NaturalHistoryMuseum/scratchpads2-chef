@@ -46,6 +46,24 @@ end
 # Load the passwords only once
 passwords = ScratchpadsEncryptedData.new(node)
 
+# Copy the /etc/init.d/mysql patch file and do the patching
+unless(::File.exists?('/var/chef/etc-init.d-mysql.patch'))
+  cookbook_file '/var/chef/etc-init.d-mysql.patch' do
+    source 'etc-init.d-mysql.patch'
+    cookbook 'scratchpads'
+    owner 'root'
+    group 'root'
+    mode '0400'
+    notifies :run, 'execute[patch percona init file]', :immediately
+  end
+  execute 'patch percona init file' do
+    action :nothing
+    command '/usr/bin/patch /etc/init.d/mysql /var/chef/etc-init.d-mysql.patch -f -r - --no-backup-if-mismatch'
+    user 'root'
+    group 'root'
+  end
+end
+
 # Copy the percona-functions SQL file and execute it
 unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['percona-functions-file']}"))
   cookbook_file "/var/chef/#{node['scratchpads']['percona']['percona-functions-file']}" do

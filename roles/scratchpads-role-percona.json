@@ -22,6 +22,7 @@
         "bind_address": "",
         "innodb_log_file_size": "100M",
         "group_concat_max_len": 4294967295,
+        "innodb_buffer_pool_size": "4G",
         "innodb_file_format": "Barracuda",
         "max_connections": 101,
         "log_bin": "",

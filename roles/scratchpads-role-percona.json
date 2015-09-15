@@ -14,8 +14,7 @@
           "max_user_connections": 20
         },
         "mysqld_safe": {
-          "open-files-limit": 1000000,
-          "query_cache_type": 1
+          "open-files-limit": 1000000
         }
       },
       "encrypted_data_bag_secret_file": "/etc/chef/encrypted_data_bag_secret",

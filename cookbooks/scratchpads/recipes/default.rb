@@ -31,6 +31,12 @@ elsif node['roles'].index(node['scratchpads']['search']['role']) then
   iptables_rule 'iptables_search'
 end
 
+# Set the swappiness on all machines to 0 (we always want to use memory over swap)
+append_if_no_line "set swappiness to 0" do
+  path '/etc/sysctl.conf'
+  line 'vm.swappiness = 0'
+end
+
 # Add the prefix to the hosts in case we have one.
 hosts = {}
 if node['fqdn'].index('sp-') > 0

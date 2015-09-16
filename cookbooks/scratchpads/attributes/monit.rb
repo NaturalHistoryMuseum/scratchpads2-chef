@@ -69,7 +69,7 @@ default['scratchpads']['monit']['conf']['ssh']['stop'] = '/bin/systemctl stop ss
 default['scratchpads']['monit']['conf']['ssh']['group'] = 'admin'
 default['scratchpads']['monit']['conf']['ssh']['rls'] = [node['scratchpads']['ntp']['role']]
 default['scratchpads']['monit']['conf']['ssh']['tests'] = [{
-    'condition' => "failed host #{node['fqdn']} port 22 protocol ssh for 3 cycles",
+    'condition' => "failed host 127.0.0.1 port 22 protocol ssh for 3 cycles",
     'action' => 'restart'
   },{
     'condition' => "3 restarts within 5 cycles",

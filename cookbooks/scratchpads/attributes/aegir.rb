@@ -131,7 +131,7 @@ default['scratchpads']['aegir']['cookbook_files']['aegir-patch'] = {
 # - Run updates on testing sites once a day
 # - Clear vbrant.eu site caches (every five minutes)
 
-# Build the Backup archives users have requested
+# Aegir cron task
 default['scratchpads']['aegir']['cron']['hosting_cron'] = {
   'minute' => '*',
   'hour' => '*',
@@ -139,6 +139,21 @@ default['scratchpads']['aegir']['cron']['hosting_cron'] = {
   'month' => '*',
   'weekday' => '*',
   'command' => 'drush @hm hosting-cron',
+  'environment' => {},
+  'home' => '/var/aegir',
+  'action' => 'create',
+  'user' => 'aegir',
+  'mailto' => node['scratchpads']['control']['admin_email'],
+  'path' => '/usr/local/bin:/usr/bin:/bin'
+}
+# Aegir garbage collection task
+default['scratchpads']['aegir']['cron']['hosting_cron_garbage_collection'] = {
+  'minute' => '*',
+  'hour' => '*',
+  'day' => '*',
+  'month' => '*',
+  'weekday' => '*',
+  'command' => 'drush @hm hosting-task_gc',
   'environment' => {},
   'home' => '/var/aegir',
   'action' => 'create',

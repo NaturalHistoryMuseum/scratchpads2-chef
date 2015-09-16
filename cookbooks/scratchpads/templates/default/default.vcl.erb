@@ -69,14 +69,6 @@ backend sp_search_slave_<%= n+1 %> {
   }
 }
 <% end -%>
-backend selenium {
-  .host = "<%= node['scratchpads']['varnish']['selenium']['host'] %>";
-  .port = "<%= node['scratchpads']['varnish']['selenium']['port'] %>";
-  .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
-  .between_bytes_timeout = <%= node['scratchpads']['varnish']['between_bytes_timeout'] %>;
-  .connect_timeout = <%= node['scratchpads']['varnish']['connect_timeout'] %>;
-  .max_connections = <%= node['scratchpads']['varnish']['selenium']['max_connections'] %>;
-}
 backend redmine {
   .host = "<%= node['scratchpads']['varnish']['redmine']['host'] %>";
   .port = "<%= node['scratchpads']['varnish']['redmine']['port'] %>";

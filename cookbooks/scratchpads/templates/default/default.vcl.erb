@@ -96,19 +96,6 @@ sub set_control_domains{
     set req.backend_hint = control;
   }
 }
-sub set_selenium_domains{
-<%
-  domains = []
-  node['scratchpads']['varnish']['selenium']['domains'].each do|domain|
-    domains << 'req.http.host ~ "^'+domain+'$"'
-  end
-%>
-  if(<%= domains.join(' || ') %>){
-    # Absolutely NO CACHING for the qa.scratchpads.eu site
-    set req.backend_hint = selenium;
-    return (pipe);
-  }
-}
 sub set_monit_domains{
 <%
   domains = []
@@ -183,7 +170,6 @@ sub vcl_recv {
   call set_control_domains;
   call set_redmine_domains;
   call set_monit_domains;
-  call set_selenium_domains;
   call set_no_cache_domains;
   # Set the backen for server-status and xhprof
 <% @sp_app_servers.each_with_index do |app_server, n| -%>

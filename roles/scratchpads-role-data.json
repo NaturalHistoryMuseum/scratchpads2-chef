@@ -12,7 +12,7 @@
     },
     "memcached": {
       "max_object_size": "3M",
-      "memory": 4000
+      "memory": 2000
     }
   },
   "override_attributes": {

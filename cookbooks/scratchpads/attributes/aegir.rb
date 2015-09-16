@@ -132,19 +132,19 @@ default['scratchpads']['aegir']['cookbook_files']['aegir-patch'] = {
 # - Clear vbrant.eu site caches (every five minutes)
 
 # Build the Backup archives users have requested
-default['scratchpads']['aegir']['cron']['create_requested_backup_archives'] = {
+default['scratchpads']['aegir']['cron']['hosting_cron'] = {
   'minute' => '*',
   'hour' => '*',
   'day' => '*',
   'month' => '*',
   'weekday' => '*',
-  'command' => "flock -n /tmp/create_scratchpads_backups -c /usr/local/bin/create_scratchpads_backups",
+  'command' => 'drush @hm hosting-cron',
   'environment' => {},
-  'home' => '/root',
+  'home' => '/var/aegir',
   'action' => 'create',
-  'user' => 'root',
+  'user' => 'aegir',
   'mailto' => node['scratchpads']['control']['admin_email'],
-  'path' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+  'path' => '/usr/local/bin:/usr/bin:/bin'
 }
 # Build the Backup archives users have requested
 default['scratchpads']['aegir']['cron']['create_requested_backup_archives'] = {

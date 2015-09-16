@@ -40,6 +40,7 @@
     "recipe[scratchpads::aegir]",
     "recipe[scratchpads::nfs]",
     "recipe[scratchpads::postfix]",
+    "recipe[scratchpads::phantomjs]",
     "role[scratchpads-role-monit]"
   ]
 }

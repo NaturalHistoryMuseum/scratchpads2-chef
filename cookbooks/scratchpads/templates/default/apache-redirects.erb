@@ -1,0 +1,193 @@
+<VirtualHost *:80>
+  DocumentRoot    /var/www/default
+  <Directory /var/www/default>
+    Order deny,allow
+    Allow from all
+    Require all granted
+  </Directory>
+
+  RewriteEngine On
+
+  # Get rid of the WWW domain.  No Scratchpad should be using the www domain.
+  RewriteCond %{HTTP_HOST}  ^www\.(.*)
+  RewriteRule /(.*)   http://%1/$1 [L,R=301]
+
+  # Ignore the chuffin apache wakeup thingy
+  RewriteCond %{HTTP_USER_AGENT}  internal\ dummy\ connection
+  RewriteRule (.*)  /wakeup.html [L]
+
+  # Rewrite the myspecies.net & myspecies.name to myspecies.info
+  RewriteCond %{HTTP_HOST} !info$
+  RewriteCond %{HTTP_HOST} ^(.*)\.myspecies.*
+  RewriteRule /(.*) http://%1.myspecies.info/$1 [R=permanent,L]
+
+  # Rewrite the old issues queue to Redmine.
+  RewriteCond %{HTTP_HOST} dev\.scratchpads\.eu
+  RewriteRule (.*)  http://support.scratchpads.eu/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} redmine\.scratchpads\.eu
+  RewriteRule (.*)  http://support.scratchpads.eu/ [R=permanent,L]
+
+  # A lot of rewrites for LifeDesks.
+  RewriteCond %{HTTP_HOST} afribats.lifedesks.org
+  RewriteRule (.*) http://afribats.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} africanamphibians.lifedesks.org
+  RewriteRule (.*) http://africanamphibians.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} congofishes.lifedesks.org
+  RewriteRule (.*) http://africhthy.org/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} agrilus.lifedesks.org
+  RewriteRule (.*) http://agrilus.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} alpheidae.lifedesks.org
+  RewriteRule (.*) http://alpheidae.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} ampullariidae.lifedesks.org
+  RewriteRule (.*) http://ampullariidae.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} annelida.lifedesks.org
+  RewriteRule (.*) http://annelida.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} polychaetasouthocean.lifedesks.org
+  RewriteRule (.*) http://annelida.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} apoidea.lifedesks.org
+  RewriteRule (.*) http://apoidea.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} arachnids.lifedesks.org
+  RewriteRule (.*) http://arachnids.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} avesamericanas.lifedesks.org
+  RewriteRule (.*) http://avesamericanas.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} batrach.lifedesks.org
+  RewriteRule (.*) http://batrach.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} borneanlandsnails.lifedesks.org
+  RewriteRule (.*) http://borneanlandsnails.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} buccinids.lifedesks.org
+  RewriteRule (.*) http://buccinids.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} camptosomata.lifedesks.org
+  RewriteRule (.*) http://camptosomata.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} caterpillars.lifedesks.org
+  RewriteRule (.*) http://caterpillars.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} cephaloleia.lifedesks.org
+  RewriteRule (.*) http://cephaloleia.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} chess.lifedesks.org
+  RewriteRule (.*) http://chess.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} choreutidae.lifedesks.org
+  RewriteRule (.*) http://choreutidae.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} cnidaria.lifedesks.org
+  RewriteRule (.*) http://cnidaria.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} compositae.lifedesks.org
+  RewriteRule (.*) http://compositae.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} continenticola.lifedesks.org
+  RewriteRule (.*) http://continenticola.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} cyanolichens.lifedesks.org
+  RewriteRule (.*) http://cyanolichens.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} deepseacoral.lifedesks.org
+  RewriteRule (.*) http://deepseaoctocoral.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} diatoms.lifedesks.org
+  RewriteRule (.*) http://diatom.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} dinoflagellate.lifedesks.org
+  RewriteRule (.*) http://dinoflagellate.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} ebasidiolichens.lifedesks.org
+  RewriteRule (.*) http://ebasidiolichens.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} ebivalvia.lifedesks.org
+  RewriteRule (.*) http://emollusks.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} flatwormssmokys.lifedesks.org
+  RewriteRule (.*) http://flatwormssmokys.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} graphidaceae.lifedesks.org
+  RewriteRule (.*) http://graphidaceae.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} hawaiilandsnails.lifedesks.org
+  RewriteRule (.*) http://hawaiilandsnails.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} hundrednewlichens.lifedesks.org
+  RewriteRule (.*) http://hundrednewlichens.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} hypogymnia.lifedesks.org
+  RewriteRule (.*) http://hypogymnia.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} indiareeffishes.lifedesks.org
+  RewriteRule (.*) http://indiareeffishes.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} katydidsfrombrazil.lifedesks.org
+  RewriteRule (.*) http://katydidsfrombrazil.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} korupplants.lifedesks.org
+  RewriteRule (.*) http://korupplants.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} leptogastrinae.lifedesks.org
+  RewriteRule (.*) http://leptogastrinae.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} lincolnsflorafauna.lifedesks.org
+  RewriteRule (.*) http://lincolnsflorafauna.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} liquensbr.lifedesks.org
+  RewriteRule (.*) http://liquensbr.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} liquensms.lifedesks.org
+  RewriteRule (.*) http://liquensms.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} malaypeninsularsnail.lifedesks.org
+  RewriteRule (.*) http://malaypeninsularsnail.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} marineinvaders.lifedesks.org
+  RewriteRule (.*) http://marineinvaders.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} molluscacolombia.lifedesks.org
+  RewriteRule (.*) http://molluscacolombia.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} mormyrids.lifedesks.org
+  RewriteRule (.*) http://mormyrids.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} nemertea.lifedesks.org
+  RewriteRule (.*) http://nemertea.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} neotropicalfishes.lifedesks.org
+  RewriteRule (.*) http://neotropicalfishes.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} neotropnathistory.lifedesks.org
+  RewriteRule (.*) http://neotropnathistory.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} neritopsine.lifedesks.org
+  RewriteRule (.*) http://neritopsine.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} canopy.lifedesks.org
+  RewriteRule (.*) http://newworldcarabidae.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} olivirv.lifedesks.org
+  RewriteRule (.*) http://olivirv.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} opisthobranchia.lifedesks.org
+  RewriteRule (.*) http://opisthobranchia.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} opisthostoma.lifedesks.org
+  RewriteRule (.*) http://opisthostoma.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} parmotrema.lifedesks.org
+  RewriteRule (.*) http://parmotrema.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} pelagics.lifedesks.org
+  RewriteRule (.*) http://pelagics.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} peracarida.lifedesks.org
+  RewriteRule (.*) http://peracarida.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} tearga.lifedesks.org
+  RewriteRule (.*) http://plummersislandcarabidae.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} polycladida.lifedesks.org
+  RewriteRule (.*) http://polycladida.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} porifera.lifedesks.org
+  RewriteRule (.*) http://porifera.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} proctotrupidae.lifedesks.org
+  RewriteRule (.*) http://proctotrupidae.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} quercus.lifedesks.org
+  RewriteRule (.*) http://quercus.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} sacoglossa.lifedesks.org
+  RewriteRule (.*) http://sacoglossa.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} salamandersofchina.lifedesks.org
+  RewriteRule (.*) http://salamandersofchina.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} sarcophagidae.lifedesks.org
+  RewriteRule (.*) http://sarcophagidae.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} scarabaeinae.lifedesks.org
+  RewriteRule (.*) http://scarabaeinae.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} simuliidae.lifedesks.org
+  RewriteRule (.*) http://simuliidae.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} sipuncula.lifedesks.org
+  RewriteRule (.*) http://sipuncula.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} ostracoda.lifedesks.org
+  RewriteRule (.*) http://soostracoda.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} squatlobsters.lifedesks.org
+  RewriteRule (.*) http://squatlobsters.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} staurozoa.lifedesks.org
+  RewriteRule (.*) http://staurozoa.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} syrphidae.lifedesks.org
+  RewriteRule (.*) http://syrphidae.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} tabanidae.lifedesks.org
+  RewriteRule (.*) http://tabanidae.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} taiwanseagrasses.lifedesks.org
+  RewriteRule (.*) http://taiwanseagrasses.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} terrslugs.lifedesks.org
+  RewriteRule (.*) http://terrslugs.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} tunicata.lifedesks.org
+  RewriteRule (.*) http://tunicata.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} urbanfloranyc.lifedesks.org
+  RewriteRule (.*) http://urbanfloranyc.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} odonata.lifedesks.org
+  RewriteRule (.*) http://worldodonata.myspecies.info/ [R=permanent,L]
+  RewriteCond %{HTTP_HOST} naididae.lifedesks.org
+  RewriteRule (.*) http://worms.myspecies.info/ [R=permanent,L]
+
+  # Finally, if we haven't rewritten anything, ensure that we're on
+  # quartz.nhm.ac.uk or localhost, else rewrite to scratchpads.eu
+  RewriteRule (.*) http://scratchpads.eu/ [R,L]
+
+  # Rewrite vm.scratchpads.eu to https://vc-asteroid.nhm.ac.uk:9443/vsphere-client/ so that I don't have to remember the crap URL!
+  RewriteCond %{HTTP_HOST} vm.scratchpads.eu
+  RewriteRule (.*) https://vc-asteroid.nhm.ac.uk:9443/vsphere-client/ [R,L]
+</VirtualHost>

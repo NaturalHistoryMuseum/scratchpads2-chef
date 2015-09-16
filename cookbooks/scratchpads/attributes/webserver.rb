@@ -84,6 +84,12 @@ default['scratchpads']['webserver']['apache']['templates']['xhprof'] = {
   'documentroot' => '/usr/share/php/xhprof_html',
   'servername' => "xhprof.#{node['fqdn']}"
 }
+default['scratchpads']['webserver']['apache']['templates']['redirects'] = {
+  'source' => 'apache-redirects.erb',
+  'cookbook' => 'scratchpads',
+  'documentroot' => '/var/www/empty',
+  'servername' => ''
+}
 default['scratchpads']['webserver']['apache']['templates']['wiki.scratchpads.eu'] = {
   'source' => 'wiki.scratchpads.eu.erb',
   'cookbook' => 'scratchpads',

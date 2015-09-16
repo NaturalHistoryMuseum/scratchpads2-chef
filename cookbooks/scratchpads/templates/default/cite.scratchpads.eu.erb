@@ -3,6 +3,7 @@
   ServerName <%= node['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['servername'] %>
   <Directory <%= node['scratchpads']['webserver']['apache']['templates']['cite.scratchpads.eu']['documentroot'] %>>
     Options -Indexes
+    Require all granted
     DirectoryIndex index.php index.html index.htm
     <IfModule mod_php5.c>
       php_flag magic_quotes_gpc off

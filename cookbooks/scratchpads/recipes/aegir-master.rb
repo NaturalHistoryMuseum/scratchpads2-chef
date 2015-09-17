@@ -127,6 +127,10 @@ git "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir
   group node['scratchpads']['aegir']['group']
   user node['scratchpads']['aegir']['user']
 end
+# Link the hosting_scratchpads.drush.inc file to the /var/aegir/.drush folder
+link "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/custom/hosting_scratchpads/hosting_scratchpads.drush.inc" do
+  to '/var/aegir/.drush/hosting_scratchpads.drush.inc'
+end
 # Download the Solanaceae source repository
 git "#{node['scratchpads']['aegir']['home_folder']}/platforms/solanaceaesource-2.0" do
   repository node['scratchpads']['aegir']['solanaceae_source']['repository']

@@ -17,7 +17,7 @@ do
   do
     case "$1" in
       quick)
-        echo "ALTER TABLE "$DATABASE"."$TABLE" CONVERT TO CHARACTER SET <%= node['scratchpads']['percona']['charset'] => COLLATE <%= node['scratchpads']['percona']['collation'] =>, ENGINE=INNODB, ROW_FORMAT=COMPRESSED;" | mysql
+        echo "ALTER TABLE "$DATABASE"."$TABLE" CONVERT TO CHARACTER SET <%= node['scratchpads']['percona']['charset'] %> COLLATE <%= node['scratchpads']['percona']['collation'] %>, ENGINE=INNODB, ROW_FORMAT=COMPRESSED;" | mysql
         ;;
       online)
         pt-online-schema-change --alter "ENGINE=InnoDB, ROW_FORMAT=COMPRESSED" D=$DATABASE,t=$TABLE

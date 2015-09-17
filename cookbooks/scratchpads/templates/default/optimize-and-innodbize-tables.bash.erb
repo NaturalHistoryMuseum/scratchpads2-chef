@@ -20,7 +20,7 @@ do
         echo "ALTER TABLE "$DATABASE"."$TABLE" CONVERT TO CHARACTER SET <%= node['scratchpads']['percona']['charset'] %> COLLATE <%= node['scratchpads']['percona']['collation'] %>, ENGINE=INNODB, ROW_FORMAT=COMPRESSED;" | mysql
         ;;
       online)
-        pt-online-schema-change --alter "ENGINE=InnoDB, ROW_FORMAT=COMPRESSED" D=$DATABASE,t=$TABLE
+        pt-online-schema-change --execute --alter "CONVERT TO CHARACTER SET <%= node['scratchpads']['percona']['charset'] %> COLLATE <%= node['scratchpads']['percona']['collation'] %>, ENGINE=INNODB, ROW_FORMAT=COMPRESSED" D=$DATABASE,t=$TABLE
         ;;
     esac
   done

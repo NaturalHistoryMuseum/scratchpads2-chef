@@ -20,7 +20,14 @@
         "setenvif",
         "expires",
         "ssl"
-      ]
+      ],
+      "keepalive": "off",
+      "prefork": {
+        "startservers": "5",
+        "minspareservers": "5",
+        "maxspareservers": "10",
+        "maxrequestworkers": "25"
+      }
     },
     "chef_client": {
       "init_style": "systemd"

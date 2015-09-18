@@ -25,7 +25,7 @@
         "group_concat_max_len": 4294967295,
         "innodb_buffer_pool_size": "1G",
         "innodb_file_format": "Barracuda",
-        "max_connections": 101,
+        "max_connections": 51,
         "log_bin": "",
         "table_cache": 500000
       }

@@ -25,7 +25,9 @@
   },
   "override_attributes": {
     "postfix": {
-      "relayhost_role": "scratchpads-role-control"
+      "main": {
+        "relayhost": "sp-control-1.nhm.ac.uk"
+      }
     }
   },
   "run_list": [

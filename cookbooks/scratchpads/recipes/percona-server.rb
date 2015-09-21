@@ -65,6 +65,23 @@ unless(::File.exists?('/var/chef/etc-init.d-mysql.patch'))
 end
 
 # Copy the percona-functions SQL file and execute it
+unless(::File.exists?("/etc/security/limits.d/xtrabackup.conf"))
+  template "/etc/security/limits.d/xtrabackup.conf" do
+    source 'xtrabackup.conf.erb'
+    cookbook 'scratchpads'
+    owner 'root'
+    group 'root'
+    mode '0644'
+    action :create
+  end
+  execute 'set ulimit' do
+    command 'ulimit -Hn 1048576 ; ulimit -Sn 1048576'
+    user 'root'
+    group 'root'
+  end
+end
+
+# Copy the percona-functions SQL file and execute it
 unless(::File.exists?("/var/chef/#{node['scratchpads']['percona']['percona-functions-file']}"))
   cookbook_file "/var/chef/#{node['scratchpads']['percona']['percona-functions-file']}" do
     source node['scratchpads']['percona']['percona-functions-file']

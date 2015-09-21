@@ -220,7 +220,7 @@ default['scratchpads']['monit']['conf'][node['fqdn']]['tests'] = [{ # ~FC047
     'condition' => 'loadavg (5min) > 6 for 15 cycles',
     'action' => 'alert'
   },{
-    'condition' => 'memory usage > 90% for 15 cycles',
+    'condition' => 'memory usage > 95% for 15 cycles',
     'action' => 'alert'
   },{
     'condition' => 'swap usage > 25%',

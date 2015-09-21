@@ -161,6 +161,21 @@ default['scratchpads']['aegir']['cron']['hosting_cron_garbage_collection'] = {
   'mailto' => node['scratchpads']['control']['admin_email'],
   'path' => '/usr/local/bin:/usr/bin:/bin'
 }
+# Rebuild the sandbox task
+default['scratchpads']['aegir']['cron']['rebuild_sandbox_every_six_hours'] = {
+  'minute' => '1',
+  'hour' => '*/6',
+  'day' => '*',
+  'month' => '*',
+  'weekday' => '*',
+  'command' => 'drush @sandbox.scratchpads.eu provision-reinstall',
+  'environment' => {},
+  'home' => '/var/aegir',
+  'action' => 'create',
+  'user' => 'aegir',
+  'mailto' => node['scratchpads']['control']['admin_email'],
+  'path' => '/usr/local/bin:/usr/bin:/bin'
+}
 # Build the Backup archives users have requested
 default['scratchpads']['aegir']['cron']['create_requested_backup_archives'] = {
   'minute' => '*',

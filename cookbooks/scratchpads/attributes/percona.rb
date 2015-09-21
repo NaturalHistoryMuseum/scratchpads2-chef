@@ -13,10 +13,11 @@ default['scratchpads']['percona']['cron']['rotate_backups'] = {
   'day' => '*',
   'month' => '*',
   'weekday' => 0,
-  'command' => "rm -rf /var/aegir/backups-databases/#{node['fqdn']}/week/4 ;\
-                mv /var/aegir/backups-databases/#{node['fqdn']}/week/3 /var/aegir/backups-databases/#{node['fqdn']}/week/4 ;\
-                mv /var/aegir/backups-databases/#{node['fqdn']}/week/2 /var/aegir/backups-databases/#{node['fqdn']}/week/3 ;\
-                mv /var/aegir/backups-databases/#{node['fqdn']}/week/1 /var/aegir/backups-databases/#{node['fqdn']}/week/2",
+  'command' => "rm -rf /var/aegir/backups-databases/#{node['fqdn']}/week/4.tar.bz2 ;\
+                mv /var/aegir/backups-databases/#{node['fqdn']}/week/3.tar.bz2 /var/aegir/backups-databases/#{node['fqdn']}/week/4.tar.bz2 ;\
+                mv /var/aegir/backups-databases/#{node['fqdn']}/week/2.tar.bz2 /var/aegir/backups-databases/#{node['fqdn']}/week/3.tar.bz2 ;\
+                tar cfj /var/aegir/backups-databases/#{node['fqdn']}/week/2.tar.bz2 /var/aegir/backups-databases/#{node['fqdn']}/week/1 ;\
+                rm -rf /var/aegir/backups-databases/#{node['fqdn']}/week/1",
   'environment' => {},
   'home' => '/root',
   'action' => 'create',
@@ -30,10 +31,9 @@ default['scratchpads']['percona']['cron']['rotate_backups_monthly_and_yearly'] =
   'day' => '1',
   'month' => '*',
   'weekday' => '*',
-  'command' => "mkdir /var/aegir/backups-databases/#{node['fqdn']}/month/ ;\
-                mkdir /var/aegir/backups-databases/#{node['fqdn']}/year/ ;\
-                cp -r /var/aegir/backups-databases/#{node['fqdn']}/week/4 /var/aegir/backups-databases/#{node['fqdn']}/month/`date +%m`;\
-                cp -r /var/aegir/backups-databases/#{node['fqdn']}/week/4 /var/aegir/backups-databases/#{node['fqdn']}/year/`date +%Y`",
+  'command' => "mkdir /var/aegir/backups-databases/#{node['fqdn']}/month/ /var/aegir/backups-databases/#{node['fqdn']}/year/ ;\
+                cp /var/aegir/backups-databases/#{node['fqdn']}/week/4.tar.bz2 /var/aegir/backups-databases/#{node['fqdn']}/month/`date +%m`.tar.bz2;\
+                cp /var/aegir/backups-databases/#{node['fqdn']}/week/4.tar.bz2 /var/aegir/backups-databases/#{node['fqdn']}/year/`date +%Y`.tar.bz2",
   'environment' => {},
   'home' => '/root',
   'action' => 'create',

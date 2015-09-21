@@ -46,17 +46,31 @@ create-aegir-platform [Scratchpads release, e.g. "2.9.9"]
 ```
 
 The root user can take all sites offline to make maintenance easier and to 
-advise users that the sites are being maintained.
+advise users that the sites are being maintained:
 
 ```bash
 ssh sp-control-1.nhm.ac.uk
 sudo su -
 varnish-maintenance
 ```
-... and to make the sites live
+
+... and to make the sites live again:
+
 ```
 ssh sp-control-1.nhm.ac.uk
 sudo su -
 systemctl restart varnish
 ```
 
+### sp-data-{1|2}.nhm.ac.uk
+
+There shouldn't be any need to access the database servers directly, especially 
+given the Aegir/Drush command "sql-cli" which provides access to a sites 
+database. If access to the database is still required, the root user has a 
+~/.my.cnf that allows easy access to all databases.
+
+```bash
+ssh sp-data-{1|2}.nhm.ac.uk
+sudo su -
+mysql
+```

@@ -7,7 +7,7 @@ default['scratchpads']['percona']['gm3_data_file'] = 'gm3.sql.gz'
 
 # Cron functions for backup
 # Rotate previous weeks backups before creating full backup.
-default['scratchpads']['percona']['cron']['rotate_backups_week'] = {
+default['scratchpads']['percona']['cron']['rotate_backups'] = {
   'minute' => 33,
   'hour' => 1,
   'day' => '*',
@@ -42,7 +42,7 @@ default['scratchpads']['percona']['cron']['rotate_backups_monthly_and_yearly'] =
   'path' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 }
 # Prepare the full backup at the start of the week and the incremental backups
-default['scratchpads']['percona']['cron']['week_prepare_backup'] = {
+default['scratchpads']['percona']['cron']['weekly_prepare_backup'] = {
   'minute' => 33,
   'hour' => 4,
   'day' => '*',

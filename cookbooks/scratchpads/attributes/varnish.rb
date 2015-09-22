@@ -45,9 +45,9 @@ body>div.text{background-color:rgba(255,255,255,0.7);border:solid 1px #ccc;}
 </div>
 <div class="text">
 <h1>Technical difficulties</h1>
-<p>The <a href="http://www.nhm.ac.uk/">Natural History Museum</a> Scratchpads servers are currently experiencing a few problems. Please try reloading the page you are trying to access (this will happen automatically in 15 seconds), or come back later.</p>
+<p>The <a href="http://www.nhm.ac.uk/">Natural History Museum</a> Scratchpads servers are currently experiencing a few problems. Please try reloading the page you are attempting to access (this will happen automatically in 15 seconds), or come back later.</p>
 <p>If there is a major problem, further information regarding this outage should be available on our <a href="https://twitter.com/scratchpads">Twitter feed</a>.</p>
-<p>If you continue to experience this problem, please contact the Scratchpads Team.</p>
+<p>If you continue to experience this problem, please contact the <a href="mailto:scratchpads@nhm.ac.uk?subject=Scratchpads%20Technical%20difficulties&body=I%20am%20having%20problems%20accessing:%0D%0D[URL]%0D%0DPlease%20could%20you%20look%20into%20this%20for%20me.%0D%0D[INSERT%20ANY%20ADDITIONAL%20INFORMATION%20HERE]">Scratchpads Team</a>.</p>
 </div>
 </body>
 </html>'

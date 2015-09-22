@@ -8,3 +8,8 @@
 <% node['scratchpads']['all_hosts'].each do |hostname| -%>
 -A tcpin -s <%= hostname %> -p tcp -m tcp -m multiport --dports 111,2049,32765,32766,32767,32768,8080 -j ACCEPT
 <% end -%>
+
+# Allow connections to Varnish control port (<%= node['varnish']['admin_listen_port'] %>) from other hosts
+<% node['scratchpads']['all_hosts'].each do |hostname| -%>
+-A tcpin -s <%= hostname %> -p tcp -m tcp --dport <%= node['varnish']['admin_listen_port'] %> -j ACCEPT
+<% end -%>

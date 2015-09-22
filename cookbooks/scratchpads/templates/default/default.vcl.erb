@@ -372,7 +372,7 @@ sub vcl_backend_error {
   }
   # Friendly error!
   set beresp.http.Content-Type = "text/html; charset=utf-8";
-  set beresp.http.Retry-After = "5";
+  set beresp.http.Retry-After = "15";
   synthetic({"<%= node['scratchpads']['varnish']['error_message'] %>"});
   return (deliver);
 }

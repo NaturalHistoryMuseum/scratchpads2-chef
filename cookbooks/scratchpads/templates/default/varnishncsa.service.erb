@@ -1,0 +1,10 @@
+[Unit]
+Description=Varnish HTTP accelerator logging
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=varnishlog -n sp-control-1.nhm.ac.uk > /var/log/varnish/varnishncsa.log
+
+[Install]
+WantedBy=multi-user.target

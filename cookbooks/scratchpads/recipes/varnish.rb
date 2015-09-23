@@ -24,6 +24,7 @@ template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
   group 'root'
   mode 0644
   notifies :reload, 'service[varnish]', :delayed
+  notifies :reload, 'service[varnishncsa]', :delayed
   variables({
     :sp_app_servers => app_hosts,
     :sp_search_master_servers => search_master_hosts,
@@ -69,6 +70,17 @@ template '/etc/systemd/system/varnish.service' do
   notifies :run, 'execute[restart_systemctl_daemon]', :immediately
   notifies :restart, 'service[varnish]', :delayed
 end
+template '/etc/systemd/system/varnishncsa.service' do
+  path '/etc/systemd/system/varnishncsa.service'
+  source 'varnishncsa.service.erb'
+  cookbook 'scratchpads'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+  notifies :run, 'execute[restart_systemctl_daemon]', :immediately
+  notifies :restart, 'service[varnishncsa]', :delayed
+end
 passwords = ScratchpadsEncryptedData.new(node)
 node.default['scratchpads']['varnish']['varnish_secret'] = passwords.get_encrypted_data 'varnish', 'secret'
 template node['varnish']['secret_file'] do
@@ -79,4 +91,5 @@ template node['varnish']['secret_file'] do
   mode '0644'
   action :create
   notifies :restart, 'service[varnish]', :delayed
+  notifies :restart, 'service[varnishncsa]', :delayed
 end

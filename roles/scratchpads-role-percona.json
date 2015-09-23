@@ -12,7 +12,7 @@
         "mysqld": {
           "innodb_large_prefix": 1,
           "max_user_connections": 20,
-          "innodb_buffer_pool_instances": "1"
+          "innodb_buffer_pool_instances": "2"
         },
         "mysqld_safe": {
           "open-files-limit": 1000000
@@ -23,7 +23,7 @@
         "bind_address": "",
         "innodb_log_file_size": "100M",
         "group_concat_max_len": 4294967295,
-        "innodb_buffer_pool_size": "1G",
+        "innodb_buffer_pool_size": "2G",
         "innodb_file_format": "Barracuda",
         "max_connections": 51,
         "log_bin": "",

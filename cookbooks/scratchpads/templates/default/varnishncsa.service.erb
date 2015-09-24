@@ -2,9 +2,9 @@
 Description=Varnish HTTP accelerator logging
 
 [Service]
-Type=simple
+Type=forking
 Restart=always
-ExecStart=varnishlog -n sp-control-1.nhm.ac.uk > /var/log/varnish/varnishncsa.log
+ExecStart=/usr/bin/varnishncsa -n <%= node['varnish']['instance'] %> -a -w /var/log/varnish/varnishncsa.log -D
 
 [Install]
 WantedBy=multi-user.target

@@ -7,6 +7,7 @@
 # Varnish
 node.default['varnish']['listen_address'] = node['fqdn']
 include_recipe 'varnish'
+service 'varnishncsa'
 # Note, we hardcode the cookbook here to scratchpads so that the varnish
 # default recipe uses its own cookbook which builds and allows the service
 # to be restarted.

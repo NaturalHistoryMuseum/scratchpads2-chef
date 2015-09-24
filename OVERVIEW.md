@@ -22,6 +22,11 @@ server and therefore require users to be managed across them. The servers
 should be managed using Chef only, but it may be necessary to access each 
 server to aid with debugging and other maintenance tasks.
 
+We also have an additional server (```web-scratchpad-solr```) which runs 
+Redmine. This server should be replaced by the application servers above, but 
+it will require the installation of Ruby/Ruby-on-rails which is not within the 
+skills of the author of this document.
+
 Useful commands
 ---------------
 

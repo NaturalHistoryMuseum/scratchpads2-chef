@@ -42,6 +42,7 @@ sudo su - aegir
 drush @site-domain-name.com help
 ```
 
+#### Create platform
 New Scratchpads platforms can be created automatically also as the aegir user:
 
 ```bash
@@ -54,6 +55,7 @@ Sites should be upgraded by migrating between platforms. This process should be
 performed via the Aegir user interface, as the user interface will provide full 
 feedback on the upgrade/migration process.
 
+#### Drush commands
 Specific Drush commands can be run on specific sites:
 
 ```bash
@@ -70,6 +72,7 @@ drush @[domain-name] cron
 drush @[domain-name] scr /path/to/php/file.php
 ```
 
+#### Maintenance mode
 The root user can take all sites offline to make maintenance easier and to 
 advise users that the sites are being maintained:
 
@@ -87,6 +90,7 @@ sudo su -
 systemctl restart varnish
 ```
 
+#### Sandbox
 The Sandbox site is rebuilt automatically by a cron command which runs every 
 six hours (01:00, 07:00, 13:00, 19:00). The site should not be managed through 
 the Aegir front end, but instead should be managed using Drush commands. If 

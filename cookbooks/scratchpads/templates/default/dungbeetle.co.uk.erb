@@ -3,6 +3,7 @@
   ServerName <%= node['scratchpads']['webserver']['apache']['templates']['dungbeetle.co.uk']['servername'] %>
   <Directory <%= node['scratchpads']['webserver']['apache']['templates']['dungbeetle.co.uk']['documentroot'] %>>
     Options -Indexes
+    Require all granted
   </Directory>
   # We don't care about errors.
   ErrorLog  /dev/null

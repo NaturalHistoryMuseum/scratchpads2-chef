@@ -45,6 +45,26 @@ sudo su - aegir
 create-aegir-platform [Scratchpads release, e.g. "2.9.9"]
 ```
 
+Sites should be upgraded by migrating between platforms. This process should be 
+performed via the Aegir user interface, as the user interface will provide full 
+feedback on the upgrade/migration process.
+
+Specific Drush commands can be run on specific sites:
+
+```bash
+ssh sp-control-1.nhm.ac.uk
+sudo su - aegir
+# Access MySQL CLI for a site
+drush @[domain-name] sqlc
+# Clear a sites cache
+drush @[domain-name] cc all
+# Run Cron on a site
+drush @[domain-name] cron
+# Execute the PHP commands in a file (useful for executing various commands on
+# a site)
+drush @[domain-name] scr /path/to/php/file.php
+```
+
 The root user can take all sites offline to make maintenance easier and to 
 advise users that the sites are being maintained:
 

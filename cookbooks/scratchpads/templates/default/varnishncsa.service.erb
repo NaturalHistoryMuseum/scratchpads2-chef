@@ -4,7 +4,7 @@ Description=Varnish HTTP accelerator logging
 [Service]
 Type=forking
 Restart=always
-ExecStart=/usr/bin/varnishncsa -n <%= node['varnish']['instance'] %> -a -w /var/log/varnish/varnishncsa.log -D
+ExecStart=/usr/bin/varnishncsa -n <%= node['varnish']['instance'] %> -a -w /var/log/varnish/varnishncsa.log -D -q "not ReqURL ~ '/solr/'"
 
 [Install]
 WantedBy=multi-user.target

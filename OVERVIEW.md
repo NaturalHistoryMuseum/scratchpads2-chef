@@ -81,10 +81,47 @@ varnish-maintenance
 
 ... and to make the sites live again:
 
-```
+```bash
 ssh sp-control-1.nhm.ac.uk
 sudo su -
 systemctl restart varnish
+```
+
+The Sandbox site is rebuilt automatically by a cron command which runs every 
+six hours (01:00, 07:00, 13:00, 19:00). The site should not be managed through 
+the Aegir front end, but instead should be managed using Drush commands. If 
+there is a problem with the site, the easiest thing to do is to delete all 
+remnants of the current sandbox, and then rebuild it:
+
+```bash
+ssh sp-control-1.nhm.ac.uk
+sudo su -
+find /var/aegir/config | grep "/sandbox.scratchpads.eu" | xargs rm
+rm -rf /var/aegir/platforms/scratchpads-master/sites/sandbox.scratchpads.eu
+logout
+logout
+ssh sp-data-2.nhm.ac.uk
+sudo su -
+mysql
+```
+```sql
+-- Delete sandbox databases
+SHOW DATABASES LIKE 'sandboxscratch%';
+DROP DATABASE [...];
+-- Delete sandbox users
+DELETE FROM mysql.user WHERE User LIKE 'sandboxscratchpad%';
+FLUSH PRIVILEGES;
+```
+```bash
+ssh sp-control-1.nhm.ac.uk
+sudo su - aegir
+drush provision-save --context_type='site' --db_server='@server_spdata2nhmacuk'\
+ --platform='@platform_scratchpadsmaster' --server='@server_automaticpack'\
+ --uri='sandbox.scratchpads.eu'\
+ --root='/var/aegir/platforms/scratchpads-master'\
+ --profile='scratchpad_2_sandbox' --client_name='admin' sandbox.scratchpads.eu
+drush @sandbox.scratchpads.eu provision-install
+drush @hm provision-verify @platform_scratchpadsmaster
 ```
 
 ### sp-data-{1|2}.nhm.ac.uk

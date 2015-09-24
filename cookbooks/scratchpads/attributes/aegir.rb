@@ -163,12 +163,15 @@ default['scratchpads']['aegir']['cron']['hosting_cron_garbage_collection'] = {
 }
 # Rebuild the sandbox task
 default['scratchpads']['aegir']['cron']['rebuild_sandbox_every_six_hours'] = {
-  'minute' => '1',
-  'hour' => '*/6',
+  'minute' => '0',
+  'hour' => '1,7,13,19',
   'day' => '*',
   'month' => '*',
   'weekday' => '*',
-  'command' => "#drush @sandbox.scratchpads.eu provision-reinstall ; rm #{node['scratchpads']['aegir']['home_folder']}/backups/sandbox.scratchpads.eu*",
+  'command' => "drush @sandbox.scratchpads.eu provision-delete && \
+                drush provision-save --context_type='site' --db_server='@server_spdata2nhmacuk' --platform='@platform_scratchpadsmaster' --server='@server_automaticpack' --uri='sandbox.scratchpads.eu' --root='/var/aegir/platforms/scratchpads-master' --profile='scratchpad_2_sandbox' --client_name='admin' sandbox.scratchpads.eu && \
+                drush @sandbox.scratchpads.eu provision-install && \
+                drush @hm provision-verify @platform_scratchpadsmaster",
   'environment' => {},
   'home' => '/var/aegir',
   'action' => 'create',

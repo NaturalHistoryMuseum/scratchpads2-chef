@@ -229,10 +229,10 @@ default['scratchpads']['monit']['conf'][node['fqdn']]['tests'] = [{ # ~FC047
     'condition' => 'cpu usage (user) > 70% for 15 cycles',
     'action' => 'alert'
   },{
-    'condition' => 'cpu usage (system) > 30% for 15 cycles',
+    'condition' => 'cpu usage (system) > 50% for 15 cycles',
     'action' => 'alert'
   },{
-    'condition' => 'cpu usage (wait) > 20% for 15 cycles',
+    'condition' => 'cpu usage (wait) > 40% for 15 cycles',
     'action' => 'alert'
   }]
 ##### File systems #####

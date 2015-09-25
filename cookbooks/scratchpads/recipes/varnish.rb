@@ -25,7 +25,7 @@ template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
   group 'root'
   mode 0644
   notifies :reload, 'service[varnish]', :delayed
-  notifies :reload, 'service[varnishncsa]', :delayed
+  notifies :restart, 'service[varnishncsa]', :delayed
   variables({
     :sp_app_servers => app_hosts,
     :sp_search_master_servers => search_master_hosts,

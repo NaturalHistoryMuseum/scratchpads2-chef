@@ -1,6 +1,6 @@
-<VirtualHost *:80>
-  DocumentRoot    /var/www/default
-  <Directory /var/www/default>
+<VirtualHost _default_:80>
+  DocumentRoot    /var/www/empty
+  <Directory /var/www/empty>
     Order deny,allow
     Allow from all
     Require all granted

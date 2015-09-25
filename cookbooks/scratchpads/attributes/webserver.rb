@@ -84,7 +84,7 @@ default['scratchpads']['webserver']['apache']['templates']['xhprof'] = {
   'documentroot' => '/usr/share/php/xhprof_html',
   'servername' => "xhprof.#{node['fqdn']}"
 }
-default['scratchpads']['webserver']['apache']['templates']['redirects'] = {
+default['scratchpads']['webserver']['apache']['templates']['aardvark-redirects'] = {
   'source' => 'apache-redirects.erb',
   'cookbook' => 'scratchpads',
   'documentroot' => '/var/www/empty',

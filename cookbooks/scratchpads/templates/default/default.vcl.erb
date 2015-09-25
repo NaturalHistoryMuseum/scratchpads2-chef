@@ -194,12 +194,6 @@ sub vcl_recv {
     }
   }
 
-  # Prevent caching of large files (>10MB)
-  if (req.http.x-pipe && req.restarts > 0) {
-    unset req.http.x-pipe;
-    return (pipe);
-  } 
-
   if (req.restarts == 0) {
     if (req.http.x-forwarded-for) {
       set req.http.X-Forwarded-For = req.http.X-Forwarded-For + ", " + client.ip;
@@ -344,11 +338,6 @@ sub vcl_hit {
 }
 
 sub vcl_backend_response {
-  # do not cache files larger than 10MB
-  if (beresp.http.Content-Length ~ "[0-9]{8,}" ) {
-    set beresp.http.x-pipe = "1";
-    return (retry);
-  }
   # Prevent ports from appearing in the response.
   if (beresp.status == 301 || beresp.status == 302){
     set beresp.http.Location = regsub(beresp.http.Location,"^(\w+://[^/]+):\d+", "\1");

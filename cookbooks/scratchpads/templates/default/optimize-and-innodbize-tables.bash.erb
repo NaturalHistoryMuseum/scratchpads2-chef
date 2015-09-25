@@ -6,7 +6,7 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-DATABASES=`find /var/lib/mysql/ -type d | sed "s|/var/lib/mysql/||" | grep -v ^mysql$ | grep -v ^performance_schema$ | grep -v ^gm3$ | sort -R`
+DATABASES=`find /var/lib/mysql/ -type d | sed "s|/var/lib/mysql/||" | grep -v ^mysql$ | grep -v ^performance_schema$ | grep -v ^gm3$ | grep -v ^classificatio | sort -R`
 NUM_DATABASES=`echo $DATABASES|wc -w`
 DATABASE_INDEX=0
 for DATABASE in $DATABASES

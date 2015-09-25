@@ -1,10 +1,10 @@
-<VirtualHost _default_:80>
-  DocumentRoot    /var/www/empty
-  <Directory /var/www/empty>
-    Order deny,allow
-    Allow from all
+<VirtualHost *:80>
+  DocumentRoot <%= node['scratchpads']['webserver']['apache']['templates']['fqdn']['documentroot'] %>
+  ServerName <%= node['scratchpads']['webserver']['apache']['templates']['fqdn']['servername'] %>
+
+  <Location />
     Require all granted
-  </Directory>
+  </Location>
 
   RewriteEngine On
 
@@ -183,8 +183,8 @@
   RewriteCond %{HTTP_HOST} naididae.lifedesks.org
   RewriteRule (.*) http://worms.myspecies.info/ [R=permanent,L]
 
-  # Finally, if we haven't rewritten anything, ensure that we're on
-  # quartz.nhm.ac.uk or localhost, else rewrite to scratchpads.eu
+  # Finally, if we haven't rewritten anything and we're not requesting the FQDN, we redirect
+  RewriteCond %{HTTP_HOST} !<%= node['scratchpads']['webserver']['apache']['templates']['fqdn']['servername'] %>
   RewriteRule (.*) http://scratchpads.eu/ [R,L]
 
   # Rewrite vm.scratchpads.eu to https://vc-asteroid.nhm.ac.uk:9443/vsphere-client/ so that I don't have to remember the crap URL!

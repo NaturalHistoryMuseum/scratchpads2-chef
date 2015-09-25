@@ -1,5 +1,8 @@
 # Limit the number of connections to port 80 from a single IP address to 20.
--A tcpin -p tcp -m tcp --dport 80 --tcp-flags FIN,SYN,RST,ACK SYN -m connlimit --connlimit-above 20 --connlimit-mask 32 -j REJECT --reject-with tcp-reset 
+# 
+# This may be causing issues, so I'm removing it for now.
+#
+# -A tcpin -p tcp -m tcp --dport 80 --tcp-flags FIN,SYN,RST,ACK SYN -m connlimit --connlimit-above 20 --connlimit-mask 32 -j REJECT --reject-with tcp-reset 
 
 # Accept connections to HTTP/HTTPS (80,443) and SMTP (25) from everywhere.
 -A tcpin -p tcp -m tcp -m multiport --dports 443,80,25 -j ACCEPT

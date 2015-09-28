@@ -14,12 +14,6 @@ default['scratchpads']['monit']['conf']['varnish']['tests'] = [{
     'condition' => 'cpu > 80% for 5 cycles',
     'action' => 'alert'
   },{
-    'condition' => 'totalmem > 6.0 GB for 5 cycles',
-    'action' => 'alert'
-  },{
-    'condition' => 'totalmem > 7.0 GB',
-    'action' => 'alert'
-  },{
     'condition' => 'children > 250',
     'action' => 'alert'
   },{

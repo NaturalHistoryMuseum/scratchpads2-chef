@@ -27,7 +27,7 @@ default['scratchpads']['aegir']['modules_to_install'] = [
   'hosting_cron',
   'hosting_migrate',
   'hosting_queued',
-  'hosting_reinstall',
+  #'hosting_reinstall',
   'hosting_scratchpads',
   'hosting_signup',
   'hosting_task_gc',
@@ -47,9 +47,11 @@ default['scratchpads']['aegir']['modules_to_download'] = [
   'themekey'
 ]
 # Hosting Reinstall module settings for aegir
-default['scratchpads']['aegir']['hosting_reinstall']['repository'] = 'http://git.drupal.org/sandbox/ergonlogic/2386543.git'
-default['scratchpads']['aegir']['hosting_reinstall']['revision'] = '7.x-3.x'
-default['scratchpads']['aegir']['hosting_reinstall']['checkout_branch'] = '7.x-3.x'
+# The hosting_reinstall module has been renamed to hosting_dev. I had issues with the hosting_reinstall module,
+# so ended up simply using drush commands to do the reinstall (delete, create, install).
+#default['scratchpads']['aegir']['hosting_reinstall']['repository'] = 'http://git.drupal.org/sandbox/ergonlogic/2386543.git'
+#default['scratchpads']['aegir']['hosting_reinstall']['revision'] = '7.x-3.x'
+#default['scratchpads']['aegir']['hosting_reinstall']['checkout_branch'] = '7.x-3.x'
 # Hosting Auto Pack module settings for aegir
 default['scratchpads']['aegir']['hosting_auto_pack']['repository'] = 'https://github.com/NaturalHistoryMuseum/hosting_auto_pack.git'
 default['scratchpads']['aegir']['hosting_auto_pack']['checkout_branch'] = 'master'

@@ -139,13 +139,13 @@ git "#{node['scratchpads']['aegir']['home_folder']}/platforms/solanaceaesource-2
   timeout node['scratchpads']['aegir']['solanaceae_source']['timeout']
 end  
 # Download the Hosting Reinstall module which is currently a Sandbox, and therefore can't be downloaded using the method below.
-git "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib/hosting_reinstall" do
-  repository node['scratchpads']['aegir']['hosting_reinstall']['repository']
-  checkout_branch node['scratchpads']['aegir']['hosting_reinstall']['checkout_branch']
-  revision node['scratchpads']['aegir']['hosting_reinstall']['revision']
-  group node['scratchpads']['aegir']['group']
-  user node['scratchpads']['aegir']['user']
-end
+# git "#{node['scratchpads']['aegir']['home_folder']}/#{node['scratchpads']['aegir']['hostmaster_folder']}/sites/all/modules/contrib/hosting_reinstall" do
+#   repository node['scratchpads']['aegir']['hosting_reinstall']['repository']
+#   checkout_branch node['scratchpads']['aegir']['hosting_reinstall']['checkout_branch']
+#   revision node['scratchpads']['aegir']['hosting_reinstall']['revision']
+#   group node['scratchpads']['aegir']['group']
+#   user node['scratchpads']['aegir']['user']
+# end
 # Create the scratchpads-master platform on the pack server
 # First get the code
 git "#{node['scratchpads']['aegir']['home_folder']}/platforms/scratchpads-master" do

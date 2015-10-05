@@ -180,6 +180,16 @@ node['scratchpads']['webserver']['php']['pear']['pear_modules_custom_channels'].
   end
 end
 
+# Enable specific PHP modules
+node['scratchpads']['webserver']['php']['modules_to_enable'].each do|module_name|
+  execute "enable #{module_name} module" do
+    command "#{node['scratchpads']['webserver']['php']['php5enmod_command']} #{module_name}"
+    group 'root'
+    user 'root'
+    not_if { ::File.exists?("/etc/php5/apache2/conf.d/20-#{module_name}.ini")}
+  end
+end
+
 # Install pecl modules from known channels (no need to discover the channel)
 node['scratchpads']['webserver']['php']['pear']['pecl_modules'].each do|module_name,details|
   # Install pecl extensions

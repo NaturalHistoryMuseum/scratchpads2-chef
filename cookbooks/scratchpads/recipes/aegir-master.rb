@@ -456,7 +456,7 @@ end
 iptables_rule 'iptables_control'
 
 # Download and install the Tivoli client
-remote_file '/var/chef/tsm/7.1.3.0-TIV-TSMBAC-LinuxX86_DEB.tar' do
+remote_file '/var/chef/7.1.3.0-TIV-TSMBAC-LinuxX86_DEB.tar' do
   source 'ftp://ftp.software.ibm.com/storage/tivoli-storage-management/maintenance/client/v7r1/Linux/LinuxX86_DEB/BA/v713/7.1.3.0-TIV-TSMBAC-LinuxX86_DEB.tar'
   owner 'root'
   group 'root'

@@ -202,5 +202,6 @@ default['scratchpads']['webserver']['php']['pear']['pear_modules_custom_channels
 default['scratchpads']['webserver']['php']['pear']['pecl_modules'] = {
   'uploadprogress' => {'preferred_state' => 'stable'},
   'mailparse' => {'preferred_state' => 'stable'},
+  'pecl_http' => {'preferred_state' => 'stable'},
   'xhprof' => {'preferred_state' => 'beta'}
 }

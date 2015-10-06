@@ -208,3 +208,23 @@ node['scratchpads']['webserver']['php']['pear']['pecl_modules'].each do|module_n
     not_if { ::File.exists?("/etc/php5/apache2/conf.d/20-#{module_name}.ini")}
   end
 end
+
+# Finally, we need to move the pecl-http module to the end of the list (this really should be automatic - why are dependencies not working?)
+execute "move pecl-http to end of apache2 list" do
+  command "mv /etc/php5/apache2/conf.d/20-pecl-http.ini /etc/php5/apache2/conf.d/30-pecl-http.ini"
+  group 'root'
+  user 'root'
+  not_if { ::File.exists?("/etc/php5/apache2/conf.d/30-pecl-http.ini")}
+end
+execute "move pecl-http to end of cgi list" do
+  command "mv /etc/php5/cgi/conf.d/20-pecl-http.ini /etc/php5/cgi/conf.d/30-pecl-http.ini"
+  group 'root'
+  user 'root'
+  not_if { ::File.exists?("/etc/php5/cgi/conf.d/30-pecl-http.ini")}
+end
+execute "move pecl-http to end of cli list" do
+  command "mv /etc/php5/cli/conf.d/20-pecl-http.ini /etc/php5/cli/conf.d/30-pecl-http.ini"
+  group 'root'
+  user 'root'
+  not_if { ::File.exists?("/etc/php5/cli/conf.d/30-pecl-http.ini")}
+end

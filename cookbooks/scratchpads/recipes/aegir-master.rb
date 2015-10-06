@@ -462,4 +462,5 @@ remote_file '/var/chef/7.1.3.0-TIV-TSMBAC-LinuxX86_DEB.tar' do
   group 'root'
   mode '0644'
   action :create
+  not_if {::File.exists?('/var/chef/7.1.3.0-TIV-TSMBAC-LinuxX86_DEB.tar')}
 end

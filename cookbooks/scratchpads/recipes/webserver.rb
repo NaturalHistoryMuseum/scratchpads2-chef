@@ -180,16 +180,6 @@ node['scratchpads']['webserver']['php']['pear']['pear_modules_custom_channels'].
   end
 end
 
-# Enable specific PHP modules
-node['scratchpads']['webserver']['php']['modules_to_enable'].each do|module_name|
-  execute "enable #{module_name} module" do
-    command "#{node['scratchpads']['webserver']['php']['php5enmod_command']} #{module_name}"
-    group 'root'
-    user 'root'
-    not_if { ::File.exists?("/etc/php5/apache2/conf.d/20-#{module_name}.ini")}
-  end
-end
-
 # Install pecl modules from known channels (no need to discover the channel)
 node['scratchpads']['webserver']['php']['pear']['pecl_modules'].each do|module_name,details|
   # Install pecl extensions
@@ -207,45 +197,4 @@ node['scratchpads']['webserver']['php']['pear']['pecl_modules'].each do|module_n
     #action :nothing
     not_if { ::File.exists?("/etc/php5/apache2/conf.d/20-#{module_name}.ini")}
   end
-end
-
-# Finally, we need to move the pecl-http module to the end of the list (this really should be automatic - why are dependencies not working?)
-execute "move pecl-http to end of apache2 list" do
-  command "mv /etc/php5/apache2/conf.d/20-pecl-http.ini /etc/php5/apache2/conf.d/30-pecl-http.ini"
-  group 'root'
-  user 'root'
-  not_if { ::File.exists?("/etc/php5/apache2/conf.d/30-pecl-http.ini")}
-  only_if { ::File.exists?("/etc/php5/apache2/conf.d/20-pecl-http.ini")}
-end
-execute "delete '20' pecl-http from apache2 list" do
-  command "rm /etc/php5/apache2/conf.d/20-pecl-http.ini"
-  group 'root'
-  user 'root'
-  only_if { ::File.exists?("/etc/php5/apache2/conf.d/20-pecl-http.ini")}
-end
-execute "move pecl-http to end of cgi list" do
-  command "mv /etc/php5/cgi/conf.d/20-pecl-http.ini /etc/php5/cgi/conf.d/30-pecl-http.ini"
-  group 'root'
-  user 'root'
-  not_if { ::File.exists?("/etc/php5/cgi/conf.d/30-pecl-http.ini")}
-  only_if { ::File.exists?("/etc/php5/cgi/conf.d/20-pecl-http.ini")}
-end
-execute "delete '20' pecl-http from cgi list" do
-  command "rm /etc/php5/cgi/conf.d/20-pecl-http.ini"
-  group 'root'
-  user 'root'
-  only_if { ::File.exists?("/etc/php5/cgi/conf.d/20-pecl-http.ini")}
-end
-execute "move pecl-http to end of cli list" do
-  command "mv /etc/php5/cli/conf.d/20-pecl-http.ini /etc/php5/cli/conf.d/30-pecl-http.ini"
-  group 'root'
-  user 'root'
-  not_if { ::File.exists?("/etc/php5/cli/conf.d/30-pecl-http.ini")}
-  only_if { ::File.exists?("/etc/php5/cli/conf.d/20-pecl-http.ini")}
-end
-execute "delete '20' pecl-http from cli list" do
-  command "rm /etc/php5/cli/conf.d/20-pecl-http.ini"
-  group 'root'
-  user 'root'
-  only_if { ::File.exists?("/etc/php5/cli/conf.d/20-pecl-http.ini")}
 end

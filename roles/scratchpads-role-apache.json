@@ -59,9 +59,6 @@
         "php5-mcrypt",
         "php5-mysql",
         "php5-memcache",
-        "php5-pecl-http",
-        "php5-propro",
-        "php5-raphf",
         "php-console-table"
       ]
     }

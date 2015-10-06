@@ -42,8 +42,8 @@
         "opcache.memory_consumption": "256",
         "opcache.max_accelerated_files": 5000,
         "opcache.enable_file_override": 1,
-        "upload_max_filesize": "50M",
-        "post_max_size": "100M",
+        "upload_max_filesize": "200M",
+        "post_max_size": "200M",
         "max_input_vars": "10000"
       },
       "ext_conf_dir": "/etc/php5/mods-available",

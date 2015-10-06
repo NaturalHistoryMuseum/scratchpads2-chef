@@ -216,15 +216,33 @@ execute "move pecl-http to end of apache2 list" do
   user 'root'
   not_if { ::File.exists?("/etc/php5/apache2/conf.d/30-pecl-http.ini")}
 end
+execute "delete '20' pecl-http from apache2 list" do
+  command "rm /etc/php5/apache2/conf.d/20-pecl-http.ini"
+  group 'root'
+  user 'root'
+  only_if { ::File.exists?("/etc/php5/apache2/conf.d/20-pecl-http.ini")}
+end
 execute "move pecl-http to end of cgi list" do
   command "mv /etc/php5/cgi/conf.d/20-pecl-http.ini /etc/php5/cgi/conf.d/30-pecl-http.ini"
   group 'root'
   user 'root'
   not_if { ::File.exists?("/etc/php5/cgi/conf.d/30-pecl-http.ini")}
 end
+execute "delete '20' pecl-http from cgi list" do
+  command "rm /etc/php5/cgi/conf.d/20-pecl-http.ini"
+  group 'root'
+  user 'root'
+  only_if { ::File.exists?("/etc/php5/cgi/conf.d/20-pecl-http.ini")}
+end
 execute "move pecl-http to end of cli list" do
   command "mv /etc/php5/cli/conf.d/20-pecl-http.ini /etc/php5/cli/conf.d/30-pecl-http.ini"
   group 'root'
   user 'root'
   not_if { ::File.exists?("/etc/php5/cli/conf.d/30-pecl-http.ini")}
+end
+execute "delete '20' pecl-http from cli list" do
+  command "rm /etc/php5/cli/conf.d/20-pecl-http.ini"
+  group 'root'
+  user 'root'
+  only_if { ::File.exists?("/etc/php5/cli/conf.d/20-pecl-http.ini")}
 end

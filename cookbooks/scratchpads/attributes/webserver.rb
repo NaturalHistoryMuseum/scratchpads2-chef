@@ -199,7 +199,7 @@ default['scratchpads']['webserver']['php']['session_save_path'] = '/var/www/php-
 
 # Pear settings
 default['scratchpads']['webserver']['php']['pear']['pear_modules_custom_channels'] = {'drush' => 'pear.drush.org'}
-default['scratchpads']['webserver']['php']['modules_to_enable'] = ['raphf','propro']
+default['scratchpads']['webserver']['php']['modules_to_enable'] = ['raphf','propro', 'pecl-http']
 default['scratchpads']['webserver']['php']['pear']['pecl_modules'] = {
   'uploadprogress' => {'preferred_state' => 'stable'},
   'mailparse' => {'preferred_state' => 'stable'},

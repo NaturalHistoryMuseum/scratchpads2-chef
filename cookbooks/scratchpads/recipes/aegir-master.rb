@@ -455,6 +455,13 @@ end
 # Add the control IPTables rules
 iptables_rule 'iptables_control'
 
+# Change the permissions on the /var/aegir/backups folder to ensure that we can copy backups to a remote server
+directory '/var/aegir/backups' do
+  owner 'aegir'
+  group 'www-data'
+  mode '0755'
+end
+
 # Download and install the Tivoli client
 remote_file '/var/chef/7.1.3.0-TIV-TSMBAC-LinuxX86_DEB.tar' do
   source 'ftp://ftp.software.ibm.com/storage/tivoli-storage-management/maintenance/client/v7r1/Linux/LinuxX86_DEB/BA/v713/7.1.3.0-TIV-TSMBAC-LinuxX86_DEB.tar'

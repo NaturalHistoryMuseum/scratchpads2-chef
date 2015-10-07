@@ -6,6 +6,8 @@
 
 # Only include the postfix recipe IF we are the control server
 if node['roles'].index(node['scratchpads']['control']['role']) then
+  # Always receive for quartz.nhm.ac.uk (add any others we require here).
+  node.default['postfix']['virtual_aliases_domains']['quartz.nhm.ac.uk'] = 'quartz.nhm.ac.uk'
   begin
     Dir.foreach('/var/aegir/platforms') do |platform|
       if File.exists?("/var/aegir/platforms/#{platform}/sites")

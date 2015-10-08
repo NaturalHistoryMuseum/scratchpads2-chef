@@ -59,6 +59,7 @@ will have been automatically configured with each of the database and
 application servers, and will also have a "pack" server configured, which in 
 turn will contain a scratchpads-master platform. New Scratchpads can easily be 
 created on the scratchpads-master platform.
+
 Preparing nodes
 ---------------
 If using this setup in your production environment, you will need to create the 

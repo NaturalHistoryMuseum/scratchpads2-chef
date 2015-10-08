@@ -1,4 +1,8 @@
+# Ignore unfolded files
 *.unfolded
+
+# Ignore .bash scripts
+*.bash
 
 # Apache
 .htpasswd

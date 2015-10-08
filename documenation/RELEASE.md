@@ -10,15 +10,15 @@ numbers follow the following basic format:
 
 2.x.y[.z]
 
-2 -> This is the version of Scratchpads, and is currently fixed. This could be
+- 2: This is the version of Scratchpads, and is currently fixed. This could be
      bumped up following an upgrade to a higher version of Drupal.
-x -> This number reflects a feature release of the Scratchpads. This number
+- x: This number reflects a feature release of the Scratchpads. This number
      should be bumped up if any additional features have been added to the
      Scratchpads (and y should be reset to 0).
-y -> This number reflects a bug release of the Scratchpads. This number should
+- y: This number reflects a bug release of the Scratchpads. This number should
      be bumped when any code is released that does not have new features (and z
      should be removed).
-z -> This number reflects a point release of the Scratchpads. A point release
+- z: This number reflects a point release of the Scratchpads. A point release
      is similar to a bug release, but does not require any database updates,
      and probably only fixes one or two issues. This number should only be
      required if non-zero.

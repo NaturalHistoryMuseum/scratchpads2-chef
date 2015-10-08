@@ -170,10 +170,10 @@ default['scratchpads']['aegir']['cron']['rebuild_sandbox_every_six_hours'] = {
   'day' => '*',
   'month' => '*',
   'weekday' => '*',
-  'command' => "drush @sandbox.scratchpads.eu provision-delete && \
-                drush provision-save --context_type='site' --db_server='@server_spdata2nhmacuk' --platform='@platform_scratchpadsmaster' --server='@server_automaticpack' --uri='sandbox.scratchpads.eu' --root='/var/aegir/platforms/scratchpads-master' --profile='scratchpad_2_sandbox' --client_name='admin' sandbox.scratchpads.eu && \
-                drush @sandbox.scratchpads.eu provision-install && \
-                drush @hm provision-verify @platform_scratchpadsmaster",
+  'command' => "drush @sandbox.scratchpads.eu provision-delete 2>/dev/null >/var/log/sandbox-install.log && \
+                drush provision-save --context_type='site' --db_server='@server_spdata2nhmacuk' --platform='@platform_scratchpadsmaster' --server='@server_automaticpack' --uri='sandbox.scratchpads.eu' --root='/var/aegir/platforms/scratchpads-master' --profile='scratchpad_2_sandbox' --client_name='admin' sandbox.scratchpads.eu 2>/dev/null >>/var/log/sandbox-install.log && \
+                drush @sandbox.scratchpads.eu provision-install 2>/dev/null >>/var/log/sandbox-install.log && \
+                drush @hm provision-verify @platform_scratchpadsmaster 2>/dev/null >>/var/log/sandbox-install.log",
   'environment' => {},
   'home' => '/var/aegir',
   'action' => 'create',

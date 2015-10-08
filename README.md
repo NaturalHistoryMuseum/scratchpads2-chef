@@ -8,5 +8,4 @@ instance at the Natural History Museum, London, and have therefore included
 passwords in encrypted data bags. If maintaining the servers at the museum, 
 please contact Simon Rycroft, or Vince Smith for the encryption key.
 
-Further documentation is available in the 
-[documentation](documentation/README.md) folder.
+Further documentation is available in the [documentation](documentation) folder.

@@ -48,7 +48,7 @@ New Scratchpads platforms can be created automatically also as the aegir user:
 ```bash
 ssh sp-control-1.nhm.ac.uk
 sudo su - aegir
-create-aegir-platform [Scratchpads release, e.g. "2.9.9"]
+create-aegir-platform [Scratchpads release, e.g. "2.9.9", or Scratchpads branch, e.g. "1234-fix-stuff"]
 ```
 
 Sites should be upgraded by migrating between platforms. This process should be 

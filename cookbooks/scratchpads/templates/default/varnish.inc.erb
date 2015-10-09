@@ -1,7 +1,7 @@
 <?php
 global $conf;
 $conf["reverse_proxy"] = TRUE;
-$conf["reverse_proxy_addresses"] = array("<%= node['varnish']['listen_address'] %>");
+$conf["reverse_proxy_addresses"] = array("<%= Resolv.getaddress node['varnish']['listen_address'] %>");
 $conf["varnish_flush_cron"] = 0;
 $conf["varnish_version"] = 3;
 $conf["varnish_control_terminal"] = "<%= node['varnish']['listen_address'] %>:<%= node['varnish']['admin_listen_port'] %>";

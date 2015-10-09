@@ -37,6 +37,16 @@ template "/usr/local/sbin/optimize-and-innodbize-tables" do
   action :create
 end
 
+# Backup script
+template "/usr/local/sbin/backup-databases" do
+  source 'backup-databases.erb'
+  cookbook 'scratchpads'
+  owner 'root'
+  group 'root'
+  mode '0700'
+  action :create
+end
+
 # Install the mysql2_chef_gem as required by database
 mysql2_chef_gem 'default' do
   provider Chef::Provider::Mysql2ChefGem::Percona

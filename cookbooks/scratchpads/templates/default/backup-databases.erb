@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# This script must be run as the root user. The root user should have
+# a .my.cnf in their home folder (/root/.my.cnf) which allows automatic
+# login to the MySQL server. If that does not work, then this file can
+# be altered to contain passwords (far from ideal).
+
+DAY=`date +%A`
+WEEK=$((`date +%V` % 4))
+MONTH=`date +%B`
+rm -rf /var/aegir/backups-databases/<%= node['fqdn'] %>/daily/$DAY
+rm -rf /var/aegir/backups-databases/<%= node['fqdn'] %>/weekly/$WEEK
+rm -rf /var/aegir/backups-databases/<%= node['fqdn'] %>/monthly/$MONTH
+mkdir -p /var/aegir/backups-databases/<%= node['fqdn'] %>/daily/$DAY
+mkdir -p /var/aegir/backups-databases/<%= node['fqdn'] %>/weekly/$WEEK
+mkdir -p /var/aegir/backups-databases/<%= node['fqdn'] %>/monthly/$MONTH
+for DATABASE in $(echo "SHOW DATABASES" | mysql --defaults-extra-file=/root/.my.cnf | grep -v performance_schema | grep -v information_schema | tail -n+2)
+do
+        mysqldump --defaults-extra-file=/root/.my.cnf $DATABASE | bzip2 > /var/aegir/backups-databases/<%= node['fqdn'] %>/daily/$DAY/$DATABASE.sql.bz2
+        cp /var/aegir/backups-databases/<%= node['fqdn'] %>/daily/$DAY/$DATABASE.sql.bz2 /var/aegir/backups-databases/<%= node['fqdn'] %>/weekly/$WEEK
+        cp /var/aegir/backups-databases/<%= node['fqdn'] %>/daily/$DAY/$DATABASE.sql.bz2 /var/aegir/backups-databases/<%= node['fqdn'] %>/monthly/$MONTH
+done

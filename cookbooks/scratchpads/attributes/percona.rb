@@ -5,7 +5,32 @@ default['scratchpads']['percona']['percona-functions-file'] = 'percona-functions
 default['scratchpads']['percona']['secure-installation-file'] = 'secure-installation.sql'
 default['scratchpads']['percona']['gm3_data_file'] = 'gm3.sql.gz'
 
+# Additional settings for the my.cnf file.
+#
+# Note, additional settings can be added easily (or can they - need to check).
+default['scratchpads']['percona']['row_format'] = 'COMPRESSED'
+default['scratchpads']['percona']['collation'] = 'utf8mb4_unicode_ci'
+default['scratchpads']['percona']['charset'] = 'utf8mb4'
+
 # Cron functions for backup
+default['scratchpads']['percona']['cron']['simple_backup'] = {
+  'minute' => 33,
+  'hour' => 1,
+  'day' => '*',
+  'month' => '*',
+  'weekday' => '*',
+  'command' => "/usr/local/sbin/backup-databases",
+  'environment' => {},
+  'home' => '/root',
+  'action' => 'create',
+  'user' => 'root',
+  'mailto' => node['scratchpads']['control']['admin_email'],
+  'path' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+}
+##############################################################
+#
+# The Following backups which use xtrabackup have been removed
+#
 # Rotate previous weeks backups before creating full backup.
 default['scratchpads']['percona']['cron']['rotate_backups'] = {
   'minute' => 33,
@@ -20,7 +45,7 @@ default['scratchpads']['percona']['cron']['rotate_backups'] = {
                 rm -rf /var/aegir/backups-databases/#{node['fqdn']}/week/1",
   'environment' => {},
   'home' => '/root',
-  'action' => 'create',
+  'action' => 'delete',
   'user' => 'root',
   'mailto' => node['scratchpads']['control']['admin_email'],
   'path' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
@@ -36,7 +61,7 @@ default['scratchpads']['percona']['cron']['rotate_backups_monthly_and_yearly'] =
                 cp /var/aegir/backups-databases/#{node['fqdn']}/week/4.tar.bz2 /var/aegir/backups-databases/#{node['fqdn']}/year/`date +%Y`.tar.bz2",
   'environment' => {},
   'home' => '/root',
-  'action' => 'create',
+  'action' => 'delete',
   'user' => 'root',
   'mailto' => node['scratchpads']['control']['admin_email'],
   'path' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
@@ -52,7 +77,7 @@ default['scratchpads']['percona']['cron']['weekly_prepare_backup'] = {
                 xtrabackup --backup --target-dir=/var/aegir/backups-databases/#{node['fqdn']}/week/1 2> /var/log/xtrabackup.log",
   'environment' => {},
   'home' => '/root',
-  'action' => 'create',
+  'action' => 'delete',
   'user' => 'root',
   'mailto' => node['scratchpads']['control']['admin_email'],
   'path' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
@@ -66,7 +91,7 @@ default['scratchpads']['percona']['cron']['incremental_backup_mon'] = {
   'command' => "xtrabackup --backup --target-dir=/var/aegir/backups-databases/#{node['fqdn']}/week/1/mon --incremental-basedir=/var/aegir/backups-databases/#{node['fqdn']}/week/1 2>> /var/log/xtrabackup.log",
   'environment' => {},
   'home' => '/root',
-  'action' => 'create',
+  'action' => 'delete',
   'user' => 'root',
   'mailto' => node['scratchpads']['control']['admin_email'],
   'path' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
@@ -80,7 +105,7 @@ default['scratchpads']['percona']['cron']['incremental_backup_tue'] = {
   'command' => "xtrabackup --backup --target-dir=/var/aegir/backups-databases/#{node['fqdn']}/week/1/tue --incremental-basedir=/var/aegir/backups-databases/#{node['fqdn']}/week/1/mon 2>> /var/log/xtrabackup.log",
   'environment' => {},
   'home' => '/root',
-  'action' => 'create',
+  'action' => 'delete',
   'user' => 'root',
   'mailto' => node['scratchpads']['control']['admin_email'],
   'path' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
@@ -94,7 +119,7 @@ default['scratchpads']['percona']['cron']['incremental_backup_wed'] = {
   'command' => "xtrabackup --backup --target-dir=/var/aegir/backups-databases/#{node['fqdn']}/week/1/wed --incremental-basedir=/var/aegir/backups-databases/#{node['fqdn']}/week/1/tue 2>> /var/log/xtrabackup.log",
   'environment' => {},
   'home' => '/root',
-  'action' => 'create',
+  'action' => 'delete',
   'user' => 'root',
   'mailto' => node['scratchpads']['control']['admin_email'],
   'path' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
@@ -108,7 +133,7 @@ default['scratchpads']['percona']['cron']['incremental_backup_thu'] = {
   'command' => "xtrabackup --backup --target-dir=/var/aegir/backups-databases/#{node['fqdn']}/week/1/thu --incremental-basedir=/var/aegir/backups-databases/#{node['fqdn']}/week/1/wed 2>> /var/log/xtrabackup.log",
   'environment' => {},
   'home' => '/root',
-  'action' => 'create',
+  'action' => 'delete',
   'user' => 'root',
   'mailto' => node['scratchpads']['control']['admin_email'],
   'path' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
@@ -122,7 +147,7 @@ default['scratchpads']['percona']['cron']['incremental_backup_fri'] = {
   'command' => "xtrabackup --backup --target-dir=/var/aegir/backups-databases/#{node['fqdn']}/week/1/fri --incremental-basedir=/var/aegir/backups-databases/#{node['fqdn']}/week/1/thu 2>> /var/log/xtrabackup.log",
   'environment' => {},
   'home' => '/root',
-  'action' => 'create',
+  'action' => 'delete',
   'user' => 'root',
   'mailto' => node['scratchpads']['control']['admin_email'],
   'path' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
@@ -136,15 +161,8 @@ default['scratchpads']['percona']['cron']['incremental_backup_sat'] = {
   'command' => "xtrabackup --backup --target-dir=/var/aegir/backups-databases/#{node['fqdn']}/week/1/sat --incremental-basedir=/var/aegir/backups-databases/#{node['fqdn']}/week/1/fri 2>> /var/log/xtrabackup.log",
   'environment' => {},
   'home' => '/root',
-  'action' => 'create',
+  'action' => 'delete',
   'user' => 'root',
   'mailto' => node['scratchpads']['control']['admin_email'],
   'path' => '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 }
-
-# Additional settings for the my.cnf file.
-#
-# Note, additional settings can be added easily (or can they - need to check).
-default['scratchpads']['percona']['row_format'] = 'COMPRESSED'
-default['scratchpads']['percona']['collation'] = 'utf8mb4_unicode_ci'
-default['scratchpads']['percona']['charset'] = 'utf8mb4'

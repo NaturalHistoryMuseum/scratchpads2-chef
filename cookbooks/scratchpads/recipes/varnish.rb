@@ -32,6 +32,13 @@ template "#{node['varnish']['dir']}/#{node['varnish']['vcl_conf']}" do
     :sp_search_slave_servers => search_slave_hosts
   })
 end
+template "/usr/local/sbin/clear-site-from-varnish" do
+  source 'clear-site-from-varnish.erb'
+  cookbook 'scratchpads'
+  owner 'root'
+  group 'root'
+  mode 0755
+end
 # Add the maintenance varnish configuration.
 template "#{node['varnish']['dir']}/maintenance.vcl" do
   source 'maintenance.vcl.erb'

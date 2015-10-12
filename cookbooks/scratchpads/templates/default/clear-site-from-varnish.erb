@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# This command expects one argument - a site domain name.
+if [ $# -eq 1 ]
+then
+  varnishadm -T 127.0.0.1:<%= node['varnish']['admin_listen_port'] %> -S <%= node['varnish']['secret_file'] %> ban "req.http.host == "$1
+else
+  echo "usage: $0 {domain name}"
+fi

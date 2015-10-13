@@ -9,3 +9,9 @@ configuration was not deleted cleanly. This is likely to be an issue with Aegir
 and needs looking into. The next time a platform is deleted, it will be 
 necessary to run ```$ apache2ctl configtest``` to ascertain whether or not an 
 Aegir configuration file needs deleting.
+
+Memory usage on data servers
+----------------------------
+Both sp-data-1 and sp-data-2 use close to (and occasionally more than) their 
+memory allocation of 20GB. This appears to be due to MySQL/Percona, although I 
+am not sure why as MySQL/Percona is configured to use a maximum of ~6GB.

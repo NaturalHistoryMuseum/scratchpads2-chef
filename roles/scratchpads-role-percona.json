@@ -12,7 +12,8 @@
         "mysqld": {
           "innodb_large_prefix": 1,
           "max_user_connections": 20,
-          "innodb_buffer_pool_instances": "2"
+          "innodb_buffer_pool_instances": "2",
+          "table_definition_cache": "524288"
         },
         "mysqld_safe": {
           "open-files-limit": 1000000
@@ -27,7 +28,7 @@
         "innodb_file_format": "Barracuda",
         "max_connections": 51,
         "log_bin": "",
-        "table_cache": 500000
+        "table_cache": 50000
       }
     }
   },

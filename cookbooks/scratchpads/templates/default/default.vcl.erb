@@ -69,14 +69,6 @@ backend sp_search_slave_<%= n+1 %> {
   }
 }
 <% end -%>
-backend redmine {
-  .host = "<%= node['scratchpads']['varnish']['redmine']['host'] %>";
-  .port = "<%= node['scratchpads']['varnish']['redmine']['port'] %>";
-  .first_byte_timeout = <%= node['scratchpads']['varnish']['first_byte_timeout'] %>;
-  .between_bytes_timeout = <%= node['scratchpads']['varnish']['between_bytes_timeout'] %>;
-  .connect_timeout = <%= node['scratchpads']['varnish']['connect_timeout'] %>;
-  .max_connections = <%= node['scratchpads']['varnish']['redmine']['max_connections'] %>;
-}
 backend monit {
   .host = "<%= node['scratchpads']['varnish']['monit']['host'] %>";
   .port = "<%= node['scratchpads']['varnish']['monit']['port'] %>";
@@ -108,17 +100,6 @@ sub set_monit_domains{
     return (pass);
   }
 }
-sub set_redmine_domains{
-<%
-  domains = []
-  node['scratchpads']['varnish']['redmine']['domains'].each do|domain|
-    domains << 'req.http.host ~ "^'+domain+'$"'
-  end
-%>
-  if(<%= domains.join(' || ') %>){
-    set req.backend_hint = redmine;
-  }
-}
 sub set_no_cache_domains{
 <%
   domains = []
@@ -140,8 +121,12 @@ sub vcl_init {
   new random_search_slaves = directors.random();
   new random_search_masters = directors.random();
 <% @sp_app_servers.each_with_index do |app_server, n| -%>
-  random_backend.add_backend(sp_app_<%= n+1 %>, 100);
+  random_backend.add_backend(sp_app_<%= n+1 %>, 1000);
 <% end -%>
+  # We add the control backend to the random_backend, but it will only handle
+  # one request for every 1000 that each of the other servers handle. This
+  # allows both app servers to fail and the control server should cover (or try to)
+  random_backend.add_backend(control, 1);
 <% @sp_search_slave_servers.each_with_index do |search_server, n| -%>
   random_search_slaves.add_backend(sp_search_slave_<%= n+1 %>, 100);
 <% end -%>
@@ -168,7 +153,6 @@ sub vcl_recv {
   set req.backend_hint = random_backend.backend();
   # Override the default for specific domains.
   call set_control_domains;
-  call set_redmine_domains;
   call set_monit_domains;
   call set_no_cache_domains;
   # Set the backen for server-status and xhprof

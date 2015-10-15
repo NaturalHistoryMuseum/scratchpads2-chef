@@ -1,0 +1,14 @@
+<VirtualHost *:80>
+    ServerName support.scratchpads.eu
+    ServerAlias support2.scratchpads.eu
+    RailsEnv production
+    SetEnv X_DEBIAN_SITEID "default"
+    PassengerDefaultUser www-data
+    Alias "/plugin_assets/" /var/cache/redmine/default/plugin_assets/
+    DocumentRoot /usr/share/redmine/public
+    <Directory "/usr/share/redmine/public">
+        Allow from all
+        Options -MultiViews
+        Require all granted
+    </Directory>
+</VirtualHost>

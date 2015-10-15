@@ -1,0 +1,21 @@
+{
+  "id": "redmine",
+  "user": {
+    "encrypted_data": "w1fsTd2JMsS09hNDEFFWMUO2li8TZEUmHenhg1CCPZg=\n",
+    "iv": "e5B82TS3LfGdxxRvgiRIhw==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  },
+  "password": {
+    "encrypted_data": "qo9CYwnlcJ7f9kc0BT4XEJsxrJUPdnLZAkkEUhm6lYAWhI9cZbaCQROKC5Kj\n+TIG\n",
+    "iv": "BvTuMn2g8a1r4lRVVUe7lw==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  },
+  "session": {
+    "encrypted_data": "i+eWfvt+gKF+lEYBgm34OtwJHs0Xqur7z53IAHa7Fhw9J14kATt4A9OzbGZU\nJ04VVqsfSEVt4Xm57kiDaMwjM+nSyU5diPtGA5H59w+Bg1vDntdILvxVq750\nSLZc7W78kHoWYZQ6BqkEOyi+DQlHxA==\n",
+    "iv": "g+RafCYxmKlL13Y57UqWSQ==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  }
+}

@@ -32,6 +32,12 @@ default['scratchpads']['webserver']['apache']['templates']['archived-sites'] = {
     'source' => 'archived-sites.tar.gz'
   }
 }
+default['scratchpads']['webserver']['apache']['templates']['redmine'] = {
+  'source' => 'redmine-apache.erb',
+  'cookbook' => 'scratchpads',
+  'serveraliaseses' => ['support.scratchpads.eu'],
+  'documentroot' => '/usr/share/redmine/public'
+}
 default['scratchpads']['webserver']['apache']['templates']['dungbeetle.co.uk'] = {
   'source' => 'dungbeetle.co.uk.erb',
   'cookbook' => 'scratchpads',
@@ -203,4 +209,54 @@ default['scratchpads']['webserver']['php']['pear']['pecl_modules'] = {
   'uploadprogress' => {'preferred_state' => 'stable'},
   'mailparse' => {'preferred_state' => 'stable'},
   'xhprof' => {'preferred_state' => 'beta'}
+}
+
+# Redmine settings
+redmine_db_user = passwords.get_encrypted_data 'redmine', 'user'
+redmine_db_password = passwords.get_encrypted_data 'redmine', 'password'
+default['scratchpads']['redmine']['database']['adapter'] = 'mysql2'
+default['scratchpads']['redmine']['database']['database'] = 'redmine'
+default['scratchpads']['redmine']['database']['host'] = 'sp-data-2.nhm.ac.uk'
+default['scratchpads']['redmine']['database']['port'] = 3306
+default['scratchpads']['redmine']['database']['username'] = redmine_db_user
+default['scratchpads']['redmine']['database']['password'] = redmine_db_password
+default['scratchpads']['redmine']['database']['encoding'] = 'utf8mb4'
+# Session key
+redmine_session_key = passwords.get_encrypted_data 'redmine', 'session'
+default['scratchpads']['redmine']['session']['key'] = redmine_session_key
+# Redmine database template
+default['scratchpads']['redmine']['templates']['database.yml'] = {
+  'source' => 'redmine-database.yml.erb',
+  'cookbook' => 'scratchpads',
+  'path' => '/etc/redmine/default/database.yml',
+  'owner' => 'root',
+  'group' => 'www-data',
+  'mode' => '0640'
+}
+# Redmine session template
+default['scratchpads']['redmine']['templates']['session.yml'] = {
+  'source' => 'redmine-session.yml.erb',
+  'cookbook' => 'scratchpads',
+  'path' => '/etc/redmine/default/session.yml',
+  'owner' => 'root',
+  'group' => 'www-data',
+  'mode' => '0640'
+}
+# Cookbook file
+default['scratchpads']['redmine']['cookbook_file']['plugins'] = {
+  'source' => 'redmine-plugins.tar.gz',
+  'cookbook' => 'scratchpads',
+  'path' => '/usr/share/redmine/redmine-plugins.tar.gz',
+  'owner' => 'root',
+  'group' => 'root',
+  'mode' => '0644'
+}
+# Cookbook file
+default['scratchpads']['redmine']['cookbook_file']['theme'] = {
+  'source' => 'redmine-theme.tar.gz',
+  'cookbook' => 'scratchpads',
+  'path' => '/usr/share/redmine/public/themes/redmine-theme.tar.gz',
+  'owner' => 'root',
+  'group' => 'root',
+  'mode' => '0644'
 }

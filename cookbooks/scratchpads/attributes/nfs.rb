@@ -29,6 +29,13 @@ default['scratchpads']['nfs']['exports']['/var/aegir/backups-databases'] = {
   'unique' => true,
   'mount_options' => 'rw,noacl,nocto,bg,ac,noatime,nodiratime,intr,hard'
 }
+default['scratchpads']['nfs']['exports']['/var/lib/redmine/default'] = {
+  'writeable' => true,
+  'sync' => true,
+  'options' => ['no_root_squash','no_subtree_check'],
+  'unique' => true,
+  'mount_options' => 'rw,noacl,nocto,bg,ac,noatime,nodiratime,intr,hard'
+}
 # Bash template
 default['scratchpads']['nfs']['templates']['clients']['copy-control.bash.erb'] = {
   'path' => '/usr/local/sbin/copy-control',

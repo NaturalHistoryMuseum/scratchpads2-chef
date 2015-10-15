@@ -68,6 +68,7 @@ else
       group 'root'
       mode 0775
       action :create
+      recursive true
       not_if { ::File.exists?(mount_dir)}
     end
     # Mount the directory

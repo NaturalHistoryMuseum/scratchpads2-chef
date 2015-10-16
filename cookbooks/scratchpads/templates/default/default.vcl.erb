@@ -1,6 +1,7 @@
 vcl 4.0;
 import directors;
 import std;
+import vsthrottle;
 acl trusted_network {
 <% node['scratchpads']['varnish']['trusted_networks'].each do |trusted_network| -%>
   <%= trusted_network %>;
@@ -135,6 +136,18 @@ sub vcl_init {
 <% end -%>
 }
 sub vcl_recv {
+  # First check if we have too many GET requests without referrers coming from the same client
+<%
+  domains = []
+  node['scratchpads']['varnish']['search']['domains'].each do|domain|
+    domains << 'req.http.host !~ "^'+domain+'$"'
+  end
+%>
+  if(!req.http.Referer && (<%= domains.join(' && ') %>) && req.method == "GET"){
+    if (vsthrottle.is_denied(client.identity, <%= node['scratchpads']['varnish']['throttle']['count'] %>, <%= node['scratchpads']['varnish']['throttle']['seconds'] %>s)) {
+      return (synth(429, "Too Many Requests"));
+    }
+  }
 <%
   domains = []
   node['scratchpads']['varnish']['trusted_network_only_domain_paterns'].each do|domain|
@@ -342,6 +355,12 @@ sub vcl_synth {
     set resp.status = 302;
     return (deliver);
   }
+  # Too many connections error
+  if(resp.status == 429){
+    synthetic({"<%= node['scratchpads']['varnish']['429_error_message'] %>"});
+    return (deliver);
+  }
+
 }
 
 # In the event of an error, show friendlier messages.
@@ -349,6 +368,6 @@ sub vcl_backend_error {
   # Friendly error!
   set beresp.http.Content-Type = "text/html; charset=utf-8";
   set beresp.http.Retry-After = "15";
-  synthetic({"<%= node['scratchpads']['varnish']['error_message'] %>"});
+  synthetic({"<%= node['scratchpads']['varnish']['backend_error_message'] %>"});
   return (deliver);
 }

@@ -108,3 +108,44 @@ template node['varnish']['secret_file'] do
   notifies :restart, 'service[varnish]', :delayed
   notifies :restart, 'service[varnishncsa]', :delayed
 end
+# Install required packages
+package ['libvarnishapi-dev','pkg-config','python-docutils']
+# Clone the libvmod-vsthrottle module
+git '/var/chef/libvmod-vsthrottle' do
+  repository node['scratchpads']['varnish']['throttle']['git']['uri']
+  user 'root'
+  group 'root'
+  revision node['scratchpads']['varnish']['throttle']['git']['revision']
+end
+# Run autogen.sh
+execute 'libvmod-vsthrottle autogen.sh' do
+  command './autogen.sh'
+  group 'root'
+  user 'root'
+  cwd '/var/chef/libvmod-vsthrottle'
+  creates '/var/chef/libvmod-vsthrottle/configure'
+end
+# Run configure
+execute 'libvmod-vsthrottle configure' do
+  command './configure'
+  group 'root'
+  user 'root'
+  cwd '/var/chef/libvmod-vsthrottle'
+  creates '/var/chef/libvmod-vsthrottle/src/Makefile'
+end
+# Run make
+execute 'libvmod-vsthrottle make' do
+  command 'make'
+  group 'root'
+  user 'root'
+  cwd '/var/chef/libvmod-vsthrottle'
+  creates '/var/chef/libvmod-vsthrottle/src/.libs/vmod_vsthrottle.o'
+end
+# Run make install
+execute 'libvmod-vsthrottle make install' do
+  command 'make install'
+  group 'root'
+  user 'root'
+  cwd '/var/chef/libvmod-vsthrottle'
+  creates '/usr/lib/varnish/vmods/libvmod_vsthrottle.so'
+end

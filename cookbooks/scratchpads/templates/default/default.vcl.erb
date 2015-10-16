@@ -265,7 +265,7 @@ sub vcl_recv {
     set req.http.X-OriginalCookie = req.http.Cookie;
     set req.http.Cookie = ";" + req.http.Cookie;
     set req.http.Cookie = regsuball(req.http.Cookie, "; +", ";");
-    set req.http.Cookie = regsuball(req.http.Cookie, ";(S{1,2}ESS[a-z0-9]+|NO_CACHE|[a-z0-9\-]+_session|_redmine_session|mw_installer_session)=", "; \1=");
+    set req.http.Cookie = regsuball(req.http.Cookie, ";(S{1,2}ESS[a-z0-9]+|NO_CACHE|[a-z0-9\-]+_session|_redmine_default|mw_installer_session)=", "; \1=");
     set req.http.Cookie = regsuball(req.http.Cookie, ";[^ ][^;]*", "");
     set req.http.Cookie = regsuball(req.http.Cookie, "^[; ]+|[; ]+$", "");
     if (req.http.Cookie == "") {

@@ -127,6 +127,11 @@ sub vcl_init {
   # We add the control backend to the random_backend, but it will only handle
   # one request for every 1000 that each of the other servers handle. This
   # allows both app servers to fail and the control server should cover (or try to)
+  #
+  # Note, this figure could be reduced to effectively add a third application
+  # server to the mix. sp-control-1 will always need to handle fewer requests than
+  # both of the application servers (because it is running additional services and
+  # has fewer resources) - any changes will need to be monitored.
   random_backend.add_backend(control, 1);
 <% @sp_search_slave_servers.each_with_index do |search_server, n| -%>
   random_search_slaves.add_backend(sp_search_slave_<%= n+1 %>, 100);

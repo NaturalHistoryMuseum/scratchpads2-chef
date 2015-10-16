@@ -22,10 +22,12 @@ server and therefore require users to be managed across them. The servers
 should be managed using Chef only, but it may be necessary to access each 
 server to aid with debugging and other maintenance tasks.
 
-We also have an additional server (```web-scratchpad-solr```) which runs 
-Redmine. This server should be replaced by the application servers above, but 
-it will require the installation of Ruby/Ruby-on-rails which is not within the 
-skills of the author of this document.
+### Power-on/Power-off
+
+It is preferable that the `sp-control-1` server is powered on first and powered 
+off last. This is because the server is an NFS server which the other servers 
+depend upon. If powered on in a different order, it should be possible to 
+simply re-mount the various NFS directories.
 
 Useful chef/knife commands
 --------------------------
@@ -153,7 +155,6 @@ do
 done
 ```
 
-
 Useful server commands
 ----------------------
 
@@ -215,6 +216,15 @@ varnish-maintenance
 ssh sp-control-1.nhm.ac.uk
 sudo su -
 systemctl restart varnish
+```
+
+#### Restore files using Tivoli
+It's probably best to leave interaction with Tivoli to IT (via a support 
+request to the help desk), but if doing a simple restore of a deleted file, the 
+following command executed as root should work.
+
+```bash
+dsmc restore {path-to-deleted-file}
 ```
 
 #### Sandbox

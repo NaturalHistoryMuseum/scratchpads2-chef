@@ -242,7 +242,15 @@ default['scratchpads']['redmine']['templates']['session.yml'] = {
   'group' => 'www-data',
   'mode' => '0640'
 }
-# Cookbook file
+# Configuration template
+default['scratchpads']['redmine']['templates']['configuration.yml'] = {
+  'source' => 'redmine-configuration.yml.erb',
+  'cookbook' => 'scratchpads',
+  'path' => '/etc/redmine/default/configuration.yml',
+  'owner' => 'root',
+  'group' => 'www-data',
+  'mode' => '0640'
+}
 default['scratchpads']['redmine']['cookbook_file']['plugins'] = {
   'source' => 'redmine-plugins.tar.gz',
   'cookbook' => 'scratchpads',

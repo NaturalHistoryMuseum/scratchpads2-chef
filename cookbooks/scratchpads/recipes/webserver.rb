@@ -260,6 +260,14 @@ template node['scratchpads']['redmine']['templates']['session.yml']['path'] do
   group node['scratchpads']['redmine']['templates']['session.yml']['group']
   mode node['scratchpads']['redmine']['templates']['session.yml']['mode']
 end
+# Extra configuration
+template node['scratchpads']['redmine']['templates']['configuration.yml']['path'] do
+  source node['scratchpads']['redmine']['templates']['configuration.yml']['source']
+  cookbook node['scratchpads']['redmine']['templates']['configuration.yml']['cookbook']
+  owner node['scratchpads']['redmine']['templates']['configuration.yml']['owner']
+  group node['scratchpads']['redmine']['templates']['configuration.yml']['group']
+  mode node['scratchpads']['redmine']['templates']['configuration.yml']['mode']
+end
 # Add plugins
 cookbook_file node['scratchpads']['redmine']['cookbook_file']['plugins']['path'] do
   source node['scratchpads']['redmine']['cookbook_file']['plugins']['source']

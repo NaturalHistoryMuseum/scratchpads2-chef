@@ -251,6 +251,7 @@ default['scratchpads']['redmine']['templates']['configuration.yml'] = {
   'group' => 'www-data',
   'mode' => '0640'
 }
+# Plugins folder
 default['scratchpads']['redmine']['cookbook_file']['plugins'] = {
   'source' => 'redmine-plugins.tar.gz',
   'cookbook' => 'scratchpads',
@@ -259,7 +260,7 @@ default['scratchpads']['redmine']['cookbook_file']['plugins'] = {
   'group' => 'root',
   'mode' => '0644'
 }
-# Cookbook file
+# Theme folder
 default['scratchpads']['redmine']['cookbook_file']['theme'] = {
   'source' => 'redmine-theme.tar.gz',
   'cookbook' => 'scratchpads',

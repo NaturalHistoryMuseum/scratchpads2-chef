@@ -24,3 +24,11 @@ provider). The backup is also specific for a single server (sp-control-1), and
 is not required on any other machine or for the Scratchpads to function.
 Logrotate
 Systemd init script
+
+Upgrade of Mediawiki
+--------------------
+The http://help.scratchpads.eu and http://wiki.scratchpads.eu sites are both 
+running on an old version of Mediawiki and could do with being upgraded. I 
+attempted this during the Chef setup, but unfortunately was unable to resolve 
+issues with plugins/extensions installed on the Help wiki. It may be easier to 
+create a new wiki and migrate the content from the old wiki.

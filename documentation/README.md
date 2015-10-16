@@ -27,8 +27,135 @@ Redmine. This server should be replaced by the application servers above, but
 it will require the installation of Ruby/Ruby-on-rails which is not within the 
 skills of the author of this document.
 
-Useful commands
----------------
+Useful chef/knife commands
+--------------------------
+
+### Passwords
+
+All server passwords and sensitive data are stored in encrypted data bags 
+within the chef repository. It is possible to view the unencrypted contents of 
+these by performing a simple command. The following command will display the 
+various MySQL passwords (although it is not necessary to view these, as the 
+root user on the MySQL servers has a fully filled out ~/.my.cnf file):
+
+```bash
+knife data bag show passwords mysql --secret-file=.chef/encrypted_data_bag_secret 
+```
+
+It's easy to see where encrypted data is used within the chef configuration, by 
+simply searching for "passwords.get_encrypted_data" within attributes or recipe 
+files.
+
+### Bootstrap
+
+Each of the servers can be manually bootstrap'd by running the following 
+commands. You'll need to ensure you have an SSH key that can be read by the 
+command (the Linux default location is included below which may work on OSX), 
+and you will need to replace "[USER]" with your username.
+
+```bash
+knife bootstrap sp-control-1.nhm.ac.uk --ssh-user [USER] --identity-file ~/.ssh/id_rsa --sudo --environment 'production' --run-list 'role[scratchpads-role-control]'
+knife bootstrap sp-app-1.nhm.ac.uk     --ssh-user [USER] --identity-file ~/.ssh/id_rsa --sudo --environment 'production' --run-list 'role[scratchpads-role-app]'
+knife bootstrap sp-app-2.nhm.ac.uk     --ssh-user [USER] --identity-file ~/.ssh/id_rsa --sudo --environment 'production' --run-list 'role[scratchpads-role-app]'
+knife bootstrap sp-data-1.nhm.ac.uk    --ssh-user [USER] --identity-file ~/.ssh/id_rsa --sudo --environment 'production' --run-list 'role[scratchpads-role-data]'
+knife bootstrap sp-data-2.nhm.ac.uk    --ssh-user [USER] --identity-file ~/.ssh/id_rsa --sudo --environment 'production' --run-list 'role[scratchpads-role-data]'
+knife bootstrap sp-search-1.nhm.ac.uk  --ssh-user [USER] --identity-file ~/.ssh/id_rsa --sudo --environment 'production' --run-list 'role[scratchpads-role-search]'
+```
+Useful Git hooks
+----------------
+
+### .git/hooks/pre-push
+
+This hook pushes any changes made to the chef server, meaning that it's not 
+normally necessary to call `knife cookbook upload scratchpad` when making 
+changes permanent.
+
+```bash
+#!/bin/bash
+
+COOKBOOK_PATH=`git rev-parse --show-toplevel`
+COOKBOOKS_TO_TEST="scratchpads"
+cd $COOKBOOK_PATH
+for COOKBOOK in $COOKBOOKS_TO_TEST
+do
+  ERROR_MESSAGE=`knife cookbook upload $COOKBOOK`
+  EXIT="$?"
+  if [ $EXIT -gt "0" ]
+  then
+    echo "PUSH CANCELLED"
+    echo "Unable to upload $COOKBOOK to chef server"
+    echo $ERROR_MESSAGE
+    exit $EXIT
+  fi
+done
+```
+
+### .git/hooks/pre-commit
+
+This hook does two things, firstly it converts any {filename}.md.unfolded into 
+{filename}.md, wrapping the text in the process, and secondly, it checks the 
+format of all Ruby/Chef code using `knife cookbook test` and `foodcritic`.
+
+```bash
+#!/bin/bash
+
+for i in $(find -type f | grep "\.unfolded$"|sed "s/.unfolded$//")
+do
+  chmod 644 $i 2>/dev/null
+  #fold -s -w 80 $i.unfolded > $i
+  COUNTER=0
+  cat /dev/null > $i
+  IFS=$'\n'
+  for j in $(cat $i.unfolded|sed "s/^$/ /")
+  do
+    if [[ $j == "\`\`\`"* ]]
+    then
+      let COUNTER=COUNTER+1
+    fi
+    if [ $(($COUNTER%2)) -eq 0 ]
+    then
+      if [ `echo $j|grep "^\s*-"|wc -l` -eq 0 ]
+      then
+        echo $j|fold -s -w80 >> $i
+      else
+        echo $j >> $i
+      fi
+    else
+      echo $j >> $i
+    fi
+  done
+  sed "s/^\ $//" $i -i
+  chmod 444 $i
+done
+
+COOKBOOK_PATH=`git rev-parse --show-toplevel`
+COOKBOOKS_TO_TEST="scratchpads"
+for COOKBOOK in $COOKBOOKS_TO_TEST
+do
+  ERROR_MESSAGE=`knife cookbook test $COOKBOOK 2>/dev/null`
+  EXIT="$?"
+  if [ $EXIT -gt "0" ]
+  then
+    echo "COMMIT CANCELLED"
+    echo "knife cookbook test "$COOKBOOK" failed"
+    echo $ERROR_MESSAGE
+    exit $EXIT
+  fi
+  ERROR_MESSAGE=`foodcritic -f any $COOKBOOK_PATH/cookbooks/$COOKBOOK`
+  EXIT="$?"
+  if [ $EXIT -gt "0" ]
+  then
+    echo "COMMIT CANCELLED"
+    echo "foodcritic -f any "$COOKBOOK_PATH"/cookbooks/"$COOKBOOK" failed"
+    echo $ERROR_MESSAGE
+    exit $EXIT
+  fi
+done
+```
+
+
+Useful server commands
+----------------------
 
 ### sp-control-1.nhm.ac.uk
 
@@ -140,3 +267,14 @@ ssh sp-data-{1|2}.nhm.ac.uk
 sudo su -
 mysql
 ```
+
+Blocking abusive clients/IPs
+----------------------------
+
+Occasionally a remote client will request a large number of pages or downloads 
+in a short period of time, putting exceptional load on the server. In these 
+instances, assuming the client is not legitimate, it is easiest to block the 
+client at the firewall level. To do this, the 
+node['scratchpads']['blocked_ip_addresses'] array should be used. Simply add an 
+IP to the array, commit and push the code, and if the issue is urgent bootstrap 
+the sp-control-1 node (or simply wait if it is not urgent).

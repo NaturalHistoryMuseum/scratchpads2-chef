@@ -260,3 +260,12 @@ default['scratchpads']['redmine']['cookbook_file']['theme'] = {
   'group' => 'root',
   'mode' => '0644'
 }
+# Redmine favicon
+default['scratchpads']['redmine']['cookbook_file']['favicon'] = {
+  'source' => 'redmine-favicon.ico',
+  'cookbook' => 'scratchpads',
+  'path' => '/usr/share/redmine/public/favicon.ico',
+  'owner' => 'root',
+  'group' => 'root',
+  'mode' => '0644'
+}

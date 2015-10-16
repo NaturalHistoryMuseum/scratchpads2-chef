@@ -294,6 +294,14 @@ execute 'extract redmine theme' do
   group 'root'
   action :nothing
 end
+# Add favicon
+cookbook_file node['scratchpads']['redmine']['cookbook_file']['favicon']['path'] do
+  source node['scratchpads']['redmine']['cookbook_file']['favicon']['source']
+  cookbook node['scratchpads']['redmine']['cookbook_file']['favicon']['cookbook']
+  owner node['scratchpads']['redmine']['cookbook_file']['favicon']['owner']
+  group node['scratchpads']['redmine']['cookbook_file']['favicon']['group']
+  mode node['scratchpads']['redmine']['cookbook_file']['favicon']['mode']
+end
 # This installs Redmine, but does not handle the database or upgrading
 # from previous versions of Redmine. That must be handled manually using
 # the following process

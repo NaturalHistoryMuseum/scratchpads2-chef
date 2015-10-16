@@ -278,6 +278,13 @@ sudo su -
 mysql
 ```
 
+If the servers crash (as a result of a power cut), then the MySQL 
+servers/databases may require repairing. If this happens, MySQL should manage 
+everything for you, but monit may interfere and try to start additional MySQL 
+instances whilst one is starting up. Try shutting down monit whilst MySQL is 
+starting up. Further documentation can be found on the web (e.g. 
+https://dev.mysql.com/doc/refman/5.6/en/innodb-recovery.html).
+
 Blocking abusive clients/IPs
 ----------------------------
 

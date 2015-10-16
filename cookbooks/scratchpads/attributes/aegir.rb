@@ -114,25 +114,10 @@ default['scratchpads']['aegir']['cookbook_files']['aegir-patch'] = {
 }
 
 # Cron functions
+#
 # # Standard Aegir CRON functions.
 # * * * * * drush '@hostmaster' hosting-dispatch 2>/dev/null
-# * * * * * drush '@hostmaster' hosting-cron 2>/dev/null
 #
-# # Clear the ViBRANT site caches
-# */5 * * * * drush @vbrant.eu cc all >/dev/null 2>/dev/null
-#
-# # Rebuild the Sandbox and delete the backups every six hours
-# # Also ensure Drush commands work for the sandbox by updating the drushrc.php file with the new password
-# 1 */6 * * * rm -rf /var/aegir/backups/sandbox*
-# 2 */6 * * * drush '@sandbox.scratchpads.eu' provision-reinstall >/dev/null 2>/dev/null
-# 15 */6 * * * sed "s/db_passwd'] = '[a-z0-9A-Z]*'/db_passwd'] = '`grep db_passwd config/server_master/apache/vhost.d/sandbox.scratchpads.eu | sed "s/.*\s//"`'/" /var/aegir/platforms/scratchpads-master/sites/sandbox.scratchpads.eu/drushrc.php -i
-#
-# # Run the updates on testing sites every day
-# @daily for i in $(ls -1d /var/aegir/platforms/scratchpads*/sites/* | grep -v "scratchpads-1-stable" | grep -v "scratchpads-2\.[0-9]*\.[0-9]*" | sed "s|.*/||" | grep -v "php$" | grep "\." | grep -v "scratchpads.eu" | grep -vi "txt$" | sort -R); do drush @$i updatedb -y; done
-#
-# - Run updates on testing sites once a day
-# - Clear vbrant.eu site caches (every five minutes)
-
 # Aegir cron task
 default['scratchpads']['aegir']['cron']['hosting_cron'] = {
   'minute' => '*',
@@ -220,6 +205,21 @@ default['scratchpads']['aegir']['cron']['delete_week_old_backups'] = {
   'month' => '*',
   'weekday' => '*',
   'command' => 'find /var/aegir/backups -mmin +10080 | xargs rm 2>/dev/null',
+  'environment' => {},
+  'home' => '/var/aegir',
+  'action' => 'create',
+  'user' => 'aegir',
+  'mailto' => node['scratchpads']['control']['admin_email'],
+  'path' => '/usr/local/bin:/usr/bin:/bin'
+}
+# Run updates on testing and non-standard sites
+default['scratchpads']['aegir']['cron']['update_testing_and_non_standard_sites'] = {
+  'minute' => '30',
+  'hour' => '4',
+  'day' => '*',
+  'month' => '*',
+  'weekday' => '*',
+  'command' => 'for i in $(ls -1d /var/aegir/platforms/scratchpads*/sites/* | grep -v "scratchpads-1-stable" | grep -v "scratchpads-2\.[0-9]*\.[0-9]*" | sed "s|.*/||" | grep -v "php$" | grep "\." | grep -v "scratchpads.eu" | grep -vi "txt$" | sort -R); do drush @$i updatedb -y; done',
   'environment' => {},
   'home' => '/var/aegir',
   'action' => 'create',

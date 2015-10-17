@@ -7,6 +7,11 @@ acl trusted_network {
   <%= trusted_network %>;
 <% end -%>
 }
+acl scratchpads_network{
+<% node['scratchpads']['all_hosts'].each do |domain| -%>
+  "<%= Resolv.getaddress domain %>"/32;
+<% end -%>
+}
 backend control {
   .host = "<%= node['scratchpads']['varnish']['control']['host'] %>";
   .port = "<%= node['scratchpads']['varnish']['control']['port'] %>";
@@ -142,13 +147,7 @@ sub vcl_init {
 }
 sub vcl_recv {
   # First check if we have too many GET requests without referrers coming from the same client
-<%
-  domains = []
-  node['scratchpads']['varnish']['search']['domains'].each do|domain|
-    domains << 'req.http.host !~ "^'+domain+'$"'
-  end
-%>
-  if(!req.http.Referer && (<%= domains.join(' && ') %>) && req.method == "GET"){
+  if(client.ip !~ scratchpads_network && !req.http.Referer && req.method == "GET"){
     if (vsthrottle.is_denied(client.identity, <%= node['scratchpads']['varnish']['throttle']['count'] %>, <%= node['scratchpads']['varnish']['throttle']['seconds'] %>s)) {
       return (synth(429, "Too Many Requests"));
     }

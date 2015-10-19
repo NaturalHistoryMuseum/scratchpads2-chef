@@ -145,7 +145,7 @@ sub vcl_init {
   random_search_masters.add_backend(sp_search_master_<%= n+1 %>, 100);
 <% end -%>
 }
-sub vcl_recv {
+sub vcl_miss {  
   # First check if we have too many GET requests without referrers coming from the same client
   if(client.ip !~ scratchpads_network && !req.http.Referer && req.method == "GET"){
     if (vsthrottle.is_denied(client.identity, <%= node['scratchpads']['varnish']['throttle']['count'] %>, <%= node['scratchpads']['varnish']['throttle']['seconds'] %>s)) {
@@ -165,7 +165,9 @@ sub vcl_recv {
   if(client.ip !~ trusted_network && ( <%= domains.join(' || ') %> ) ){
     return (synth(750, "http://scratchpads.eu/"));
   }
-
+  return (fetch);
+}
+sub vcl_recv {
   # Default to the random_backend backend.
   set req.backend_hint = random_backend.backend();
   # Override the default for specific domains.

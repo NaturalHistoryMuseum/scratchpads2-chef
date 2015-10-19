@@ -72,7 +72,7 @@ body>div.text{background-color:rgba(255,255,255,0.7);border:solid 1px #ccc;}
 </div>
 <div class=\"text\">
 <h1>429: Too many requests</h1>
-<p>Please limit the rate at which you request resources from our server. All clients are limited to <strong>#{node['scratchpads']['varnish']['throttle']['count']}</strong> requests every <strong>#{node['scratchpads']['varnish']['throttle']['seconds']} seconds</strong>.
+<p>Please limit the rate at which you request resources from our server. All clients are limited to <strong>#{node['scratchpads']['varnish']['throttle']['count']}</strong> requests every <strong>#{node['scratchpads']['varnish']['throttle']['seconds']} seconds for uncached content.</strong>.
 <p>If you continue to experience this problem and do not believe you are bombarding our servers, then please contact the <a href=\"mailto:scratchpads@nhm.ac.uk?subject=Scratchpads%20rate%20limit&body=I%20am%20having%20problems%20with%20rate%20limiting%20when%20accessing:\">Scratchpads Team</a>.</p>
 </div>
 </body>

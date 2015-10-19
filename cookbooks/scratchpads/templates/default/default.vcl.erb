@@ -146,12 +146,18 @@ sub vcl_init {
 <% end -%>
 }
 sub vcl_miss {  
-  # First check if we have too many GET requests without referrers coming from the same client
+  # We limit a client to <%= node['scratchpads']['varnish']['throttle']['count'] %> uncached requests every <%= node['scratchpads']['varnish']['throttle']['seconds'] %> seconds. This helps to reduce the
+  # load on the server, especially the load created by search engines.
+  # Note, this is only applied to GET requests that do not have a referrer specified, which
+  # means that users browsing the site should never be affected by this limit.
   if(client.ip !~ scratchpads_network && !req.http.Referer && req.method == "GET"){
     if (vsthrottle.is_denied(client.identity, <%= node['scratchpads']['varnish']['throttle']['count'] %>, <%= node['scratchpads']['varnish']['throttle']['seconds'] %>s)) {
       return (synth(429, "Too Many Requests"));
     }
   }
+  return (fetch);
+}
+sub vcl_recv {
 <%
   domains = []
   node['scratchpads']['varnish']['trusted_network_only_domain_paterns'].each do|domain|
@@ -165,9 +171,6 @@ sub vcl_miss {
   if(client.ip !~ trusted_network && ( <%= domains.join(' || ') %> ) ){
     return (synth(750, "http://scratchpads.eu/"));
   }
-  return (fetch);
-}
-sub vcl_recv {
   # Default to the random_backend backend.
   set req.backend_hint = random_backend.backend();
   # Override the default for specific domains.

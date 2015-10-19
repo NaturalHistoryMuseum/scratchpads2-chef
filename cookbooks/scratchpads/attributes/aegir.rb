@@ -219,7 +219,7 @@ default['scratchpads']['aegir']['cron']['update_testing_and_non_standard_sites']
   'day' => '*',
   'month' => '*',
   'weekday' => '*',
-  'command' => 'for i in $(ls -1d /var/aegir/platforms/scratchpads*/sites/* | grep -v "scratchpads-1-stable" | grep -v "scratchpads-2\.[0-9]*\.[0-9]*" | sed "s|.*/||" | grep -v "php$" | grep "\." | grep -v "scratchpads.eu" | grep -vi "txt$" | sort -R); do drush @$i updatedb -y; done',
+  'command' => 'for i in $(ls -1d /var/aegir/platforms/scratchpads*/sites/* | grep -v "scratchpads-1-stable" | grep -v "scratchpads-2\.[0-9]*\.[0-9]*" | sed "s|.*/||" | grep -v "php$" | grep "\." | grep -v "scratchpads.eu" | grep -vi "txt$" | sort -R); do drush @$i updatedb -y --quiet ; done',
   'environment' => {},
   'home' => '/var/aegir',
   'action' => 'create',

@@ -183,6 +183,17 @@ Sites should be upgraded by migrating between platforms. This process should be
 performed via the Aegir user interface, as the user interface will provide full 
 feedback on the upgrade/migration process.
 
+#### Clear a site from Varnish
+Occasionally it's necessary to remove a single site from the Varnish cache. 
+This can be done using the following simple command, which must be executed as 
+root:
+
+```bash
+ssh sp-control-1.nhm.ac.uk
+sudo su -
+clear-site-from-varnish {site-domain.com}
+```
+
 #### Drush commands
 Specific Drush commands can be run on specific sites:
 

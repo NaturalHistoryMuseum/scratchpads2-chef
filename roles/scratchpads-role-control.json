@@ -51,6 +51,7 @@
     "recipe[scratchpads::nfs]",
     "recipe[scratchpads::varnish]",
     "recipe[scratchpads::mediawiki]",
+    "recipe[scratchpads::phantomjs]",
     "role[scratchpads-role-monit]"
   ]
 }

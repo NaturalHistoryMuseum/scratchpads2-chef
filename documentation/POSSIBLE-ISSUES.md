@@ -10,6 +10,16 @@ and needs looking into. The next time a platform is deleted, it will be
 necessary to run ```$ apache2ctl configtest``` to ascertain whether or not an 
 Aegir configuration file needs deleting.
 
+Sites not migrated due to tar errors
+------------------------------------
+During the migration from Scratchpads 2.7.3 to Scratchpads 2.8.0 a number of 
+sites were not upgraded due to tar errors during the backup process. These tar 
+errors were mainly caused by files changing whilst they were being read, 
+although some of theme were caused by files not being readable (in particular 
+sites/*/private/temp). Simply clicking "Retry" on the migration task would 
+re-run the task and usually result in a successful migration. This should be 
+reported to the Aegir developers.
+
 Memory usage on data servers
 ----------------------------
 Both sp-data-1 and sp-data-2 use close to (and occasionally more than) their 

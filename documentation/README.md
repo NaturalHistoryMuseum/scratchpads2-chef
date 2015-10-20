@@ -22,6 +22,8 @@ server and therefore require users to be managed across them. The servers
 should be managed using Chef only, but it may be necessary to access each 
 server to aid with debugging and other maintenance tasks.
 
+![Scratchpads architecture](scratchpads-architecture.png)
+
 ### Power-on/Power-off
 
 It is preferable that the `sp-control-1` server is powered on first and powered 

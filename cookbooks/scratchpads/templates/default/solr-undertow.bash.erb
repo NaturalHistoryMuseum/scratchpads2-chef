@@ -1,5 +1,5 @@
 #!/bin/bash
-export SOLR_UNDERTOW_OPTS="<%= node['scratchpads']['solr-undertow']['options'] %>"
+export SOLR_UNDERTOW_OPTS="-Xms<%= node['scratchpads']['solr-undertow']['memory']['xms']%> -Xmx<%= node['scratchpads']['solr-undertow']['memory']['xmx'] %> -XX:MaxPermSize=<%= node['scratchpads']['solr-undertow']['memory']['maxpermsize'] %> -XX:PermSize=<%= node['scratchpads']['solr-undertow']['memory']['permsize'] %>"
 cd <%= node['scratchpads']['solr-undertow']['application_folder'] %>
 ./bin/solr-undertow <%= node['scratchpads']['solr-undertow']['templates']['conf_file']['path'] %> &
 echo $! > /tmp/solr-undertow.pid

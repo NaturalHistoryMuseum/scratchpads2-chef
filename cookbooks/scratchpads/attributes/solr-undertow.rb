@@ -16,7 +16,6 @@ default['scratchpads']['solr-undertow']['memory']['xms'] = '8G'
 default['scratchpads']['solr-undertow']['memory']['xmx'] = '8G'
 default['scratchpads']['solr-undertow']['memory']['maxpermsize'] = '512m'
 default['scratchpads']['solr-undertow']['memory']['permsize'] = '256m'
-default['scratchpads']['solr-undertow']['options'] = "-Xms#{node['scratchpads']['solr-undertow']['memory']['xms']} -Xmx#{node['scratchpads']['solr-undertow']['memory']['xmx']} -XX:MaxPermSize=#{node['scratchpads']['solr-undertow']['memory']['maxpermsize']} -XX:PermSize=#{node['scratchpads']['solr-undertow']['memory']['permsize']}"
 # Init script
 default['scratchpads']['solr-undertow']['templates']['bash_script'] = {
   'path' => '/usr/local/sbin/solr-undertow',

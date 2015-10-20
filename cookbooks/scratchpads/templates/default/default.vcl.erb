@@ -190,7 +190,7 @@ sub vcl_recv {
     domains << 'req.http.host ~ "^'+domain+'$"'
   end
 %>
-  if(<%= domains.join(' || ') %>){
+  if(<%= domains.join(' || ') %> && client.ip ~ scratchpads_network){
     if(req.method == "GET"){
       set req.backend_hint = random_search_slaves.backend();
       return (pass);

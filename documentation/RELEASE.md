@@ -75,3 +75,37 @@ cd /var/aegir/platforms/scratchpads-2.9.9
 git pull
 git checkout 2.9.9.1
 ```
+
+Upgrading Drupal
+----------------
+
+The easiest way of upgrading the version of Drupal is to create a patch from 
+the pervious version to the new version. This is very simple to do, and ensures 
+that any patches on the Drupal code should be retained. To create the patch, 
+download the current and previous versions of Drupal and extract them. Then 
+create the patch between the two. For example, to create a patch that upgrades 
+Drupal from 7.39 to 7.40 the following should be done:
+
+```bash
+wget http://ftp.drupal.org/files/projects/drupal-7.40.tar.gz -qq -O - | tar xz
+wget http://ftp.drupal.org/files/projects/drupal-7.39.tar.gz -qq -O - | tar xz
+diff -r -c drupal-7.39/ drupal-7.40/ > drupal.patch
+rm -rf drupal-7.39 drupal-7.40
+mv drupal.patch /path/to/scratchpads/code
+cd /path/to/scratchpads/code
+patch -p1 < drupal.patch
+```
+
+You will see errors regarding missing files (always CHANGELOG.txt and 
+modules/php/php.info, and possibly others), but if everything goes to plan that 
+should leave you with an upgraded Scratchpads installation. The patch process 
+can be repeated on sp-control-1 if the Drupal release is an important security 
+release.
+
+```bash
+scp drupal.patch sp-control-1:
+ssh sp-control-1
+sudo su -
+cd /var/aegir/platforms/scratchpads-[VERSION]
+patch -p1 < ~[YOUR USERNAME]/drupal.patch
+```

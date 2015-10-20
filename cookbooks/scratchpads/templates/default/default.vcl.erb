@@ -190,6 +190,8 @@ sub vcl_recv {
     domains << 'req.http.host ~ "^'+domain+'$"'
   end
 %>
+  # If trying to manually configure solr, remove the check on the client.ip
+  # in the statement below. This will allow you to access the solr URL.
   if(<%= domains.join(' || ') %> && client.ip ~ scratchpads_network){
     if(req.method == "GET"){
       set req.backend_hint = random_search_slaves.backend();

@@ -10,7 +10,7 @@ duplicate servers. The six servers are:
 
 | Hostname     | Role                           | IP Address    |
 |--------------|--------------------------------|---------------|
-| sp-control-1 | Load balancer and aegir server | 157.140.2.181 |
+| sp-control-1 | Load balancer and aegir server | 157.140.2.32  |
 | sp-app-1     | Application server             | 157.140.2.182 |
 | sp-app-2     | Application server             | 157.140.2.183 |
 | sp-data-1    | Database and memcache server   | 157.140.2.184 |

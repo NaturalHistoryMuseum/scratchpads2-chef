@@ -92,9 +92,6 @@ default['scratchpads']['monit']['conf']['mysql']['stop'] = '/bin/systemctl stop 
 default['scratchpads']['monit']['conf']['mysql']['group'] = 'data'
 default['scratchpads']['monit']['conf']['mysql']['rls'] = [node['scratchpads']['percona']['role']]
 default['scratchpads']['monit']['conf']['mysql']['tests'] = [{
-    'condition' => 'cpu > 60% for 20 cycles',
-    'action' => 'alert'
-  },{
     'condition' => 'cpu > 80% for 5 cycles',
     'action' => 'alert'
   },{

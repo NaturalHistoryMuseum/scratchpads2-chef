@@ -23,6 +23,23 @@ numbers follow the following basic format:
      and probably only fixes one or two issues. This number should only be
      required if non-zero.
 
+Creating the git tag
+--------------------
+
+Releases are created as annotated tags in the Git repository. The process of 
+creating a new tag is quite simple. Firstly, ensure the `CHANGELOG.md` file has 
+been updated with details about the new release (the format of the file should 
+be pretty obvious, with the file being wrapped at column 80). Commit the change 
+to the CHANGELOG.md file, making a note of how many lines at the top of the 
+file the information about the new release takes up (in the example below, the 
+new release is the top '13' lines of CHANGELOG.md). Then simply create the new 
+release, e.g:
+
+```bash
+git tag -a 2.9.9 -m "Scratchpads `head -n13 CHANGELOG.md`"
+git push --tags
+```
+
 Major release
 -------------
 

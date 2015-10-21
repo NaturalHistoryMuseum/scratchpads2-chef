@@ -37,3 +37,24 @@ ssh hostname sudo mkdir /etc/chef
 scp chef-repo/.chef/encrypted_data_bag_secret hostname:
 ssh hostname sudo mv ~user/encrypted_data_bag_secret /etc/chef
 ```
+
+Adding another application/database server
+------------------------------------------
+
+The process of adding another application or database server should be pretty 
+seamless. One potential issue though, is the NFS server needs to know about the 
+new server before it is setup. This can be done by adding the domain name of 
+the new server to the `default['scratchpads']['nfs']['default_hosts']` 
+attribute in the `cookbooks/scratchpads/attributes/nfs.rb` file. Once that has 
+been done, the chef-client should be run on the control server, which should 
+add the new domain name to the /etc/exports file. Once that has been done, the 
+new server can be bootstrapped.
+
+```ruby
+default['scratchpads']['nfs']['default_hosts'] = []
+```
+becomes...
+```ruby
+default['scratchpads']['nfs']['default_hosts'] = ['sp-app-3.nhm.ac.uk']
+```
+

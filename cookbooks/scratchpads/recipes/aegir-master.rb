@@ -80,7 +80,7 @@ execute 'install hostmaster' do
   user node['scratchpads']['aegir']['user']
   not_if { ::File.exists?("#{node['scratchpads']['aegir']['home_folder']}/.drush/hm.alias.drushrc.php")}
   environment node['scratchpads']['aegir']['environment']
-  notifies :run, 'execute[patch hosting module]', :immediately
+  #notifies :run, 'execute[patch hosting module]', :immediately
   notifies :run, 'execute[remove aegir cron]', :immediately
   notifies :run, 'execute[set the admin user password]', :delayed
 end

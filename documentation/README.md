@@ -60,6 +60,17 @@ knife download /
 If everything has worked, this should download additional directories and files 
 from the Chef server to your local machine.
 
+What Chef does not do
+---------------------
+
+Chef makes the process of ensuring configurations for services are kept 
+consistent and that servers themselves are uniform and consistent. What it does 
+not handle however, is package upgrades. It is possible to add a call to 
+`apt-get upgrade` within a Chef cookbook, however, this is generally thought of 
+as a bad idea. For that reason, upgrades to packages should be handled 
+manually, which means occasionally `apt-get upgrade` should be run on each 
+production server.
+
 Useful chef/knife commands
 --------------------------
 

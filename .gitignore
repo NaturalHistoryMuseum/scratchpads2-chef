@@ -20,6 +20,7 @@ containers
 
 # Vagrant
 .vagrant
+Vagrantfile
 
 # Ruby
 .rake_test_cache

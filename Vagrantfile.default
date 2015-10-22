@@ -1,11 +1,16 @@
 # Scratchpads Vagrant file.
+#
+# Copy this file removing the ".default" extension, and then
+# edit the file changing [USERNAME] to your username on the
+# Chef server
+#
 VAGRANTFILE_API_VERSION = "2"
 # Note, if changing this number, the IP addresses assigned in /etc/hosts
 # will need changing too.
 NUMBER_OF_DATA_AND_APP_SERVERS = 2
 CHEF_SERVER_URL = "https://api.opscode.com/organizations/nhm"
-CHEF_VALIDATION_KEY_PATH = ".chef/nhm-validator.pem"
-CHEF_VALIDATION_CLIENT_NAME = "nhm-validator"
+CHEF_VALIDATION_CLIENT_NAME = "[USERNAME]"
+CHEF_VALIDATION_KEY_PATH = ".chef/#{CHEF_VALIDATION_CLIENT_NAME}.pem"
 CHEF_ENVIRONMENT = "development"
 HOSTNAME=`hostname|tr -d "\n"`
 CHEF_HOSTNAME_PREFIX = "dev-#{HOSTNAME}-"

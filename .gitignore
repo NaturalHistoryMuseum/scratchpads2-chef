@@ -11,9 +11,7 @@
 pre-chef-node-setup.bash
 
 # Chef
-.chef/*.pem
-.chef/encrypted_data_bag_secret
-.chef/syntaxcache
+.chef
 nodes
 groups
 clients

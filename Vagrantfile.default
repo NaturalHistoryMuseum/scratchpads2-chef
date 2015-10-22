@@ -12,6 +12,7 @@ CHEF_SERVER_URL = "https://api.opscode.com/organizations/nhm"
 CHEF_VALIDATION_CLIENT_NAME = "[USERNAME]"
 CHEF_VALIDATION_KEY_PATH = ".chef/#{CHEF_VALIDATION_CLIENT_NAME}.pem"
 CHEF_ENVIRONMENT = "development"
+CHEF_VERSION="12.4.1"
 HOSTNAME=`hostname|tr -d "\n"`
 CHEF_HOSTNAME_PREFIX = "dev-#{HOSTNAME}-"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -28,6 +29,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.validation_client_name = CHEF_VALIDATION_CLIENT_NAME
       chef.add_role "scratchpads-role-control"
       chef.environment = CHEF_ENVIRONMENT
+      chef.version = CHEF_VERSION
     end
     config.vm.provider "virtualbox" do |vb|
       vb.memory = 4096
@@ -46,6 +48,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         chef.validation_client_name = CHEF_VALIDATION_CLIENT_NAME
         chef.add_role "scratchpads-role-app"
         chef.environment = CHEF_ENVIRONMENT
+        chef.version = CHEF_VERSION
       end
       config.vm.provider "virtualbox" do |vb|
         vb.memory = 4096
@@ -63,6 +66,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         chef.validation_client_name = CHEF_VALIDATION_CLIENT_NAME
         chef.add_role "scratchpads-role-data"
         chef.environment = CHEF_ENVIRONMENT
+        chef.version = CHEF_VERSION
       end
       config.vm.provider "virtualbox" do |vb|
         vb.memory = 4096
@@ -81,6 +85,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       chef.validation_client_name = CHEF_VALIDATION_CLIENT_NAME
       chef.add_role "scratchpads-role-search"
       chef.environment = CHEF_ENVIRONMENT
+      chef.version = CHEF_VERSION
     end
     config.vm.provider "virtualbox" do |vb|
       vb.memory = 4096

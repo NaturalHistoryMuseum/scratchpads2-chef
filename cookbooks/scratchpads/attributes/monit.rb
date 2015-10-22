@@ -185,10 +185,7 @@ default['scratchpads']['monit']['conf']['solr-undertow']['tests'] = [{
     'condition' => 'cpu > 80% for 5 cycles',
     'action' => 'alert'
   },{
-    'condition' => 'totalmem > 9.0 GB for 5 cycles',
-    'action' => 'alert'
-  },{
-    'condition' => 'totalmem > 10.0 GB',
+    'condition' => 'totalmem > 12.0 GB',
     'action' => 'alert'
   },{
     'condition' => 'children > 250',

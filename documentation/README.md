@@ -31,6 +31,35 @@ off last. This is because the server is an NFS server which the other servers
 depend upon. If powered on in a different order, it should be possible to 
 simply re-mount the various NFS directories.
 
+Getting started with Chef
+-------------------------
+
+Before you can start altering the configuration of the Scratchpads servers, you 
+will need to install the Chef development kit, or ChefDK 
+(https://downloads.chef.io/chef-dk/). The ChefDK provides all the commands that 
+are required to interact with a Chef server, and many more besides. Once that 
+has been installed, you will need to be added as a user to the NHM organization 
+on the Chef server. We are currently using a hosted Chef server 
+(https://manage.chef.io/), rather than hosting our own, although this is likely 
+to change in the future. Once your user account has been created, you will be 
+able to download the Chef starter kit. On the Chef server web interface, click 
+on the "Administration" tab, then the "nhm" organization, and then "Starter 
+Kit" in the sidebar (which should take you to 
+https://manage.chef.io/organizations/nhm/getting_started). Once there, click on 
+the big "Download Starter Kit" button, which should offer a Zip file for 
+download. Next, checkout this Git repository to your Desktop machine. Extract 
+the contents of the Starter Kit, and copy the ".chef" folder (you may need to 
+show hidden files in order to see it) into the Git repository. Once this has 
+been done, you should be good to go. Check everything is working by executing 
+the following command from within the Git repository:
+
+```bash
+knife download /
+```
+
+If everything has worked, this should download additional directories and files 
+from the Chef server to your local machine.
+
 Useful chef/knife commands
 --------------------------
 

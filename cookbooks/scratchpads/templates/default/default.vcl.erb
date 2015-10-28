@@ -8,9 +8,11 @@ acl trusted_network {
 <% end -%>
 }
 acl scratchpads_network{
-<% node['scratchpads']['all_hosts'].each do |domain| -%>
+<% node['scratchpads']['all_hosts'].each do |domain| 
+  unless domain.nil? -%>
   "<%= Resolv.getaddress domain %>"/32;
-<% end -%>
+<% end
+end -%>
 }
 backend control {
   .host = "<%= node['scratchpads']['varnish']['control']['host'] %>";

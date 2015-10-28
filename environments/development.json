@@ -1,15 +1,6 @@
 {
   "name": "development",
   "description": "Development environment for use by all.",
-  "default_attributes": {
-    "scratchpads": {
-      "nfs": {
-        "default_hosts": [
-          "monkey.nhm.ac.uk"
-        ]
-      }
-    }
-  },
   "override_attributes": {
     "percona": {
       "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret"

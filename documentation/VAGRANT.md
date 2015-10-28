@@ -1,5 +1,30 @@
 Vagrant
 =======
+
+Before doing anything, you will need to add entries to your hosts file for 
+`get.scratchpads.eu` and each of the configured Vagrant VMs. You will also need 
+to add entries for any site you will create on the aegir platform. Note, the 
+Vagrantfile automatically adds 'dev-' and the hostname of the host machine, so 
+replace 'dev-monkey' with dev- and the hostname of your machine.
+
+    192.168.0.2     development.get.scratchpads.eu
+    192.168.0.2     dev-monkey-sp-control-1.nhm.ac.uk
+    192.168.0.3     dev-monkey-sp-app-1.nhm.ac.uk
+    192.168.0.4     dev-monkey-sp-data-1.nhm.ac.uk
+    192.168.0.5     dev-monkey-sp-app-2.nhm.ac.uk
+    192.168.0.6     dev-monkey-sp-data-2.nhm.ac.uk
+    192.168.0.7     dev-monkey-sp-search-1.nhm.ac.uk
+
+The above example assumes you have left NUMBER_OF_DATA_AND_APP_SERVERS set to 
+2. If you increase or reduce it, then you will need to adjust the IPs 
+accordingly. e.g. if set to 1, then the entries should be:
+
+    192.168.0.2     development.get.scratchpads.eu
+    192.168.0.2     dev-monkey-sp-control-1.nhm.ac.uk
+    192.168.0.3     dev-monkey-sp-app-1.nhm.ac.uk
+    192.168.0.4     dev-monkey-sp-data-1.nhm.ac.uk
+    192.168.0.5     dev-monkey-sp-search-1.nhm.ac.uk
+
 The repository contains a Vagrant script for testing the Chef setup. Simply 
 running
 
@@ -19,12 +44,6 @@ handled, you'll need to bring up the second data server.
 
 Note, there is currently no replication configured between any of the database 
 servers on the data hosts - they effectively act independently of each other.
-
-You will need to add entries to your hosts file for `get.scratchpads.eu`, and 
-an additional domain name(s) that you would like to create Scratchpads/Drupal 
-sites for. The entry should point to the control server.
-
-    192.168.0.78 get.scratchpads.eu test.scratchpad
 
 An easy way of finding the IP address of the server, is to SSH into it 
 

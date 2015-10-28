@@ -42,3 +42,10 @@ running on an old version of Mediawiki and could do with being upgraded. I
 attempted this during the Chef setup, but unfortunately was unable to resolve 
 issues with plugins/extensions installed on the Help wiki. It may be easier to 
 create a new wiki and migrate the content from the old wiki.
+
+Chef-client version
+-------------------
+I have had to pin the chef-client version to 12.4.1 in the Vagrantfile due to 
+possible issues with chef-client 12.5. This needs investigating further, as it 
+could be an issue if additional application or database servers are provisioned 
+for production.

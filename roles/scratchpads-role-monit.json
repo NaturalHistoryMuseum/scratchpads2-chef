@@ -2,7 +2,10 @@
   "name": "scratchpads-role-monit",
   "default_attributes": {
     "monit":{
-      "install_method": "source"
+      "install_method": "source",
+      "source": {
+        "url": "https://bitbucket.org/tildeslash/monit/downloads"
+      }
     }
   },
   "run_list": [

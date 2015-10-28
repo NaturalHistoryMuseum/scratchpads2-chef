@@ -1,5 +1,5 @@
 # Desktop machines that we will allow to SSH and access privileged ports on each machine
-default['scratchpads']['trusted_ip_addresses'] = ['157.140.126.0/24', '192.168.0.0/16', '157.140.121.33/32']
+default['scratchpads']['trusted_ip_addresses'] = ['157.140.126.0/24', '192.168.0.0/16', '10.0.0.0/16', '157.140.121.33/32']
 # Permanently blocked IP addresses (rude Bots or spammers)
 default['scratchpads']['blocked_ip_addresses'] = [
   '185.38.251.209'

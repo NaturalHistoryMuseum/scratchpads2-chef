@@ -13,7 +13,9 @@ else
   # Add all hosts to the list (this may cause issues if we have dev boxes using the same chef server - need to look into this)
   all_hosts_search = search(:node, "chef_environment:#{node.chef_environment}")
   all_hosts_search.each do|app_host|
-    all_hosts << app_host['fqdn']
+    unless app_host['fqdn'].nil?
+      all_hosts << app_host['fqdn']
+    end
   end
 end
 node.default['scratchpads']['all_hosts'] = all_hosts

@@ -4,6 +4,7 @@ default["mmonit"]["dir"] = "/usr/local/mmonit"
 default["mmonit"]["source"]["version"] = "3.5.1"
 default["mmonit"]["source"]["filename"] = "mmonit-#{node['mmonit']['source']['version']}-linux-x64.tar.gz"
 default["mmonit"]["source"]["url"] = "http://mmonit.com/dist/#{node['mmonit']['source']['filename']}"
+default["mmonit"]["source"]["cookbook_file"] = "mmonit-3.5.1-linux-x64.tar.gz"
 default["mmonit"]["license_owner"] = "Tildeslash Ltd. - Trial License"
 default["mmonit"]["license"] = nil
 default["mmonit"]["init_style"] = "systemd"

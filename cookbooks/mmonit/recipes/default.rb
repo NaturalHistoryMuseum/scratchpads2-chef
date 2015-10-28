@@ -7,8 +7,17 @@
 
 src_filepath = "#{Chef::Config['file_cache_path']}/#{node['mmonit']['source']['filename']}"
 
-remote_file src_filepath do
-  source node["mmonit"]["source"]["url"]
+# remote_file src_filepath do
+#   source node["mmonit"]["source"]["url"]
+#   owner "root"
+#   group "root"
+#   mode 00644
+#   not_if { ::File.exists?(src_filepath) }
+#   not_if { ::File.exists?(node["mmonit"]["dir"]) }
+# end
+cookbook_file src_filepath do
+  source node["mmonit"]["source"]["cookbook_file"]
+  cookbook "mmonit"
   owner "root"
   group "root"
   mode 00644

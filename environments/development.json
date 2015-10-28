@@ -6,6 +6,9 @@
       "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret"
     },
     "scratchpads": {
+      "control": {
+        "aegir_url": "development.get.scratchpads.eu"
+      },
       "encrypted_data_bag_secret_file": "/vagrant/.chef/encrypted_data_bag_secret",
       "hosts": {
         "variables": {

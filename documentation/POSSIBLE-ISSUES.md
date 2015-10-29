@@ -68,3 +68,9 @@ sudo su -
 cd /var/aegir/platforms/scratchpads-666-the-number-of-the-beast
 git pull
 ```
+
+Deletion of datasets from GBIF
+------------------------------
+Scratchpads currently register themselves with GBIF as a dataset (at least NHM 
+hosted ones do). If a site is deleted, then the dataset on GBIF associated with 
+the site should also be deleted - this does not currently occur.

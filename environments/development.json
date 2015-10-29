@@ -16,15 +16,14 @@
             "192.168.0.2": "sp-control-1.nhm.ac.uk",
             "192.168.0.3": "sp-app-1.nhm.ac.uk",
             "192.168.0.4": "sp-data-1.nhm.ac.uk",
-            "192.168.0.5": "sp-app-2.nhm.ac.uk",
-            "192.168.0.6": "sp-data-2.nhm.ac.uk",
-            "192.168.0.7": "sp-search-1.nhm.ac.uk"
+            "192.168.0.5": "sp-search-1.nhm.ac.uk"
           }
         }
       },
       "nameservers": [
         "127.0.0.1",
-        "10.0.2.2"
+        "10.0.2.2",
+        "10.0.2.3"
       ],
       "varnish": {
         "trusted_networks": [

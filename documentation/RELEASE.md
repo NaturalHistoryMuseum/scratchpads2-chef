@@ -93,6 +93,20 @@ git pull
 git checkout 2.9.9.1
 ```
 
+It is also possible to cheat a little and create a minor release when a major 
+one should be used. This is useful for upgrading the version of Drupal where 
+the upgrade requires a database update, or where you know that the update is a 
+very simple (e.g. a change to a setting). To do this, complete the minor 
+upgrade as above, and then run `drush updatedb` manually on each site:
+
+```bash
+# following the code update above
+for i in $(ls -1 /var/aegir/platforms/scratchpads-2.9.9/sites|grep "\."|grep -v "php$"|grep -v "txt$")
+do
+  drush @$i updatedb -y
+done
+```
+
 Upgrading Drupal
 ----------------
 

@@ -25,7 +25,7 @@ accordingly. e.g. if set to 1, then the entries should be:
     192.168.0.4     dev-monkey-sp-data-1.nhm.ac.uk
     192.168.0.5     dev-monkey-sp-search-1.nhm.ac.uk
 
-And make the corresponding changes to [environments/development.json](environments/development.json)
+And make the corresponding changes to [environments/development.json](../environments/development.json)
 
 The repository contains a Vagrant script for testing the Chef setup. Simply 
 running

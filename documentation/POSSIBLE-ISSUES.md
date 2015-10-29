@@ -49,3 +49,22 @@ I have had to pin the chef-client version to 12.4.1 in the Vagrantfile due to
 possible issues with chef-client 12.5. This needs investigating further, as it 
 could be an issue if additional application or database servers are provisioned 
 for production.
+
+Development platforms not handled by Chef
+-----------------------------------------
+Currently the additional development platforms (scratchpads-4228-dwca-import 
+and scratchpads-3231-character-editor-next-phase) are not handled by Chef and 
+are installed manually. It would be good if these were created automatically by 
+Chef, by checking for additional branches in the scratchpads2 Git repository. 
+Chef could also handle updating of the code (I believe it does this already 
+with the scratchpads-master platform), updating of sites on the platform, and 
+possibly also updating of the platform itself on the Aegir interface (running a 
+'verify' if required). This all means that currently the development platform 
+code must be updated manually.
+
+```bash
+ssh user@sp-control-1
+sudo su - 
+cd /var/aegir/platforms/scratchpads-666-the-number-of-the-beast
+git pull
+```

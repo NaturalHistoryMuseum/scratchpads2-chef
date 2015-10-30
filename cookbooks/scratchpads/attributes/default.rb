@@ -45,7 +45,7 @@ default['scratchpads']['control']['aegir']['dbname'] = 'aegir'
 # Aegir database server
 default['scratchpads']['control']['dbserver'] = 'localhost'
 default['scratchpads']['control']['dbuser'] = 'root'
-default['scratchpads']['control']['admin_email'] = 's.rycroft@nhm.ac.uk'
+default['scratchpads']['control']['admin_email'] = 'b.scott@nhm.ac.uk'
 
 # Drush config folder
 default['scratchpads']['control']['drush_config_folder'] = '.drush'

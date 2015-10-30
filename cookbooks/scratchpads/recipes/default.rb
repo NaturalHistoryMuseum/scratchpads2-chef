@@ -45,7 +45,8 @@ if node['fqdn'].index('sp-') > 0
   node.default['scratchpads']['hostname_prefix'] = node['fqdn'][0, node['fqdn'].index('sp-')]
   Chef::Log.info("Hostname prefix: #{node.default['scratchpads']['hostname_prefix']}")
   node['scratchpads']['hosts']['variables']['hosts'].each do|ip_address,hostname|
-    hosts[ip_address] = "#{node.default['scratchpads']['hostname_prefix']}#{hostname}"
+    hostname_parts = hostname.split('.')
+    hosts[ip_address] = {"fqdn" => "#{node.default['scratchpads']['hostname_prefix']}#{hostname}", "hostname" => "#{node.default['scratchpads']['hostname_prefix']}#{hostname_parts[0]}"}
     Chef::Log.info("#{ip_address}: #{hostname} -> #{node.default['scratchpads']['hostname_prefix']}#{hostname}")
   end
   node.default['scratchpads']['hosts']['variables']['hosts'] = hosts

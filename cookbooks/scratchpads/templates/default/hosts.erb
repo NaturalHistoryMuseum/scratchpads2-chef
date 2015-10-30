@@ -5,5 +5,5 @@
 127.0.0.1	localhost
 
 <% @hosts.each do |ip,host| -%>
-<%= ip %>	<%= host %>
+<%= ip %>	<%= host['fqdn'] %> <%= host['hostname'] %>
 <% end -%>

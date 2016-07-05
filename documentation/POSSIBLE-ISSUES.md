@@ -74,3 +74,26 @@ Deletion of datasets from GBIF
 Scratchpads currently register themselves with GBIF as a dataset (at least NHM 
 hosted ones do). If a site is deleted, then the dataset on GBIF associated with 
 the site should also be deleted - this does not currently occur.
+
+monit prevents database starting in recovery mode
+-------------------------------------------------
+It is possible that the mysql instance stops responding during startup in recovery mode, 
+this causes monit to attempt to restart the process. In order to successfully start the
+server:
+
+systemctl stop monit  (get monit out of the way and stop it trying to restart)
+
+systemctl stop mysql
+
+(kill all mysql outstanding duplicated processes)
+
+systemctl start mysql (will start one clean – nut times out and marks it failed); watch the log and wait for recovery to complete
+
+mysqladmin shutdown (close down mysql cleanly so it’s ready for next startup without issue)
+
+systemctl reset-failed mysql  (so that systemctl state is cleaned up)
+
+systemctl start mysql  (and this time since mysql closed cleanly it comes up without the timeout so systemctl will be happy)
+
+systemctl start monit
+ 

@@ -37,28 +37,38 @@ Getting started with Chef
 Before you can start altering the configuration of the Scratchpads servers, you 
 will need to install the Chef development kit, or ChefDK 
 (https://downloads.chef.io/chef-dk/). The ChefDK provides all the commands that 
-are required to interact with a Chef server, and many more besides. Once that 
-has been installed, you will need to be added as a user to the NHM organization 
-on the Chef server. We are currently using a hosted Chef server 
-(https://manage.chef.io/), rather than hosting our own, although this is likely 
-to change in the future. Once your user account has been created, you will be 
-able to download the Chef starter kit. On the Chef server web interface, click 
-on the "Administration" tab, then the "nhm" organization, and then "Starter 
-Kit" in the sidebar (which should take you to 
-https://manage.chef.io/organizations/nhm/getting_started). Once there, click on 
-the big "Download Starter Kit" button, which should offer a Zip file for 
-download. Next, checkout this Git repository to your Desktop machine. Extract 
-the contents of the Starter Kit, and copy the ".chef" folder (you may need to 
-show hidden files in order to see it) into the Git repository. Once this has 
-been done, you should be good to go. Check everything is working by executing 
-the following command from within the Git repository:
+are required to interact with a Chef server, and many more besides. On Mac OS X
+with [Homebrew](https://brew.sh/) installed:
 
 ```bash
-knife download /
+brew install Caskroom/cask/chefdk
 ```
 
-If everything has worked, this should download additional directories and files 
-from the Chef server to your local machine.
+Once that has been installed, you will need to be added as a user to the NHM
+organization on the Chef server. We use a hosted Chef server -
+https://manage.chef.io/:
+
+1. Open https://manage.chef.io/ and sign up for a new user account
+2. Once your user account has been created, ask an existing `chef.io` user
+  (e.g., Ben Scott, Ed Baker or Lawrence Hudson) to add you to the 'nhm' group
+  and to add you to the 'admin' and 'billing-admins' groups
+3. Log in to https://manage.chef.io/ - select the 'Administration' tab,
+  'nhm' organization, and (in the sidebar) 'Starter Kit';
+  click 'Download Starter Kit" button, which will download a file `chef-starter.zip`
+4. Clone the `scratchpads2-chef` git repository to your machine
+5. Extract `chef-starter.zip` and copy the `.chef` folder (you may need to
+  show hidden files in order to see it) into the top-level directory of your
+  clone of the `scratchpads2-chef` repo; the `.chef.` directory contains a
+  file `<your-username>.pem` that uniquely identifies you to `chef.io/` - keep
+  this file secret
+6. Run
+
+  ```bash
+  knife download /
+  ```
+
+  If everything has worked, this should download additional directories and
+  files from the Chef server to your local machine.
 
 What Chef does not do
 ---------------------

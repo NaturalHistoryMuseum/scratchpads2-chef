@@ -8,7 +8,9 @@ default['scratchpads']['trusted_ip_addresses'] = [
 ]
 # Permanently blocked IP addresses (rude Bots or spammers)
 default['scratchpads']['blocked_ip_addresses'] = [
-  '185.38.251.209'
+  '185.38.251.209',
+  '98.159.241.2',
+  '5.9.32.222'
 ]
 # The following will be populated during a Chef run.
 default['scratchpads']['all_ip_addresses'] = []
